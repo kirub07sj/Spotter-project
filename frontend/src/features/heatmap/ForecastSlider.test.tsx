@@ -1,4 +1,4 @@
-import { act, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useUi } from '../../store/ui';
 import { planOk } from '../../test/plans';
@@ -13,6 +13,26 @@ beforeEach(() => {
 });
 
 describe('ForecastSlider', () => {
+  it('keeps manual navigation available and prevents playback for reduced motion', () => {
+    vi.stubGlobal('matchMedia', () => ({
+      matches: true,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    }));
+    try {
+      render(<ForecastSlider departure={departure} route={planOk.routes[0]} />);
+      expect(screen.getByRole('button', { name: 'Play forecast' })).toBeDisabled();
+      const slider = screen.getByRole('slider');
+      expect(slider).toBeEnabled();
+      fireEvent.keyDown(slider, { key: 'ArrowRight' });
+      expect(useUi.getState().hour).toBe(1);
+      fireEvent.keyDown(slider, { key: ' ' });
+      expect(useUi.getState().playing).toBe(false);
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
+
   it('is a native range 0-48 with spoken value text', () => {
     render(<ForecastSlider departure={departure} route={planOk.routes[0]} />);
     const slider = screen.getByRole('slider', { name: 'Forecast time' });

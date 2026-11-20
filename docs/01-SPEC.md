@@ -134,6 +134,13 @@ The backend uses UTC only. The frontend shows times in the browser's time zone w
 ### D-20 Simulated weather scenario · ACCEPTED
 Real weather is often calm, which makes the logic impossible to demo. `scenario=winter_storm|high_wind` (query param, off by default) overlays synthetic weather fields on top of the real forecast. The UI shows a persistent "Simulated weather" badge whenever a scenario is active. Scenarios are only for the walkthrough and tests.
 
+### D-21 Map bundle budget · ACCEPTED
+On 2026-11-20 the human approved a **475 KB gzipped** map JavaScript budget, replacing
+450 KB. The initial JavaScript budget remains 250 KB. Both limits are enforced by
+`make check`, with regression tests for pass/fail boundaries and transitive imports.
+The existing deck.gl WebGL-only build reduces the map payload from about 512 KB to
+474 KB while retaining MapLibre, deck.gl and the rendering features.
+
 ---
 
 ## 3. Traceability

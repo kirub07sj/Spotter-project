@@ -81,7 +81,8 @@ function Shell() {
           Skip to results
         </a>
         <div className="flex min-h-0 flex-1">
-          <aside className="flex w-[400px] shrink-0 flex-col overflow-y-auto border-r border-slate-200 bg-slate-50">
+          {/* Contain absolutely positioned screen-reader text inside the scrollable sidebar. */}
+          <aside className="relative flex w-[400px] shrink-0 flex-col overflow-y-auto border-r border-slate-200 bg-slate-50">
             <header className="border-b border-slate-200 bg-white px-4 py-3">
               <Title />
             </header>

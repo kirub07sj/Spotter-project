@@ -8,7 +8,7 @@ export interface HeatmapState {
   planId: string | null;
   status: HeatmapStatus;
   bounds: [number, number, number, number] | null;
-  /** grid hour 0 is floor(departure); offset of departure into that hour, in hours */
+  /** Offset into the returned frame times; zero for departure-relative frames (D-14). */
   departureOffsetH: number;
   bitmaps: (ImageBitmap | undefined)[];
   ready: number;

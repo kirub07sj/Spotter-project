@@ -40,14 +40,39 @@ The ranking is strict, as the brief orders it: one fewer Severe mile beats a 2-h
 The reasons text in the banner states the trade-off ("Chosen over B: 25.0 fewer Severe miles").
 
 ## Run locally
-Requirements: Python 3.12 with [uv](https://docs.astral.sh/uv/), Node 20+ with pnpm.
+Requirements: Python 3.12 with [uv](https://docs.astral.sh/uv/), Node 22 and
+pnpm 10 (the version used in CI and pinned in `frontend/package.json`).
 
 ```bash
-cp .env.example .env          # set MAPBOX_TOKEN, or PROVIDERS=fake to run fully offline
+cp -n .env.example .env       # first setup only; preserve an existing .env
+# Edit .env: set PROVIDERS=fake for the demo, or set MAPBOX_TOKEN for real providers.
 make install
+```
+
+Start the servers in **two separate terminals**, both from the repository root:
+
+```bash
+# Terminal 1
 make dev-backend              # Django on :8000
+
+# Terminal 2
 make dev-frontend             # Vite on :5173, proxies /api to :8000
 ```
+
+Open http://localhost:5173. Check the API at http://localhost:8000/api/v1/health.
+Both terminals must stay running.
+
+If pnpm reports `ERR_PNPM_MINIMUM_RELEASE_AGE_VIOLATION` or `vite: not found`,
+use the project's pinned pnpm version and reinstall before starting the frontend:
+
+```bash
+cd frontend
+corepack pnpm install --frozen-lockfile
+corepack pnpm dev
+```
+
+If place search reports `MAPBOX_TOKEN is empty`, set `PROVIDERS=fake` in the
+root `.env` and restart the backend, or supply a valid Mapbox token with `PROVIDERS=real`.
 
 `PROVIDERS=fake` uses deterministic routes and weather, so the whole app runs without any
 token or network access. To demo every risk level, open **Demo: simulated weather** in the form

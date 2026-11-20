@@ -42,6 +42,8 @@ export function HeatmapController({ plan }: { plan: Plan | undefined }) {
     const worker = new Worker(new URL('./heatmap.worker.ts', import.meta.url), { type: 'module' });
     const pending: { hour: number; bitmap: ImageBitmap }[] = [];
     let frame = 0;
+    let completionFrame = 0;
+    let active = true;
     const flush = () => {
       frame = 0;
       const s = useHeatmapStore.getState();
@@ -52,7 +54,7 @@ export function HeatmapController({ plan }: { plan: Plan | undefined }) {
     };
     worker.onmessage = (event: MessageEvent<FromWorker>) => {
       const msg = event.data;
-      if (msg.planId !== planId) {
+      if (!active || msg.planId !== planId) {
         if (msg.type === 'bitmap') msg.bitmap.close();
         return;
       }
@@ -60,9 +62,11 @@ export function HeatmapController({ plan }: { plan: Plan | undefined }) {
         pending.push({ hour: msg.hour, bitmap: msg.bitmap });
         frame ||= requestAnimationFrame(flush); // one store update per frame, not per bitmap
       } else if (msg.type === 'done') {
-        requestAnimationFrame(() =>
-          useHeatmapStore.setState({ status: 'ready', renderMs: msg.ms }),
-        );
+        completionFrame = requestAnimationFrame(() => {
+          if (active && useHeatmapStore.getState().planId === planId) {
+            useHeatmapStore.setState({ status: 'ready', renderMs: msg.ms });
+          }
+        });
       } else {
         useHeatmapStore.setState({ status: 'error', error: msg.message });
       }
@@ -84,7 +88,11 @@ export function HeatmapController({ plan }: { plan: Plan | undefined }) {
     };
     worker.postMessage(message, [scores, mask]);
     return () => {
+      active = false;
       if (frame) cancelAnimationFrame(frame);
+      if (completionFrame) cancelAnimationFrame(completionFrame);
+      for (const p of pending) p.bitmap.close();
+      pending.length = 0;
       worker.terminate(); // a replaced plan stops rendering immediately
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps -- re-run per heatmap response only

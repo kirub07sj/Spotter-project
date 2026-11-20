@@ -111,7 +111,7 @@ Memory check: 300 × 200 px × 4 bytes × 49 is about 12 MB of GPU textures. Tha
 - **Playback:** `requestAnimationFrame` loop that advances `hour` by `elapsed_ms / 1000 * 2` (2 forecast hours per second) and stops at 48.
 - **Truck position at hour h:** for each route, binary search the cumulative-time array (sent with the plan as `cum_time_s` per simplified vertex) and interpolate. This is O(log n) per frame per route.
 - **Geocoder:** debounce, `AbortController` per keystroke, cache results in a query cache.
-- **Bundle:** lazy-load the map chunk (MapLibre + deck.gl) with `React.lazy` while the form renders. Target initial JS < 250 KB gzipped, map chunk < 450 KB gzipped.
+- **Bundle:** lazy-load the map chunk (MapLibre + deck.gl) with `React.lazy` while the form renders. Budgets: initial JS < 250 KB gzipped, map JavaScript including transitive imports <= 475 KB gzipped (D-21, approved 2026-11-20). Both are enforced by CI.
 
 ## 8. Performance budget (measured in QA)
 

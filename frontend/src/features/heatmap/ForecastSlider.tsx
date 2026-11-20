@@ -22,7 +22,7 @@ export function ForecastSlider({ departure, route }: Props) {
   const ready = useHeatmapStore((s) => s.ready);
   const total = useHeatmapStore((s) => s.bitmaps.length);
   const retry = useHeatmapStore((s) => s.retry);
-  usePlayback();
+  const reducedMotion = usePlayback();
 
   const etaTicks = useMemo(() => {
     if (!route) return [];
@@ -36,6 +36,7 @@ export function ForecastSlider({ departure, route }: Props) {
   const disabled = loading;
 
   const togglePlay = () => {
+    if (reducedMotion) return;
     if (!playing && hour >= MAX_HOUR) setHour(0);
     setPlaying(!playing);
   };
@@ -57,7 +58,8 @@ export function ForecastSlider({ departure, route }: Props) {
         <button
           type="button"
           onClick={togglePlay}
-          disabled={disabled}
+          disabled={disabled || reducedMotion}
+          title={reducedMotion ? 'Playback disabled by your reduced-motion preference' : undefined}
           aria-label={playing ? 'Pause forecast playback' : 'Play forecast'}
           className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-900 text-white disabled:bg-slate-300"
         >

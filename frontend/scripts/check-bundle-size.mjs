@@ -1,15 +1,13 @@
-// Bundle budgets (docs/04 §7): initial JS < 250 KB gz, lazy map chunk < 450 KB gz.
+// Bundle budgets (docs/04 §7, D-21): initial JS < 250 KB gz, map <= 475 KB gz.
 // Sizes are the gzipped JS each load actually pulls in (a chunk plus its static imports).
 import { readFileSync } from 'node:fs';
 import { gzipSync } from 'node:zlib';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
 
-const BUDGETS = { initial: 250, map: 450 };
-// The map budget is reported but not enforced: MapLibre 5 alone is ~265 KB gz and deck.gl
-// core ~185 KB gz, so 450 can't be met with the stack in docs/02. Pending a human decision
-// (raise the budget, or change the stack); the initial-JS budget stays a hard gate.
-const ENFORCED = new Set(['initial']);
-const dist = new URL('../dist/', import.meta.url).pathname;
+const BUDGETS = { initial: 250, map: 475 };
+const dist = process.argv[2]
+  ? resolve(process.argv[2])
+  : new URL('../dist/', import.meta.url).pathname;
 const manifest = JSON.parse(readFileSync(join(dist, '.vite/manifest.json'), 'utf8'));
 
 function closure(key, seen = new Set(), dynamic = false) {
@@ -34,13 +32,9 @@ for (const [name, files] of [
   ['map', map],
 ]) {
   const total = files.reduce((sum, f) => sum + kb(f), 0);
-  const ok = total <= BUDGETS[name];
-  if (!ok && ENFORCED.has(name)) failed = true;
-  const verdict = ok
-    ? 'ok'
-    : ENFORCED.has(name)
-      ? 'OVER'
-      : 'OVER (warning: needs a budget decision)';
+  const ok = name === 'initial' ? total < BUDGETS[name] : total <= BUDGETS[name];
+  if (!ok) failed = true;
+  const verdict = ok ? 'ok' : 'OVER';
   process.stdout.write(
     `${name} JS: ${total.toFixed(1)} KB gz (budget ${BUDGETS[name]}) ${verdict}\n`,
   );

@@ -9,7 +9,7 @@ import { truckPositionAt } from '../../lib/truck';
 import { useUi } from '../../store/ui';
 import { useHeatmapStore } from '../heatmap';
 import { heatmapLayers, truckLayers, type TruckDatum } from '../heatmap/layers';
-import { endpointLayer, routeLayers } from './layers';
+import { endpointLayer, prepareRouteLayers, routeLayers } from './layers';
 import { checkpointTooltip } from './tooltip';
 import { FALLBACK_STYLE, MAP_STYLE_URL, US_VIEW } from './styles';
 import { EMPTY_MAP_DATA, useMapData, type MapRoute } from './useMapData';
@@ -71,9 +71,9 @@ export function MapView({ plan, selectedId }: Props) {
     setLabelLayerId(layers.find((l) => l.type === 'symbol')?.id);
   }, []);
 
-  const selectedSegments = useMemo(
-    () => data?.segments.filter((s) => s.routeId === selected) ?? [],
-    [data, selected],
+  const routeData = useMemo(
+    () => prepareRouteLayers(data ?? EMPTY_MAP_DATA, selected, showAllRoutes, showCheckpoints),
+    [data, selected, showAllRoutes, showCheckpoints],
   );
 
   // Nearest checkpoint to the slider time on the selected route gets a thicker ring.
@@ -118,19 +118,15 @@ export function MapView({ plan, selectedId }: Props) {
       opacity: heatmapOpacity,
       beforeId: labelLayerId,
     }),
-    ...routeLayers(
-      layerData,
-      {
-        selectedId: selected,
-        hoveredRouteId,
-        hoveredCheckpoint,
-        emphasizedCheckpoint,
-        showAllRoutes,
-        showCheckpoints,
-        beforeId: labelLayerId,
-      },
-      selectedSegments,
-    ),
+    ...routeLayers(routeData, {
+      selectedId: selected,
+      hoveredRouteId,
+      hoveredCheckpoint,
+      emphasizedCheckpoint,
+      showAllRoutes,
+      showCheckpoints,
+      beforeId: labelLayerId,
+    }),
     endpointLayer(layerData),
     ...truckLayers(trucks),
   ];
