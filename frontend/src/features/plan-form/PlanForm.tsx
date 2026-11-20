@@ -79,6 +79,7 @@ export function PlanForm({ onSubmit, loading, initial }: Props) {
             type="datetime-local"
             className="w-full rounded-md border border-slate-300 bg-white px-2 py-2 text-sm shadow-sm"
             aria-invalid={Boolean(errors.departure)}
+            aria-describedby={errors.departure ? 'trip-error' : undefined}
             {...register('departure')}
           />
         </div>
@@ -91,6 +92,7 @@ export function PlanForm({ onSubmit, loading, initial }: Props) {
             inputMode="numeric"
             className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm"
             aria-invalid={Boolean(errors.load)}
+            aria-describedby={errors.load ? 'trip-error' : undefined}
             {...register('load', {
               onBlur: (e: React.FocusEvent<HTMLInputElement>) => {
                 const n = parseLoad(e.target.value);
@@ -101,7 +103,9 @@ export function PlanForm({ onSubmit, loading, initial }: Props) {
         </div>
       </div>
       {(errors.departure || errors.load) && (
-        <p className="text-xs text-red-700">{errors.departure?.message ?? errors.load?.message}</p>
+        <p id="trip-error" role="alert" className="text-xs text-red-700">
+          {errors.departure?.message ?? errors.load?.message}
+        </p>
       )}
       <fieldset>
         <legend className="mb-1 block text-xs font-medium text-slate-600">Checkpoint every</legend>

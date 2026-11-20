@@ -15,6 +15,7 @@ export interface HeatmapState {
   version: number;
   renderMs: number | null;
   error: string | null;
+  retry: (() => void) | null;
 }
 
 export const useHeatmapStore = create<HeatmapState>()(() => ({
@@ -27,6 +28,7 @@ export const useHeatmapStore = create<HeatmapState>()(() => ({
   version: 0,
   renderMs: null,
   error: null,
+  retry: null,
 }));
 
 export function resetHeatmap(planId: string | null, status: HeatmapStatus) {

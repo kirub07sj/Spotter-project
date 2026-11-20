@@ -10,14 +10,16 @@ const gradient = `linear-gradient(to right, ${Array.from({ length: 41 }, (_, i) 
 
 /** Legend and layer toggles, collapsible, bottom-right above the slider. */
 export function MapControls() {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(
+    () => window.matchMedia?.('(min-width: 1024px)').matches ?? true,
+  );
   const heatmapVisible = useUi((s) => s.heatmapVisible);
   const heatmapOpacity = useUi((s) => s.heatmapOpacity);
   const showAllRoutes = useUi((s) => s.showAllRoutes);
   const showCheckpoints = useUi((s) => s.showCheckpoints);
   const setLayer = useUi((s) => s.setLayer);
   return (
-    <div className="absolute right-2 top-24 z-10 w-56 rounded-lg bg-white/95 text-xs shadow-lg ring-1 ring-slate-200 backdrop-blur max-lg:hidden">
+    <div className="absolute right-2 top-24 z-10 w-56 rounded-lg bg-white/95 text-xs shadow-lg ring-1 ring-slate-200 backdrop-blur max-lg:top-[124px] max-lg:w-auto max-lg:max-w-[14rem]">
       <button
         type="button"
         className="flex w-full items-center justify-between px-3 py-2 font-semibold"

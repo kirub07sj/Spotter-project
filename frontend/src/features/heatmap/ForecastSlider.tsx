@@ -21,6 +21,7 @@ export function ForecastSlider({ departure, route }: Props) {
   const status = useHeatmapStore((s) => s.status);
   const ready = useHeatmapStore((s) => s.ready);
   const total = useHeatmapStore((s) => s.bitmaps.length);
+  const retry = useHeatmapStore((s) => s.retry);
   usePlayback();
 
   const etaTicks = useMemo(() => {
@@ -52,7 +53,7 @@ export function ForecastSlider({ departure, route }: Props) {
 
   return (
     <div className="pointer-events-auto rounded-xl bg-white/95 px-3 pb-2 pt-2 shadow-lg ring-1 ring-slate-200 backdrop-blur">
-      <div className="flex items-center gap-3">
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
         <button
           type="button"
           onClick={togglePlay}
@@ -98,18 +99,31 @@ export function ForecastSlider({ departure, route }: Props) {
             ))}
           </div>
         </div>
-        <div className="w-40 shrink-0 text-right">
+        <div className="w-40 shrink-0 text-right max-sm:order-first max-sm:flex max-sm:w-full max-sm:items-baseline max-sm:justify-between max-sm:text-left">
           <div className="text-sm font-semibold text-slate-900">
             {formatOffset(hour, departure)}
           </div>
           <div className="text-[11px] text-slate-500" aria-live="polite">
-            {loading
-              ? 'Loading forecast…'
-              : status === 'error'
-                ? 'Heatmap unavailable'
-                : status === 'rendering'
-                  ? `rendering ${ready}/${total || 49}`
-                  : 'ticks = checkpoint ETAs'}
+            {loading ? (
+              'Loading forecast…'
+            ) : status === 'error' ? (
+              <>
+                Heatmap unavailable{' '}
+                {retry && (
+                  <button
+                    type="button"
+                    className="pointer-events-auto font-semibold text-blue-700 underline"
+                    onClick={retry}
+                  >
+                    Retry
+                  </button>
+                )}
+              </>
+            ) : status === 'rendering' ? (
+              `rendering ${ready}/${total || 49}`
+            ) : (
+              'ticks = checkpoint ETAs'
+            )}
           </div>
         </div>
       </div>

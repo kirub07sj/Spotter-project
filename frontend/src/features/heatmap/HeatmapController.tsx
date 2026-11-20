@@ -15,11 +15,19 @@ export function HeatmapController({ plan }: { plan: Plan | undefined }) {
     resetHeatmap(planId, planId ? 'loading' : 'idle');
   }, [planId]);
 
+  const { refetch } = query;
   useEffect(() => {
     if (query.isError && planId) {
-      useHeatmapStore.setState({ status: 'error', error: 'Weather heatmap unavailable' });
+      useHeatmapStore.setState({
+        status: 'error',
+        error: 'Weather heatmap unavailable',
+        retry: () => {
+          useHeatmapStore.setState({ status: 'loading', error: null, retry: null });
+          void refetch();
+        },
+      });
     }
-  }, [query.isError, planId]);
+  }, [query.isError, planId, refetch]);
 
   const data = query.data;
   useEffect(() => {
