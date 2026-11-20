@@ -166,8 +166,9 @@ services. Frontend types are generated from the drf-spectacular schema, and CI f
 - Forecasts more than 72 h out are flagged as low-confidence. Departures are limited to 7 days ahead.
 - Sampling is discrete: at a 50 mi interval a narrow storm can fall between checkpoints. The
   heatmap shows what the checkpoints miss.
-- The provider fixtures are synthetic, in the providers' exact response shape, because no key or
-  network was available when they were written. Run `uv run python scripts/record_fixtures.py`
-  with a token to replace them with real recordings.
+- Mapbox fixtures remain synthetic because no token is configured. Open-Meteo fixtures
+  include real recordings from 2026-11-20 and intentional synthetic conversion/null cases.
+  From `backend/`, run `uv run --env-file ../.env python scripts/record_fixtures.py`
+  with a token to record Mapbox responses too.
 - Open decisions are listed in [docs/QA-REPORT.md](docs/QA-REPORT.md#open-decisions).
 - Stretch ideas: S-01 safer departure time, S-03 shareable URL, S-04 per-checkpoint sparkline.

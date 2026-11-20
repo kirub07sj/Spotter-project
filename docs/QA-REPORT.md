@@ -20,7 +20,7 @@ work remains. Passing unit tests alone is not a full acceptance result.
 
 ### Additional rule checks
 
-`make check` passes locally: 300 backend tests, 59 frontend tests and four bundle-gate
+The latest delivery `make check` passed locally with 301 backend tests, 59 frontend tests and four bundle-gate
 tests, plus lint, types, import rules, schema drift, build and size checks. The domain
 retains 100% branch coverage.
 
@@ -51,7 +51,9 @@ Software rendering remains substantially slower and is not reported as a perform
 The live Open-Meteo adapter successfully fetched a batch of two locations and three hourly
 buckets, parsing metric conversion. No Mapbox token is configured, so live routing, real
 route latency and a complete real-provider trip remain **NOT VERIFIED**. The recorded
-provider fixtures remain synthetic. The original Lighthouse result below was not rerun.
+Mapbox fixtures remain synthetic. Two Open-Meteo fixtures were subsequently replaced
+with real responses and capture provenance on 2026-11-20; nonzero conversion/null stress
+cases remain synthetic. The original Lighthouse result below was not rerun.
 
 Repeat browser checks with the demo backend running and `pnpm build && pnpm preview`:
 
@@ -78,6 +80,24 @@ passes; both bundle budgets fail the build when exceeded.
 Repository publication and remote checks are tracked at
 [RasAbrish/spotter Actions](https://github.com/RasAbrish/spotter/actions/workflows/ci.yml).
 Require a successful run for the repository's current head before delivery.
+
+### Delivery execution · 2026-11-20
+
+- Created and pushed the private `RasAbrish/spotter` repository. Repository-local Git
+  configuration uses the user's authenticated SSH key; no credentials are committed.
+- GitHub Actions is enabled and allows all actions. Push and manual runs both returned
+  `startup_failure` before creating any jobs or logs. The manual
+  [CI run](https://github.com/RasAbrish/spotter/actions/runs/44730189703) uses the actual
+  `.github/workflows/ci.yml` workflow. The API supplies no further error message; the
+  owner must inspect the run page before this can be marked green.
+- The documented production command, Gunicorn with two Uvicorn workers and production
+  Django settings, passed local health, geocoding, winter-storm planning and 49-frame
+  heatmap smoke checks with offline providers and a generated environment-only secret.
+- A Docker image build was attempted but stopped during a very slow upstream registry
+  download. The complete container build is **not verified**; the native Render command
+  was verified separately. No cloud services have been provisioned or charged.
+- Render/Vercel connections and approval for the existing paid Render backend/Redis
+  blueprint remain pending. The local Mapbox token is still absent.
 
 ## Original delivery run
 

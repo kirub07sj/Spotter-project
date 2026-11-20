@@ -49,6 +49,18 @@ async def test_multi_point_parse_and_unit_conversion(
 
 
 @respx.mock
+async def test_nonzero_snow_and_rain_units_with_synthetic_stress_fixture(
+    http: HttpClient, load_fixture: Callable[[str], Any]
+) -> None:
+    # Calm real recordings must not erase the nonzero conversion checks.
+    raw = load_fixture("open_meteo/unit_conversion.json")
+    respx.get(BASE).mock(return_value=httpx.Response(200, json=raw))
+    series = await weather(http).hourly(PTS, START, END)
+    assert series[1].snow_in_hr[10] == pytest.approx(cm_to_in(4.2))
+    assert series[2].rain_in_hr[10] == pytest.approx(mm_to_in(0.4 + 0.3))
+
+
+@respx.mock
 async def test_single_point_object_response(
     http: HttpClient, load_fixture: Callable[[str], Any]
 ) -> None:

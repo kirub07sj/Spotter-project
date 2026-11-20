@@ -1,0 +1,39 @@
+{
+  "recorded_at": "2026-11-20T11:47:50.603808+00:00",
+  "records": [
+    {
+      "file": "multi_point_winter.json",
+      "url": "https://api.open-meteo.com/v1/forecast",
+      "params": {
+        "hourly": "wind_speed_10m,wind_gusts_10m,rain,showers,snowfall",
+        "timezone": "GMT",
+        "timeformat": "unixtime",
+        "start_hour": "2026-11-20T13:00",
+        "latitude": "39.74,41.31,39.06",
+        "longitude": "-104.99,-105.59,-108.55",
+        "end_hour": "2026-11-21T12:00"
+      },
+      "locations": 3,
+      "hours": 24
+    },
+    {
+      "file": "single_point.json",
+      "url": "https://api.open-meteo.com/v1/forecast",
+      "params": {
+        "hourly": "wind_speed_10m,wind_gusts_10m,rain,showers,snowfall",
+        "timezone": "GMT",
+        "timeformat": "unixtime",
+        "start_hour": "2026-11-20T13:00",
+        "latitude": "40.76",
+        "longitude": "-111.89",
+        "end_hour": "2026-11-20T18:00"
+      },
+      "locations": 1,
+      "hours": 6
+    }
+  ],
+  "synthetic_cases": [
+    "nulls.json",
+    "unit_conversion.json"
+  ]
+}

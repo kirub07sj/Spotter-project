@@ -1,7 +1,7 @@
 """Records real provider responses into planner/tests/fixtures, with tokens stripped.
 Needs MAPBOX_TOKEN and network access. Run only when asked (CLAUDE.md):
 
-    uv run python scripts/record_fixtures.py
+    uv run --env-file ../.env python scripts/record_fixtures.py
 """
 
 import json
