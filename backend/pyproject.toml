@@ -1,0 +1,100 @@
+[project]
+name = "spotter-backend"
+version = "0.1.0"
+description = "Weather-aware truck routing API"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "django>=5.1,<6",
+    "djangorestframework>=3.15",
+    "drf-spectacular>=0.27",
+    "django-cors-headers>=4.4",
+    "httpx[http2]>=0.27",
+    "numpy>=2.0",
+    "shapely>=2.0",
+    "polyline>=2.0",
+    "uvicorn[standard]>=0.30",
+    "gunicorn>=22",
+    "whitenoise>=6.7",
+    "redis>=5.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "pytest-django>=4.9",
+    "pytest-asyncio>=0.24",
+    "pytest-cov>=5",
+    "pytest-socket>=0.7",
+    "hypothesis>=6.100",
+    "respx>=0.21",
+    "ruff>=0.6",
+    "mypy>=1.11",
+    "import-linter>=2.0",
+]
+
+[tool.uv]
+package = false
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+extend-exclude = ["staticfiles"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF", "DTZ", "T20", "N"]
+ignore = ["RUF012"]
+
+[tool.ruff.lint.per-file-ignores]
+"planner/tests/**" = ["DTZ001", "N802"]
+
+[tool.mypy]
+python_version = "3.12"
+ignore_missing_imports = true
+warn_unused_ignores = true
+check_untyped_defs = true
+exclude = ["planner/tests/"]
+
+[[tool.mypy.overrides]]
+module = "planner.domain.*"
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+disallow_untyped_calls = true
+disallow_any_generics = true
+disallow_subclassing_any = true
+disallow_untyped_decorators = true
+warn_return_any = true
+no_implicit_reexport = true
+strict_equality = true
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings.test"
+addopts = "--disable-socket --allow-unix-socket -p no:cacheprovider"
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["planner/tests"]
+filterwarnings = ["error::RuntimeWarning"]
+
+[tool.coverage.run]
+branch = true
+source = ["planner"]
+omit = ["planner/tests/*"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = false
+
+[tool.importlinter]
+root_package = "planner"
+include_external_packages = true
+
+[[tool.importlinter.contracts]]
+name = "Domain is pure"
+type = "forbidden"
+source_modules = ["planner.domain"]
+forbidden_modules = ["planner.api", "planner.services", "planner.providers", "django", "rest_framework", "httpx"]
+allow_indirect_imports = false
+
+[[tool.importlinter.contracts]]
+name = "Layers"
+type = "layers"
+layers = ["planner.api", "planner.services", "planner.providers", "planner.domain"]
