@@ -14,11 +14,26 @@ class LatLon:
 
 
 @dataclass(frozen=True, slots=True)
+class Place:
+    id: str
+    label: str
+    position: LatLon
+
+
+@dataclass(frozen=True, slots=True)
 class RouteGeometry:
     coords: tuple[LatLon, ...]  # full resolution
     seg_dist_m: tuple[float, ...]  # len(coords) - 1
     seg_dur_s: tuple[float, ...]  # len(coords) - 1, provider (car) durations
     summary: str = ""
+
+    @property
+    def distance_m(self) -> float:
+        return sum(self.seg_dist_m)
+
+    @property
+    def duration_s(self) -> float:
+        return sum(self.seg_dur_s)
 
 
 @dataclass(frozen=True, slots=True)
