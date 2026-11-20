@@ -77,3 +77,14 @@ export function useMapData(plan: Plan | undefined): MapData | null {
     // eslint-disable-next-line react-hooks/exhaustive-deps -- keyed by plan_id on purpose
   }, [planId]);
 }
+
+/** Same shape with no data, so MapView builds one stable layer list before the first plan. */
+export const EMPTY_MAP_DATA: MapData = {
+  planId: '',
+  routes: [],
+  segments: [],
+  checkpoints: {},
+  checkpointOffsetsS: {},
+  endpoints: [],
+  bounds: null,
+};

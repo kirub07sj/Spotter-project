@@ -12,7 +12,7 @@ import { heatmapLayers, truckLayers, type TruckDatum } from '../heatmap/layers';
 import { endpointLayer, routeLayers } from './layers';
 import { checkpointTooltip } from './tooltip';
 import { FALLBACK_STYLE, MAP_STYLE_URL, US_VIEW } from './styles';
-import { useMapData, type MapRoute } from './useMapData';
+import { EMPTY_MAP_DATA, useMapData, type MapRoute } from './useMapData';
 import { MapControls } from './MapControls';
 
 function DeckOverlay(props: MapboxOverlayProps) {
@@ -107,36 +107,33 @@ export function MapView({ plan, selectedId }: Props) {
     : [];
 
   const heatmap = useHeatmapStore.getState();
-  const showHeatmap = heatmapVisible && heatmap.bounds !== null && heatmap.planId === data?.planId;
+  const showHeatmap = heatmapVisible && heatmap.planId === data?.planId;
+  const layerData = data ?? EMPTY_MAP_DATA;
 
-  const layers = data
-    ? [
-        ...(showHeatmap && heatmap.bounds
-          ? heatmapLayers({
-              bitmaps: heatmap.bitmaps,
-              bounds: heatmap.bounds,
-              position: hour + heatmap.departureOffsetH,
-              opacity: heatmapOpacity,
-              beforeId: labelLayerId,
-            })
-          : []),
-        ...routeLayers(
-          data,
-          {
-            selectedId: selected,
-            hoveredRouteId,
-            hoveredCheckpoint,
-            emphasizedCheckpoint,
-            showAllRoutes,
-            showCheckpoints,
-            beforeId: labelLayerId,
-          },
-          selectedSegments,
-        ),
-        endpointLayer(data),
-        ...truckLayers(trucks),
-      ]
-    : [];
+  const layers = [
+    ...heatmapLayers({
+      bitmaps: showHeatmap ? heatmap.bitmaps : [],
+      bounds: heatmap.bounds ?? WORLD_BOUNDS,
+      position: hour + heatmap.departureOffsetH,
+      opacity: heatmapOpacity,
+      beforeId: labelLayerId,
+    }),
+    ...routeLayers(
+      layerData,
+      {
+        selectedId: selected,
+        hoveredRouteId,
+        hoveredCheckpoint,
+        emphasizedCheckpoint,
+        showAllRoutes,
+        showCheckpoints,
+        beforeId: labelLayerId,
+      },
+      selectedSegments,
+    ),
+    endpointLayer(layerData),
+    ...truckLayers(trucks),
+  ];
   void heatmapVersion; // re-render when new bitmaps land (bumped at most once per frame)
 
   const getTooltip = useCallback(
@@ -213,6 +210,8 @@ export function MapView({ plan, selectedId }: Props) {
     </div>
   );
 }
+
+const WORLD_BOUNDS: [number, number, number, number] = [-180, -85, 180, 85];
 
 const TOOLTIP_STYLE = {
   backgroundColor: 'white',

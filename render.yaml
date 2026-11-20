@@ -1,0 +1,55 @@
+# Render Blueprint (docs/06 §1). Backend only; the frontend goes to Vercel or Netlify.
+# Secrets (sync: false) are entered in the Render dashboard, never committed.
+services:
+  - type: web
+    name: truck-routing-api
+    runtime: python
+    rootDir: backend
+    plan: starter # an always-on instance: free tiers sleep, and a 30 s cold start hurts the perf grade
+    region: oregon
+    buildCommand: pip install uv && uv sync --frozen && uv run python manage.py collectstatic --noinput
+    startCommand: uv run gunicorn config.asgi:application -k uvicorn.workers.UvicornWorker -w 2 -b 0.0.0.0:$PORT --timeout 30
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.13
+      - key: DJANGO_SETTINGS_MODULE
+        value: config.settings.prod
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: DJANGO_DEBUG
+        value: 'false'
+      - key: DJANGO_ALLOWED_HOSTS
+        sync: false # e.g. truck-routing-api.onrender.com
+      - key: CORS_ALLOWED_ORIGINS
+        sync: false # e.g. https://truck-routing.vercel.app
+      - key: PROVIDERS
+        value: real
+      - key: MAPBOX_TOKEN
+        sync: false
+      - key: OPEN_METEO_BASE_URL
+        value: https://api.open-meteo.com/v1/forecast
+      - key: OPEN_METEO_API_KEY
+        sync: false
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: truck-routing-cache
+          property: connectionString
+      - key: RISK_WIND_METRIC
+        value: gust
+      - key: TRUCK_MAX_SPEED_MPH
+        value: '65'
+      - key: HEATMAP_CORRIDOR_KM
+        value: '40'
+      - key: HEATMAP_MAX_POINTS
+        value: '450'
+      - key: MAPBOX_USE_MAX_WEIGHT
+        value: 'false'
+      - key: TRACTOR_TRAILER_TARE_LB
+        value: '35000'
+  - type: redis
+    name: truck-routing-cache
+    plan: starter
+    ipAllowList: []
+    maxmemoryPolicy: allkeys-lru

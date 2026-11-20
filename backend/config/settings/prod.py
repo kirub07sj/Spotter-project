@@ -20,4 +20,14 @@ MIDDLEWARE = [
     MIDDLEWARE[0],  # noqa: F405
     "whitenoise.middleware.WhiteNoiseMiddleware",
     *MIDDLEWARE[1:],  # noqa: F405
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+]
+SILENCED_SYSTEM_CHECKS = [
+    # Stateless JSON API: no cookies, sessions or form posts, so CSRF middleware has nothing
+    # to protect; CORS is an allowlist (docs/02 §8).
+    "security.W003",
+    # HSTS subdomains/preload depend on the host's domain (e.g. *.onrender.com); decide per
+    # deployment rather than here.
+    "security.W005",
+    "security.W021",
 ]
