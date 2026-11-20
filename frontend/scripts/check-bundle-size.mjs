@@ -3,11 +3,12 @@
 import { readFileSync } from 'node:fs';
 import { gzipSync } from 'node:zlib';
 import { join, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const BUDGETS = { initial: 250, map: 475 };
 const dist = process.argv[2]
   ? resolve(process.argv[2])
-  : new URL('../dist/', import.meta.url).pathname;
+  : fileURLToPath(new URL('../dist/', import.meta.url));
 const manifest = JSON.parse(readFileSync(join(dist, '.vite/manifest.json'), 'utf8'));
 
 function closure(key, seen = new Set(), dynamic = false) {

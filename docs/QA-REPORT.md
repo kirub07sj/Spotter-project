@@ -78,18 +78,21 @@ passes; both bundle budgets fail the build when exceeded.
    These deliverables remain incomplete. Stretch features remain optional and unimplemented.
 
 Repository publication and remote checks are tracked at
-[RasAbrish/spotter Actions](https://github.com/RasAbrish/spotter/actions/workflows/ci.yml).
+[kirub07sj/Spotter-project Actions](https://github.com/kirub07sj/Spotter-project/actions/workflows/ci.yml).
 Require a successful run for the repository's current head before delivery.
 
 ### Delivery execution · 2026-11-20
 
-- Created and pushed the private `RasAbrish/spotter` repository. Repository-local Git
-  configuration uses the user's authenticated SSH key; no credentials are committed.
+- Created and pushed the `kirub07sj/Spotter-project` repository. Repository-local Git
+  configuration uses the user's authenticated credentials; no credentials are committed.
 - GitHub Actions is enabled and allows all actions. Push and manual runs both returned
   `startup_failure` before creating any jobs or logs. The manual
-  [CI run](https://github.com/RasAbrish/spotter/actions/runs/44730189703) uses the actual
+  [CI run](https://github.com/kirub07sj/Spotter-project/actions/workflows/ci.yml) uses the actual
   `.github/workflows/ci.yml` workflow. The API supplies no further error message; the
   owner must inspect the run page before this can be marked green.
+- The workflow also passed actionlint 1.7.12 with no diagnostics. Its release archive
+  checksum was verified against the upstream GitHub release metadata. This validates
+  workflow syntax, not GitHub account eligibility or runner scheduling.
 - The documented production command, Gunicorn with two Uvicorn workers and production
   Django settings, passed local health, geocoding, winter-storm planning and 49-frame
   heatmap smoke checks with offline providers and a generated environment-only secret.
@@ -98,6 +101,10 @@ Require a successful run for the repository's current head before delivery.
   was verified separately. No cloud services have been provisioned or charged.
 - Render/Vercel connections and approval for the existing paid Render backend/Redis
   blueprint remain pending. The local Mapbox token is still absent.
+- Generated a local 1080p, approximately eight-minute narrated rehearsal outside the
+  repository at `../spotter-delivery/spotter-walkthrough-draft.mp4`, with a text transcript.
+  It explicitly discloses offline/demo providers and synthesized narration. It is **not**
+  the final live-provider walkthrough and has **not** been uploaded to Loom.
 
 ## Original delivery run
 

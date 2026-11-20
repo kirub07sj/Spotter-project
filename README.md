@@ -1,7 +1,7 @@
 # Weather-Aware Truck Routing
 
-Repository: [RasAbrish/spotter](https://github.com/RasAbrish/spotter) ·
-[GitHub Actions](https://github.com/RasAbrish/spotter/actions/workflows/ci.yml)
+Repository: [kirub07sj/Spotter-project](https://github.com/kirub07sj/Spotter-project) ·
+[GitHub Actions](https://github.com/kirub07sj/Spotter-project/actions/workflows/ci.yml)
 
 Live app: _not deployed yet_ · API health: _`<backend>/api/v1/health`_ · Walkthrough: _Loom not recorded yet_
 
