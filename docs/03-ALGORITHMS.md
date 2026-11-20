@@ -111,7 +111,7 @@ def cumulative(xs):            # returns len(xs)+1, starting at 0.0
 def checkpoint_miles(total_mi, interval_mi):
     miles = [0.0]
     m = interval_mi
-    while m < total_mi - 0.5:          # avoid a near-duplicate before the destination
+    while m <= total_mi - 0.5:         # D-06: drop only if *less than* 0.5 mi before the end
         miles.append(m); m += interval_mi
     miles.append(total_mi)
     return miles

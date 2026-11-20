@@ -32,6 +32,7 @@ check-backend: ## Lint, types, import rules, tests with coverage
 	cd $(BACKEND) && uv run lint-imports
 	cd $(BACKEND) && uv run pytest -q --cov --cov-report=term --cov-fail-under=0
 	cd $(BACKEND) && uv run coverage report --include='planner/domain/*' --fail-under=90 > /dev/null
+	cd $(BACKEND) && uv run coverage report --include='planner/domain/risk.py,planner/domain/ranking.py' --fail-under=100
 
 check-schema: ## Fail if openapi.yaml or schema.d.ts are stale
 	cd $(BACKEND) && uv run python manage.py spectacular --validate --fail-on-warn --file /tmp/openapi.check.yaml

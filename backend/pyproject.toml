@@ -45,7 +45,7 @@ select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF", "DTZ", "T20", "N"]
 ignore = ["RUF012"]
 
 [tool.ruff.lint.per-file-ignores]
-"planner/tests/**" = ["DTZ001", "N802"]
+"planner/tests/**" = ["DTZ001", "N802", "N812"]
 
 [tool.mypy]
 python_version = "3.12"
