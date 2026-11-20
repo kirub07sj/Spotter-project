@@ -1,5 +1,8 @@
 # Weather-Aware Truck Routing
 
+Repository: [RasAbrish/spotter](https://github.com/RasAbrish/spotter) ·
+[GitHub Actions](https://github.com/RasAbrish/spotter/actions/workflows/ci.yml)
+
 Live app: _not deployed yet_ · API health: _`<backend>/api/v1/health`_ · Walkthrough: _Loom not recorded yet_
 
 Compare 3 truck routes by forecast weather at the time the truck reaches each checkpoint,

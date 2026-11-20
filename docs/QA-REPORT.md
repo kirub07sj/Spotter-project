@@ -1,5 +1,86 @@
 # Final QA report (docs/06 §4)
 
+## Follow-up audit and fixes · 2026-11-20
+
+This section supersedes the original results below where they differ. The project is
+**not fully signed off**: Mapbox needs a token and delivery
+work remains. Passing unit tests alone is not a full acceptance result.
+
+### Specification coverage
+
+| Decisions | Current evidence |
+|---|---|
+| D-01–D-05: thresholds, component maximum/ties, load rules, gusts, rain + showers | Boundary/property/adapter tests pass. Risk and ranking retain 100% branch coverage |
+| D-06–D-10: checkpoint spacing, capped ETAs, ending hourly buckets, midpoint ownership, weighted risk | Domain tests pass, including exact 0.5 mi, zero-length segments, timezone changes and missing weather |
+| D-11–D-12: ranking and No Travel status | Golden scenarios pass. New tests prove even 0.000001 No Travel miles produces `NO_SAFE_ROUTE`; status no longer uses rounded miles |
+| D-13: distinct alternatives and warnings | Fake-provider contract tests pass, including filtering overlong primary/via alternatives. Live Mapbox verification remains blocked |
+| D-14–D-16: heatmap timeline, scoring and corridor | Frames cover exact departure +0 to +48 h. New tests cover minutes 1, 30 and 59 and compare scenario grid scores with checkpoint classification for a half-hour departure |
+| D-17: validation | Tests cover load/time/interval bounds, identical locations and route lengths. All returned alternatives respect the 3,000 mi limit. An undocumented 0.1 mi minimum separation was removed; nearby distinct locations are valid |
+| D-18–D-20: confidence, local times, simulation | Tests cover >72 h flags, local formatting and scenarios. Low-confidence markers now have dashed SVG rings; simulated/demo data remains labelled |
+
+### Additional rule checks
+
+`make check` passes locally: 300 backend tests, 59 frontend tests and four bundle-gate
+tests, plus lint, types, import rules, schema drift, build and size checks. The domain
+retains 100% branch coverage.
+
+- Native async API handlers now await services on the ASGI loop. DRF synchronous
+  authentication/throttle checks run in a thread; contract tests still verify errors,
+  malformed JSON, method rejection, OPTIONS and throttling. Uvicorn health/geocoding smoke
+  checks also pass.
+- Retry tests cover all 5xx codes, long numeric `Retry-After` and HTTP-date values.
+  Each network attempt has a total timeout in addition to httpx phase timeouts.
+- Route-layer data arrays remain stable across forecast updates. Regression tests check
+  buffer references, and the existing React Profiler test checks that route cards/table
+  do not re-render during slider movement.
+- Reduced-motion users retain manual slider controls while playback is disabled.
+- Worker replacement closes pending bitmaps, cancels queued completion updates and ignores
+  stale completion messages; regression tests cover these cases.
+- Domain import rules, strict types, lint/formatting and generated API schema/types are
+  checked by `make check`. A tracked-history scan found no matches for common Mapbox,
+  OpenAI or GitHub token patterns; this is a pattern scan, not proof against every secret.
+
+### Browser and live-provider results
+
+Production build, Chromium with hardware OpenGL, AMD Radeon Graphics (radeonsi renoir ACO),
+1440 × 900 viewport: the final-build slider drag averaged **59.9 fps**, with **zero tasks
+over 50 ms** and **zero API requests**. The heatmap worker completed in **105 ms**. Keyboard navigation,
+reduced-motion controls and layout at 1440 × 900, 1200 × 700 and 390 × 844 passed.
+Software rendering remains substantially slower and is not reported as a performance pass.
+
+The live Open-Meteo adapter successfully fetched a batch of two locations and three hourly
+buckets, parsing metric conversion. No Mapbox token is configured, so live routing, real
+route latency and a complete real-provider trip remain **NOT VERIFIED**. The recorded
+provider fixtures remain synthetic. The original Lighthouse result below was not rerun.
+
+Repeat browser checks with the demo backend running and `pnpm build && pnpm preview`:
+
+```bash
+cd backend
+uv run --with playwright python scripts/check_browser.py --url http://localhost:4173 \
+  --browser /path/to/chrome --angle gl
+```
+
+Playwright is optional QA tooling; it is not an application dependency. The script reports
+the renderer and long tasks so a software-rendered run is distinguishable from hardware.
+
+### Remaining acceptance blockers
+
+The WebGL-only deck.gl build reduces map JavaScript from 511.7 KB to about **474 KB
+gzipped**. The human approved the **475 KB** budget in D-21 on 2026-11-20. This gate now
+passes; both bundle budgets fail the build when exceeded.
+
+1. Provide a local Mapbox token, run real routing/geocoding and record real fixtures.
+   Recheck performance with the real providers, including seven-day departures.
+2. Deploy the frontend/backend, add the live links and record the Loom.
+   These deliverables remain incomplete. Stretch features remain optional and unimplemented.
+
+Repository publication and remote checks are tracked at
+[RasAbrish/spotter Actions](https://github.com/RasAbrish/spotter/actions/workflows/ci.yml).
+Require a successful run for the repository's current head before delivery.
+
+## Original delivery run
+
 Run on 2026-11-20 against commit `M7`. The environment matters for reading these results:
 
 - **No network to Mapbox, Open-Meteo or the Carto basemap**, and no `MAPBOX_TOKEN`. Every run
@@ -61,9 +142,9 @@ Legend: **PASS**; **FAIL**; **NOT VERIFIED** (can't be checked in this environme
 
 These need a human call. None of them changes risk logic.
 
-1. **Map chunk budget.** 450 KB gzipped can't be met with the specified MapLibre + deck.gl stack
-   (it is 512 KB). Either raise the budget to about 520 KB or change the stack. `make check`
-   warns about it and does not fail.
+1. **Map chunk budget — resolved by D-21 in the follow-up above.** The original run
+   measured 512 KB against 450 KB. The current WebGL-only build is about 474 KB against
+   the human-approved 475 KB budget; the gate now fails on an excess.
 2. **D-06 boundary.** The spec drops a checkpoint *less than* 0.5 mi before the destination;
    the pseudocode in docs/03 §5 also dropped one at exactly 0.5 mi. The code follows the spec,
    and the pseudocode was corrected.
