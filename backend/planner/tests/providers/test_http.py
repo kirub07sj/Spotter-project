@@ -1,9 +1,11 @@
+from datetime import UTC, datetime
+
 import httpx
 import pytest
 import respx
 
 from planner.domain.errors import ProviderUnavailableError
-from planner.providers.http import HttpClient
+from planner.providers.http import HttpClient, _retry_after
 
 URL = "https://example.test/x"
 
@@ -48,12 +50,28 @@ async def test_429_honours_retry_after(http: HttpClient, sleeps: list[float]) ->
 
 
 @respx.mock
-async def test_retry_after_is_capped(http: HttpClient, sleeps: list[float]) -> None:
+async def test_long_retry_after_is_respected(http: HttpClient, sleeps: list[float]) -> None:
     respx.get(URL).mock(
         side_effect=[httpx.Response(429, headers={"Retry-After": "600"}), httpx.Response(200)]
     )
     assert await http.get_json(URL, {}, provider="t") == (200, None)  # non-JSON body
-    assert sleeps == [3.0]
+    assert sleeps == [600.0]
+
+
+def test_retry_after_http_date() -> None:
+    response = httpx.Response(429, headers={"Retry-After": "Fri, 20 Nov 2026 14:01:00 GMT"})
+    now = datetime(2026, 11, 20, 14, 0, tzinfo=UTC)
+    assert _retry_after(response, now) == 60
+
+
+@pytest.mark.parametrize("status", [501, 505, 507, 599])
+@respx.mock
+async def test_all_server_errors_are_retried(http: HttpClient, status: int) -> None:
+    request = respx.get(URL).mock(
+        side_effect=[httpx.Response(status), httpx.Response(200, json={})]
+    )
+    assert await http.get_json(URL, {}, provider="t") == (200, {})
+    assert request.call_count == 2
 
 
 @respx.mock

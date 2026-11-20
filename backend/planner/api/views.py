@@ -1,4 +1,3 @@
-from asgiref.sync import async_to_sync
 from django.conf import settings
 from django.utils import timezone
 from drf_spectacular.utils import OpenApiParameter, extend_schema, inline_serializer
@@ -6,7 +5,6 @@ from rest_framework import serializers
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.throttling import ScopedRateThrottle
-from rest_framework.views import APIView
 
 from planner.domain.errors import GeocodeNotFoundError
 from planner.domain.heatmap import NO_DATA, SCORE_SCALE, b64
@@ -17,6 +15,7 @@ from planner.services.heatmap_service import HeatmapConfig, HeatmapRequest, crea
 from planner.services.plan_service import PlanConfig, PlanRequest, create_plan
 from planner.services.timing import Timings
 
+from .async_view import AsyncAPIView
 from .presenters import iso, present_plan
 from .serializers import (
     GeocodeQuerySerializer,
@@ -32,17 +31,17 @@ from .serializers import (
 PROBLEM_RESPONSES = {code: ProblemSerializer for code in (400, 404, 422, 429, 503)}
 
 
-class HealthView(APIView):
+class HealthView(AsyncAPIView):
     @extend_schema(
         responses=inline_serializer(
             "Health", {"status": serializers.CharField(), "version": serializers.CharField()}
         )
     )
-    def get(self, request: Request) -> Response:
+    async def get(self, request: Request) -> Response:
         return Response({"status": "ok", "version": settings.APP_VERSION})
 
 
-class GeocodeView(APIView):
+class GeocodeView(AsyncAPIView):
     throttle_classes = [ScopedRateThrottle]
     throttle_scope = "geocode"
 
@@ -50,10 +49,10 @@ class GeocodeView(APIView):
         parameters=[GeocodeQuerySerializer],
         responses={200: GeocodeResponseSerializer, **PROBLEM_RESPONSES},
     )
-    def get(self, request: Request) -> Response:
+    async def get(self, request: Request) -> Response:
         query = GeocodeQuerySerializer(data=request.query_params)
         query.is_valid(raise_exception=True)
-        places = async_to_sync(get_providers().geocoding.search)(
+        places = await get_providers().geocoding.search(
             query.validated_data["q"], query.validated_data["limit"]
         )
         if not places:
@@ -73,7 +72,7 @@ def plan_config() -> PlanConfig:
     )
 
 
-class PlanView(APIView):
+class PlanView(AsyncAPIView):
     throttle_classes = [ScopedRateThrottle]
     throttle_scope = "plans"
 
@@ -82,7 +81,7 @@ class PlanView(APIView):
         parameters=[OpenApiParameter("scenario", str, enum=list(SCENARIOS), required=False)],
         responses={200: PlanResponseSerializer, **PROBLEM_RESPONSES},
     )
-    def post(self, request: Request) -> Response:
+    async def post(self, request: Request) -> Response:
         now = timezone.now()
         body = PlanRequestSerializer(data=request.data, context={"now": now})
         body.is_valid(raise_exception=True)
@@ -98,9 +97,7 @@ class PlanView(APIView):
             scenario=query.validated_data.get("scenario"),
         )
         timings = Timings()
-        plan = async_to_sync(create_plan)(
-            plan_request, get_providers(), plan_config(), now, timings
-        )
+        plan = await create_plan(plan_request, get_providers(), plan_config(), now, timings)
         with timings.measure("serialize"):
             payload = present_plan(plan)
         response = Response(payload)
@@ -108,7 +105,7 @@ class PlanView(APIView):
         return response
 
 
-class HeatmapView(APIView):
+class HeatmapView(AsyncAPIView):
     throttle_classes = [ScopedRateThrottle]
     throttle_scope = "heatmaps"
 
@@ -116,7 +113,7 @@ class HeatmapView(APIView):
         request=HeatmapRequestSerializer,
         responses={200: HeatmapResponseSerializer, **PROBLEM_RESPONSES},
     )
-    def post(self, request: Request) -> Response:
+    async def post(self, request: Request) -> Response:
         body = HeatmapRequestSerializer(data=request.data, context={"now": timezone.now()})
         body.is_valid(raise_exception=True)
         data = body.validated_data
@@ -132,7 +129,7 @@ class HeatmapView(APIView):
             max_points=settings.HEATMAP_MAX_POINTS,
         )
         timings = Timings()
-        heatmap = async_to_sync(create_heatmap)(heatmap_request, get_providers(), config, timings)
+        heatmap = await create_heatmap(heatmap_request, get_providers(), config, timings)
         g = heatmap.grid
         response = Response(
             {

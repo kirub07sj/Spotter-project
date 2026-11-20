@@ -75,6 +75,12 @@ def test_no_safe_route_when_best_has_no_travel() -> None:
     assert rec.route_id == "A"
 
 
+@pytest.mark.parametrize("no_travel_mi", [0.000001, 0.04, 0.049, 0.05, 0.1])
+def test_no_travel_status_uses_unrounded_miles(no_travel_mi: float) -> None:
+    rec, _ = recommend([route("A", 100, nt=no_travel_mi)])
+    assert rec.status == "NO_SAFE_ROUTE"
+
+
 def test_single_route() -> None:
     rec, ranked = recommend([route("A", 100)])
     assert rec.route_id == "A" and rec.reasons == () and len(ranked) == 1

@@ -16,7 +16,6 @@ def checkpoint_miles(total_mi: float, interval_mi: float) -> list[float]:
     miles = [0.0]
     m = float(interval_mi)
     # D-06: dropped only when *less than* 0.5 mi before the destination, so exactly 0.5 stays.
-    # (03-ALGORITHMS §5 pseudocode uses `<`, which would also drop the 0.5 case.)
     while m <= total_mi - MIN_GAP_BEFORE_DESTINATION_MI:
         miles.append(m)
         m += interval_mi

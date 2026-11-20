@@ -1,5 +1,5 @@
 import base64
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import numpy as np
 import pytest
@@ -36,8 +36,9 @@ def decode(body: dict) -> tuple[np.ndarray, np.ndarray]:
     return mask, scores.reshape(49, rows, cols)
 
 
-def test_heatmap_contract_and_49_hours(client: APIClient) -> None:
-    plan = make_plan(client)
+@pytest.mark.parametrize("minute", [0, 1, 30, 59])
+def test_heatmap_contract_and_49_hours(client: APIClient, minute: int) -> None:
+    plan = make_plan(client, departure_time=next_hour().replace(minute=minute).isoformat())
     r = client.post("/api/v1/heatmaps", heatmap_body(plan), format="json")
     assert r.status_code == 200, r.content
     body = r.json()
@@ -53,7 +54,8 @@ def test_heatmap_contract_and_49_hours(client: APIClient) -> None:
     assert "weather;dur=" in r["Server-Timing"]
 
 
-async def test_heatmap_cells_match_checkpoint_classification() -> None:
+@pytest.mark.parametrize("minute", [0, 30])
+async def test_heatmap_cells_match_checkpoint_classification(minute: int) -> None:
     """D-15: for the same weather, floor(decoded cell score) is exactly the level
     classify_checkpoint gives, at every masked cell and hour, under a storm scenario so
     every level occurs."""
@@ -73,7 +75,7 @@ async def test_heatmap_cells_match_checkpoint_classification() -> None:
     from planner.services.timing import Timings
 
     route = [LatLon(39.74 + 0.01 * i, -104.99 - 0.069 * i) for i in range(101)]
-    depart = next_hour()
+    depart = next_hour().replace(minute=minute)
     load = 42_000
     req = HeatmapRequest([route], depart, load, "winter_storm")
     weather = FakeWeather()
@@ -88,7 +90,9 @@ async def test_heatmap_cells_match_checkpoint_classification() -> None:
     seen = set()
     for r, c in zip(*np.nonzero(mask), strict=True):
         p = LatLon(float(lat[r, c]), float(lon[r, c]))
-        (series,) = await weather.hourly([p], hm.hours[0], hm.hours[-1])
+        (series,) = await weather.hourly(
+            [p], depart.replace(minute=0), depart.replace(minute=0) + timedelta(hours=49)
+        )
         for k in range(0, 49, 4):
             ws = sample_for(series, hm.hours[k])
             ws = apply_delta(ws, scenario_delta("winter_storm", anchor, p, ws.forecast_hour))

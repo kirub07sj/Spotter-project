@@ -13,7 +13,7 @@ from planner.domain.levels import WindMetric
 from planner.domain.models import HourlySeries, LatLon
 from planner.domain.risk import FloatArray, continuous_score_array
 from planner.domain.scenarios import ScenarioName, scenario_fields
-from planner.domain.weather_lookup import floor_hour
+from planner.domain.weather_lookup import bucket_time
 from planner.providers.registry import Providers
 
 from .plan_service import scenario_anchor
@@ -76,7 +76,8 @@ async def create_heatmap(
             LatLon(float(lat[r, c]), float(lon[r, c]))
             for r, c in zip(rows_idx, cols_idx, strict=True)
         ]
-        start = floor_hour(req.departure)
+        # D-08/D-14: each departure-relative frame uses its ending hourly bucket.
+        start = bucket_time(req.departure)
     with timings.measure("weather"):
         series = await providers.weather.hourly(points, start, start + timedelta(hours=HOURS - 1))
     with timings.measure("compute"):
@@ -88,7 +89,8 @@ async def create_heatmap(
             )
             p_lat = lat[mask][:, np.newaxis]
             p_lon = lon[mask][:, np.newaxis]
-            hours = np.arange(HOURS, dtype=np.float64)[np.newaxis, :]
+            offset_h = (start - anchor.start).total_seconds() / 3600
+            hours = np.arange(HOURS, dtype=np.float64)[np.newaxis, :] + offset_h
             d_wind, d_gust, d_rain, d_snow = scenario_fields(
                 req.scenario, anchor, p_lat, p_lon, hours
             )
@@ -99,7 +101,7 @@ async def create_heatmap(
         full[:, rows_idx, cols_idx] = point_scores.T
         heatmap = Heatmap(
             grid=grid,
-            hours=[start + timedelta(hours=k) for k in range(HOURS)],
+            hours=[req.departure + timedelta(hours=k) for k in range(HOURS)],
             mask=encode_mask(mask),
             scores=encode_scores(full, mask),
             masked_points=len(points),

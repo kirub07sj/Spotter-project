@@ -339,7 +339,7 @@ def build_grid(route_geoms, corridor_km, max_points):
     return Grid(lat0=lats[0], lon0=lons[0], dlat=step, dlon=step, rows, cols), mask
 ```
 
-**Weather for the grid:** one batched Open-Meteo request (chunked by 100) for the masked points, with `start_hour = floor_hour(departure)` and `end_hour = start_hour + 48h`. That gives 49 hourly values.
+**Weather for the grid:** one batched Open-Meteo request (chunked by 100) for the masked points, with `start_hour = ceil_to_hour(departure)` (D-08) and `end_hour = start_hour + 48h`. That gives 49 hourly values. Frame labels are the exact departure plus 0 to 48 hours (D-14), including departures between whole hours. Scenario deltas use the forecast bucket time, matching checkpoints.
 
 **Scoring:** build an array of shape `(49, rows, cols)`, fill in the vectorized `continuous_score`, and set unmasked cells to 255.
 

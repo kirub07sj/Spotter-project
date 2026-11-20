@@ -169,7 +169,8 @@ async def _fetch_routes(req: PlanRequest, providers: Providers) -> list[RouteCan
     primary = await routing.route(
         req.origin, req.destination, alternatives=True, load_lb=req.load_lb
     )
-    if m_to_mi(min(r.distance_m for r in primary)) > MAX_ROUTE_MI:
+    primary = [r for r in primary if r.distance_m <= MAX_ROUTE_MI * M_PER_MI]
+    if not primary:
         raise RouteTooLongError(f"Routes over {MAX_ROUTE_MI:,.0f} miles are not supported.")
     via_routes: list[RouteGeometry | None] = []
     if needs_more_routes(primary):  # D-13
@@ -187,7 +188,7 @@ async def _fetch_routes(req: PlanRequest, providers: Providers) -> list[RouteCan
                     )
                 except (NoRouteError, ProviderUnavailableError):
                     return None  # an unreachable via-point is skipped, never fatal
-                return found[0] if found else None
+                return next((r for r in found if r.distance_m <= MAX_ROUTE_MI * M_PER_MI), None)
 
         vias = candidate_via_points(req.origin, req.destination)
         via_routes = list(await asyncio.gather(*(via_route(v) for v in vias)))

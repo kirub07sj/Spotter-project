@@ -2,10 +2,13 @@
 
 import asyncio
 import logging
+import math
 import random
 import time
 import weakref
 from collections.abc import Awaitable, Callable, Mapping
+from datetime import UTC, datetime
+from email.utils import parsedate_to_datetime
 from typing import Any
 
 import httpx
@@ -14,8 +17,7 @@ from planner.domain.errors import ProviderUnavailableError
 
 log = logging.getLogger(__name__)
 
-RETRY_STATUSES = frozenset({429, 500, 502, 503, 504})
-MAX_RETRY_AFTER_S = 3.0
+RETRY_STATUSES = frozenset({429, *range(500, 600)})
 
 Sleep = Callable[[float], Awaitable[None]]
 
@@ -67,8 +69,9 @@ class HttpClient:
         while True:
             started = time.perf_counter()
             try:
-                response = await self.client.get(url, params=params)
-            except httpx.TransportError as exc:  # includes timeouts
+                async with asyncio.timeout(self.timeout_s):
+                    response = await self.client.get(url, params=params)
+            except (httpx.TransportError, TimeoutError) as exc:
                 outcome, retry_after = type(exc).__name__, None
             else:
                 outcome, retry_after = str(response.status_code), _retry_after(response)
@@ -96,14 +99,21 @@ class HttpClient:
         )
 
 
-def _retry_after(response: httpx.Response) -> float | None:
+def _retry_after(response: httpx.Response, now: datetime | None = None) -> float | None:
     raw = response.headers.get("Retry-After")
     if raw is None:
         return None
     try:
-        return min(float(raw), MAX_RETRY_AFTER_S)
+        seconds = float(raw)
     except ValueError:
-        return None
+        try:
+            retry_at = parsedate_to_datetime(raw)
+            if retry_at.tzinfo is None:
+                retry_at = retry_at.replace(tzinfo=UTC)
+            seconds = (retry_at - (now or datetime.now(UTC))).total_seconds()
+        except (ValueError, TypeError, OverflowError):
+            return None
+    return max(0.0, seconds) if math.isfinite(seconds) else None
 
 
 def _json_or_none(response: httpx.Response) -> Any:

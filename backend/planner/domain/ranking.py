@@ -48,7 +48,8 @@ def recommend(routes: Sequence[RouteScore]) -> tuple[Recommendation, list[RouteS
         raise ValueError("at least one route is required")
     ranked = sorted(routes, key=ranking_key)
     best = ranked[0]
-    status: Status = "NO_SAFE_ROUTE" if _risk_key(best)[0] > 0 else "OK"  # D-12
+    # D-12 checks actual exposure; D-11 rounding applies only to the ranking comparison.
+    status: Status = "NO_SAFE_ROUTE" if best.stats.miles_by_level[Level.NO_TRAVEL] > 0 else "OK"
     reasons = tuple(explain(best, other) for other in ranked[1:])
     return Recommendation(route_id=best.route_id, status=status, reasons=reasons), ranked
 

@@ -11,12 +11,10 @@ from planner.domain.geo import haversine_m
 from planner.domain.levels import Level
 from planner.domain.models import LatLon
 from planner.domain.scenarios import SCENARIOS
-from planner.domain.units import mi_to_m
 
 LEVEL_CHOICES = [lvl.name for lvl in sorted(Level, key=int)]
 KNOWN_LEVEL_CHOICES = [lvl.name for lvl in sorted(Level, key=int) if lvl is not Level.UNKNOWN]
 INTERVAL_CHOICES = [10, 25, 50]
-MIN_SEPARATION_MI = 0.1
 DEPARTURE_PAST = timedelta(hours=1)
 DEPARTURE_FUTURE = timedelta(days=7)
 MAX_LOAD_LB = 80_000
@@ -52,9 +50,7 @@ class PlanRequestSerializer(serializers.Serializer):
 
     def validate(self, attrs: dict[str, Any]) -> dict[str, Any]:
         o, d = attrs["origin"], attrs["destination"]
-        if haversine_m(LatLon(o["lat"], o["lon"]), LatLon(d["lat"], d["lon"])) < mi_to_m(
-            MIN_SEPARATION_MI
-        ):
+        if haversine_m(LatLon(o["lat"], o["lon"]), LatLon(d["lat"], d["lon"])) == 0:
             raise serializers.ValidationError("Origin and destination must be different.")
         return attrs
 

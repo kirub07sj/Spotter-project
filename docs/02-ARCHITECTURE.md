@@ -206,6 +206,8 @@ The backend is Redis when `REDIS_URL` is set, otherwise `LocMemCache`. The app i
 ## 6. Concurrency
 
 - Django runs under ASGI (uvicorn workers), and views are `async def`.
+- `api/async_view.py` preserves DRF's request/error lifecycle while awaiting handlers;
+  synchronous authentication and throttle/cache checks run through `sync_to_async`.
 - One shared `httpx.AsyncClient` per process, with HTTP/2 on, an 8 second timeout, and connection pooling.
 - Via-point route requests and weather chunks run through `asyncio.gather` behind a semaphore (max 4 concurrent per provider).
 - Retries: up to 2 retries on timeouts, 429 and 5xx, with exponential backoff (0.3 s, 0.9 s) and jitter. Respect `Retry-After`.
