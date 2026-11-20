@@ -17,13 +17,19 @@ export default tseslint.config(
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       'no-console': ['error', { allow: ['warn', 'error'] }],
+    },
+  },
+  {
+    // Features talk to each other only through a feature's index.ts (docs/05 §1).
+    files: ['src/features/**/*.{ts,tsx}'],
+    rules: {
       'no-restricted-imports': [
         'error',
         {
           patterns: [
             {
-              group: ['../*/**', '!../../lib/**'],
-              message: 'Features must not import other features’ internals. Share via lib/.',
+              group: ['../plan-form/*', '../routes/*', '../map/*', '../heatmap/*'],
+              message: 'Import another feature through its index.ts, not its internals.',
             },
           ],
         },

@@ -1,0 +1,1034 @@
+{
+  "plan_id": "pln_acd634fc5b2e42adb6d6",
+  "generated_at": "2026-11-20T06:29:22.738493Z",
+  "assumptions": {
+    "wind_metric": "gust",
+    "truck_max_speed_mph": 65.0,
+    "hos_breaks": false,
+    "scenario": "winter_storm",
+    "providers": "fake",
+    "load_weight_lb": 42000,
+    "sample_interval_mi": 25,
+    "departure_time": "2026-11-20T07:00:00Z"
+  },
+  "routes": [
+    {
+      "id": "A",
+      "label": "via I 80",
+      "source": "provider",
+      "distance_mi": 370.7,
+      "duration_s": 21211,
+      "arrival_time": "2026-11-20T12:53:30.822076Z",
+      "geometry": "_snxjAvdbggE_ij}@v|ddL",
+      "cum_time_s": [0.0, 21210.8],
+      "risk_segments": [
+        { "level": "MODERATE", "from_mi": 0.0, "to_mi": 62.5, "geometry": "_snxjAvdbggE_lmI`zqeA" },
+        { "level": "HIGH", "from_mi": 62.5, "to_mi": 87.5, "geometry": "_`}bkAx_umiEs~dC~`h[" },
+        {
+          "level": "NO_TRAVEL",
+          "from_mi": 87.5,
+          "to_mi": 162.5,
+          "geometry": "s_cgkAxa~ijEyvqKxm_tA"
+        },
+        { "level": "SEVERE", "from_mi": 162.5, "to_mi": 187.5, "geometry": "mwuskArp~~lEkoeC|qk[" },
+        {
+          "level": "MODERATE",
+          "from_mi": 187.5,
+          "to_mi": 237.5,
+          "geometry": "yg|wkApck{mEkllGtzzw@"
+        },
+        { "level": "LOW", "from_mi": 237.5, "to_mi": 370.68, "geometry": "eui`lAf_gtoEyfoUfb`wC" }
+      ],
+      "checkpoints": [
+        {
+          "index": 0,
+          "mile": 0.0,
+          "lat": 39.7392,
+          "lon": -104.9903,
+          "eta": "2026-11-20T07:00:00Z",
+          "forecast_hour": "2026-11-20T07:00:00Z",
+          "weather": {
+            "wind_mph": 7.3,
+            "gust_mph": 12.1,
+            "rain_in_hr": 0.117,
+            "snow_in_hr": 0.682
+          },
+          "levels": {
+            "wind": "LOW",
+            "rain": "MODERATE",
+            "snow": "MODERATE",
+            "overall": "MODERATE"
+          },
+          "dominant_factor": "snow",
+          "load_adjusted": false,
+          "owned_mi": 12.5,
+          "low_confidence": false
+        },
+        {
+          "index": 1,
+          "mile": 25.0,
+          "lat": 39.80764,
+          "lon": -105.45258,
+          "eta": "2026-11-20T07:28:47.435588Z",
+          "forecast_hour": "2026-11-20T08:00:00Z",
+          "weather": {
+            "wind_mph": 13.4,
+            "gust_mph": 22.3,
+            "rain_in_hr": 0.061,
+            "snow_in_hr": 0.854
+          },
+          "levels": { "wind": "LOW", "rain": "LOW", "snow": "MODERATE", "overall": "MODERATE" },
+          "dominant_factor": "snow",
+          "load_adjusted": false,
+          "owned_mi": 25.0,
+          "low_confidence": false
+        },
+        {
+          "index": 2,
+          "mile": 50.0,
+          "lat": 39.87614,
+          "lon": -105.9153,
+          "eta": "2026-11-20T07:51:52.050973Z",
+          "forecast_hour": "2026-11-20T08:00:00Z",
+          "weather": {
+            "wind_mph": 13.6,
+            "gust_mph": 22.7,
+            "rain_in_hr": 0.003,
+            "snow_in_hr": 0.889
+          },
+          "levels": { "wind": "LOW", "rain": "LOW", "snow": "MODERATE", "overall": "MODERATE" },
+          "dominant_factor": "snow",
+          "load_adjusted": false,
+          "owned_mi": 25.0,
+          "low_confidence": false
+        },
+        {
+          "index": 3,
+          "mile": 75.0,
+          "lat": 39.94471,
+          "lon": -106.37847,
+          "eta": "2026-11-20T08:14:56.666358Z",
+          "forecast_hour": "2026-11-20T09:00:00Z",
+          "weather": { "wind_mph": 17.1, "gust_mph": 28.5, "rain_in_hr": 0.0, "snow_in_hr": 1.239 },
+          "levels": { "wind": "MODERATE", "rain": "LOW", "snow": "HIGH", "overall": "HIGH" },
+          "dominant_factor": "snow",
+          "load_adjusted": false,
+          "owned_mi": 25.0,
+          "low_confidence": false
+        },
+        {
+          "index": 4,
+          "mile": 100.0,
+          "lat": 40.01334,
+          "lon": -106.84208,
+          "eta": "2026-11-20T08:38:01.281742Z",
+          "forecast_hour": "2026-11-20T09:00:00Z",
+          "weather": { "wind_mph": 27.3, "gust_mph": 45.5, "rain_in_hr": 0.0, "snow_in_hr": 1.62 },
+          "levels": { "wind": "NO_TRAVEL", "rain": "LOW", "snow": "HIGH", "overall": "NO_TRAVEL" },
+          "dominant_factor": "wind",
+          "load_adjusted": true,
+          "owned_mi": 25.0,
+          "low_confidence": false
+        },
+        {
+          "index": 5,
+          "mile": 125.0,
+          "lat": 40.08205,
+          "lon": -107.30615,
+          "eta": "2026-11-20T09:01:05.897127Z",
+          "forecast_hour": "2026-11-20T10:00:00Z",
+          "weather": { "wind_mph": 42.2, "gust_mph": 70.3, "rain_in_hr": 0.0, "snow_in_hr": 2.437 },
+          "levels": {
+            "wind": "NO_TRAVEL",
+            "rain": "LOW",
+            "snow": "SEVERE",
+            "overall": "NO_TRAVEL"
+          },
+          "dominant_factor": "wind",
+          "load_adjusted": false,
+          "owned_mi": 25.0,
+          "low_confidence": false
+        },
+        {
+          "index": 6,
+          "mile": 150.0,
+          "lat": 40.15081,
+          "lon": -107.77067,
+          "eta": "2026-11-20T09:24:10.512512Z",
+          "forecast_hour": "2026-11-20T10:00:00Z",
+          "weather": { "wind_mph": 37.8, "gust_mph": 63.0, "rain_in_hr": 0.0, "snow_in_hr": 2.286 },
+          "levels": {
+            "wind": "NO_TRAVEL",
+            "rain": "LOW",
+            "snow": "SEVERE",
+            "overall": "NO_TRAVEL"
+          },
+          "dominant_factor": "wind",
+          "load_adjusted": false,
+          "owned_mi": 25.0,
+          "low_confidence": false
+        },
+        {
+          "index": 7,
+          "mile": 175.0,
+          "lat": 40.21965,
+          "lon": -108.23564,
+          "eta": "2026-11-20T09:47:15.127896Z",
+          "forecast_hour": "2026-11-20T10:00:00Z",
+          "weather": { "wind_mph": 26.3, "gust_mph": 43.8, "rain_in_hr": 0.0, "snow_in_hr": 1.714 },
+          "levels": { "wind": "SEVERE", "rain": "LOW", "snow": "HIGH", "overall": "SEVERE" },
+          "dominant_factor": "wind",
+          "load_adjusted": true,
+          "owned_mi": 25.0,
+          "low_confidence": false
+        },
+        {
+          "index": 8,
+          "mile": 200.0,
+          "lat": 40.28855,
+          "lon": -108.70107,
+          "eta": "2026-11-20T10:10:19.743281Z",
+          "forecast_hour": "2026-11-20T11:00:00Z",
+          "weather": { "wind_mph": 16.0, "gust_mph": 26.6, "rain_in_hr": 0.0, "snow_in_hr": 0.601 },
+          "levels": {
+            "wind": "MODERATE",
+            "rain": "LOW",
+            "snow": "MODERATE",
+            "overall": "MODERATE"
+          },
+          "dominant_factor": "wind",
+          "load_adjusted": false,
+          "owned_mi": 25.0,
+          "low_confidence": false
+        },
+        {
+          "index": 9,
+          "mile": 225.0,
+          "lat": 40.35752,
+          "lon": -109.16695,
+          "eta": "2026-11-20T10:33:24.358665Z",
+          "forecast_hour": "2026-11-20T11:00:00Z",
+          "weather": { "wind_mph": 15.9, "gust_mph": 26.6, "rain_in_hr": 0.0, "snow_in_hr": 0.244 },
+          "levels": { "wind": "MODERATE", "rain": "LOW", "snow": "LOW", "overall": "MODERATE" },
+          "dominant_factor": "wind",
+          "load_adjusted": false,
+          "owned_mi": 25.0,
+          "low_confidence": false
+        },
+        {
+          "index": 10,
+          "mile": 250.0,
+          "lat": 40.42656,
+          "lon": -109.6333,
+          "eta": "2026-11-20T10:56:28.974050Z",
+          "forecast_hour": "2026-11-20T11:00:00Z",
+          "weather": { "wind_mph": 10.8, "gust_mph": 18.0, "rain_in_hr": 0.0, "snow_in_hr": 0.079 },
+          "levels": { "wind": "LOW", "rain": "LOW", "snow": "LOW", "overall": "LOW" },
+          "dominant_factor": "wind",
+          "load_adjusted": false,
+          "owned_mi": 25.0,
+          "low_confidence": false
+        },
+        {
+          "index": 11,
+          "mile": 275.0,
+          "lat": 40.49567,
+          "lon": -110.1001,
+          "eta": "2026-11-20T11:19:33.589435Z",
+          "forecast_hour": "2026-11-20T12:00:00Z",
+          "weather": { "wind_mph": 5.7, "gust_mph": 9.4, "rain_in_hr": 0.0, "snow_in_hr": 0.006 },
+          "levels": { "wind": "LOW", "rain": "LOW", "snow": "LOW", "overall": "LOW" },
+          "dominant_factor": "wind",
+          "load_adjusted": false,
+          "owned_mi": 25.0,
+          "low_confidence": false
+        },
+        {
+          "index": 12,
+          "mile": 300.0,
+          "lat": 40.56485,
+          "lon": -110.56737,
+          "eta": "2026-11-20T11:42:38.204819Z",
+          "forecast_hour": "2026-11-20T12:00:00Z",
+          "weather": { "wind_mph": 9.4, "gust_mph": 15.7, "rain_in_hr": 0.0, "snow_in_hr": 0.001 },
+          "levels": { "wind": "LOW", "rain": "LOW", "snow": "LOW", "overall": "LOW" },
+          "dominant_factor": "wind",
+          "load_adjusted": false,
+          "owned_mi": 25.0,
+          "low_confidence": false
+        },
+        {
+          "index": 13,
+          "mile": 325.0,
+          "lat": 40.63409,
+          "lon": -111.03511,
+          "eta": "2026-11-20T12:05:42.820204Z",
+          "forecast_hour": "2026-11-20T13:00:00Z",
+          "weather": { "wind_mph": 13.0, "gust_mph": 21.7, "rain_in_hr": 0.0, "snow_in_hr": 0.0 },
+          "levels": { "wind": "LOW", "rain": "LOW", "snow": "LOW", "overall": "LOW" },
+          "dominant_factor": "wind",
+          "load_adjusted": false,
+          "owned_mi": 25.0,
+          "low_confidence": false
+        },
+        {
+          "index": 14,
+          "mile": 350.0,
+          "lat": 40.70341,
+          "lon": -111.50331,
+          "eta": "2026-11-20T12:28:47.435588Z",
+          "forecast_hour": "2026-11-20T13:00:00Z",
+          "weather": { "wind_mph": 8.8, "gust_mph": 14.7, "rain_in_hr": 0.0, "snow_in_hr": 0.087 },
+          "levels": { "wind": "LOW", "rain": "LOW", "snow": "LOW", "overall": "LOW" },
+          "dominant_factor": "wind",
+          "load_adjusted": false,
+          "owned_mi": 22.84,
+          "low_confidence": false
+        },
+        {
+          "index": 15,
+          "mile": 370.68,
+          "lat": 40.7608,
+          "lon": -111.891,
+          "eta": "2026-11-20T12:53:30.822076Z",
+          "forecast_hour": "2026-11-20T13:00:00Z",
+          "weather": { "wind_mph": 5.6, "gust_mph": 9.4, "rain_in_hr": 0.011, "snow_in_hr": 0.414 },
+          "levels": { "wind": "LOW", "rain": "LOW", "snow": "LOW", "overall": "LOW" },
+          "dominant_factor": "wind",
+          "load_adjusted": false,
+          "owned_mi": 10.34,
+          "low_confidence": false
+        }
+      ],
+      "stats": {
+        "miles_by_level": {
+          "LOW": 133.2,
+          "MODERATE": 112.5,
+          "HIGH": 25.0,
+          "SEVERE": 25.0,
+          "NO_TRAVEL": 75.0
+        },
+        "unknown_mi": 0.0,
+        "avg_risk": 1.45,
+        "max_level": "NO_TRAVEL"
+      },
+      "rank": 3,
+      "recommended": false
+    },
+    {
+      "id": "B",
+      "label": "via US 6",
+      "source": "via",
+      "distance_mi": 391.5,
+      "duration_s": 23137,
+      "arrival_time": "2026-11-20T13:25:36.867452Z",
+      "geometry": "_snxjAvdbggE}yw@`lkAifeA|w~A{hdAja_Bexu@jalAatbAlr_B}mt@`olAe_aApc`B{a`A~l`Bclr@hdmAam~@b~`B{aq@|qmAcx|@foaByz{@txaBo}z@dbbBa`z@tkbBcqm@lvnAk~l@l|nAwsw@jdcBatk@bjoA}~u@lucBqau@~~cBgri@j_pAwls@~odBior@pydBqpg@rtpAozp@rjeBc}o@`teBy_o@r}eBmbn@`gfBy_d@byqAqml@bxfBgpk@tagB{rj@bkgBofa@|urAa~h@f|gBs`h@tehByd_@fksAykf@xvhBoz]zxsA_wd@zgiBsyc@jqiBwx[bntAwdb@nbjBkga@|kjB_wYjcuAqr_@`}jBeu^nfkBguWtxuAmbWv~uA{h\\d_lBok[thlBcnZdrlBypYt{lBuqSdcwA}~RfiwAmdWjtmBstQzvwAsoUlenBgrT|nnB{tSlxnBqwR|aoBezQjkoBy|P|toB}tLnjyAcbLrpyAopNrmpBcsM`wpBwuLp`qB{hIlmzA}`KtqqBqcJb{qBcgGvb{AunHdlrB{|Ejp{A{yFh}rBo|ExfsBa{Cte|AugDzwsBypBhs|AyrB|htBmuAnrtBcx@|{tBqWdp}AgC~luBbXnvuBdh@le~A|lArgvBhjBbqvB~iBtz~Ab_DdbwBftCjh_B~sEfswBjqFv|wBtnGffxB`lHtoxB~dGzl`B|`Jx`yBfoHlz`BvuK|qyBbsLj{yB`qJvoaB|gNnlzBjeO|uzBrbPn_{B``Q|h{BvaNdtbB|tR`z{B~kOxacBz~O|gcBdaUvr|Br~Ud||B|{Vte}BfyWdo}BtvXtx}B`gT|sdBnkZxi~Bzh[fs~BxhVdieBt}\\jd_CbsWzveBpr^lu_Cj}XpdfBbpYrjfB|~`@bn`Cd|a@pw`Cryb@`aaCli\\nggBlnd@draC",
+      "cum_time_s": [
+        0.0, 358.0, 708.2, 914.0, 1078.0, 1282.0, 1444.6, 1646.9, 1848.3, 2008.8, 2208.5, 2367.7,
+        2565.8, 2763.1, 2959.5, 3155.0, 3310.9, 3466.2, 3659.7, 3813.8, 4005.9, 4197.2, 4349.7,
+        4539.6, 4728.9, 4879.8, 5067.8, 5255.1, 5441.8, 5627.9, 5776.3, 5961.3, 6145.8, 6329.6,
+        6476.4, 6659.3, 6841.7, 6987.3, 7168.8, 7313.8, 7494.5, 7674.9, 7818.9, 7998.6, 8177.9,
+        8321.1, 8499.8, 8678.3, 8820.8, 8963.2, 9140.9, 9318.5, 9495.8, 9673.0, 9814.6, 9956.1,
+        10132.9, 10274.3, 10450.9, 10627.5, 10804.0, 10980.5, 11157.0, 11333.5, 11474.8, 11616.1,
+        11792.8, 11969.6, 12146.5, 12288.2, 12465.4, 12642.8, 12784.9, 12962.6, 13105.1, 13283.3,
+        13461.8, 13604.9, 13784.0, 13927.5, 14107.2, 14287.4, 14467.9, 14612.6, 14793.9, 14975.7,
+        15121.4, 15304.1, 15487.2, 15634.1, 15818.3, 15966.0, 16151.2, 16337.0, 16523.4, 16710.5,
+        16860.6, 17048.9, 17200.0, 17389.6, 17579.9, 17732.7, 17924.3, 18116.7, 18310.0, 18504.0,
+        18659.9, 18855.4, 19012.5, 19170.1, 19368.0, 19566.7, 19766.4, 19967.0, 20168.5, 20330.5,
+        20533.8, 20738.1, 20902.3, 21108.5, 21274.1, 21482.1, 21649.3, 21817.2, 22028.0, 22239.9,
+        22453.0, 22673.7, 23136.9
+      ],
+      "risk_segments": [
+        {
+          "level": "MODERATE",
+          "from_mi": 0.0,
+          "to_mi": 62.5,
+          "geometry": "_snxjAvdbggEk`tA|tqBqzdAt{~A{rqA|mrB}ybApp_Bq|aAbz_BcbnAjrsB{wlAb`tBqmkAtmtBicjAl{tBir|@bqaB}t{@rzaBqrfAz_vBkty@lobBaedA|xvBwzbApfwBk`aAvvvB"
+        },
+        {
+          "level": "HIGH",
+          "from_mi": 62.5,
+          "to_mi": 112.5,
+          "geometry": "q`_|kA|jf~hEkck@hrpAyut@vbdBmxs@dldBa{r@vudB}yg@rqpAgfq@xfeB}hp@fpeBoko@xyeBenn@hcfBypm@vlfBmsl@fvfBgzb@ferAq~j@jggBgaj@xpgB}ci@jzgBuig@pyeB"
+        },
+        {
+          "level": "NO_TRAVEL",
+          "from_mi": 112.5,
+          "to_mi": 162.5,
+          "geometry": "_l_slAblwojE_fh@pwjBykf@xvhBmne@f`iBcqd@xiiBwsc@fsiBkvb@x|iB_ya@ffjBu{`@vojBi~_@fyjB}`_@tbkBqc^flkBgf]vukB{h\\d_lBok[thlBcnZdrlBqzY~dnB"
+        },
+        {
+          "level": "SEVERE",
+          "from_mi": 162.5,
+          "to_mi": 187.5,
+          "geometry": "irwcmArwuelEuiXz{kBavWrnmBwxVdxmBi{UranB_~TbknBu`TrtnBgcSb~nBo|T~p_C"
+        },
+        {
+          "level": "MODERATE",
+          "from_mi": 187.5,
+          "to_mi": 212.5,
+          "geometry": "qlmimAxr~amEqcRhyuBkePl|oB}gO~epBsjNnopBgmM|xpB}oLlbqBorK~kqBmnKpyyB"
+        },
+        {
+          "level": "LOW",
+          "from_mi": 212.5,
+          "to_mi": 391.54,
+          "geometry": "enfmmA~fz~mEq~HvziBw}Fxe{A}jFxk{AcxE|q{AkeE~w{Ao|ExfsBa{Cte|AihCtk|AouBzq|AubBzw|A{oA|}|Ac}@`d}Akj@bj}AqWdp}AwDfv}AfRrtuBnc@|c~Ahv@~i~AbiA`p~Az{Abv~AnmCn|vBdfCxc_B|xCzi_BvkD~o_Bp~D~u_BhqEb|_Bh`H|kxBr{Fxi`BbuI~|xBzeHlw`BtxHp}`BlkIpcaBf~ItiaB`qJvoaB|gNnlzBh{Kj}aBbnLncbBz`MpibBtsMtobBnfNtubBfyNx{bB~kOxacBz~O|gcBdaUvr|BbiQpucB|{Qt{cBpmWjk}BbfSjidBlbYl|}BlpT`wdBhzk@fakElen@nykEppp@zqlEx{r@bjmEpyYtmfBrja@zq`Cxc[j{fBn_c@|baC~oz@byoE"
+        }
+      ],
+      "checkpoints": [
+        {
+          "index": 0,
+          "mile": 0.0,
+          "lat": 39.7392,
+          "lon": -104.9903,
+          "eta": "2026-11-20T07:00:00Z",
+          "forecast_hour": "2026-11-20T07:00:00Z",
+          "weather": {
+            "wind_mph": 7.3,
+            "gust_mph": 12.1,
+            "rain_in_hr": 0.117,
+            "snow_in_hr": 0.682
+          },
+          "levels": {
+            "wind": "LOW",
+            "rain": "MODERATE",
+            "snow": "MODERATE",
+            "overall": "MODERATE"
+          },
+          "dominant_factor": "snow",
+          "load_adjusted": false,
+          "owned_mi": 12.5,
+          "low_confidence": false
+        },
+        {
+          "index": 1,
+          "mile": 25.0,
+          "lat": 39.98434,
+          "lon": -105.33693,
+          "eta": "2026-11-20T07:29:32.028913Z",
+          "forecast_hour": "2026-11-20T08:00:00Z",
+          "weather": {
+            "wind_mph": 12.3,
+            "gust_mph": 20.6,
+            "rain_in_hr": 0.025,
+            "snow_in_hr": 0.818
+          },
+          "levels": { "wind": "LOW", "rain": "LOW", "snow": "MODERATE", "overall": "MODERATE" },
+          "dominant_factor": "snow",
+          "load_adjusted": false,
+          "owned_mi": 25.0,
+          "low_confidence": false
+        },
+        {
+          "index": 2,
+          "mile": 50.0,
+          "lat": 40.21337,
+          "lon": -105.70305,
+          "eta": "2026-11-20T07:53:28.943199Z",
+          "forecast_hour": "2026-11-20T08:00:00Z",
+          "weather": { "wind_mph": 14.6, "gust_mph": 24.4, "rain_in_hr": 0.0, "snow_in_hr": 0.935 },
+          "levels": { "wind": "LOW", "rain": "LOW", "snow": "MODERATE", "overall": "MODERATE" },
+          "dominant_factor": "snow",
+          "load_adjusted": false,
+          "owned_mi": 25.0,
+          "low_confidence": false
+        },
+        {
+          "index": 3,
+          "mile": 75.0,
+          "lat": 40.42371,
+          "lon": -106.08908,
+          "eta": "2026-11-20T08:17:25.857485Z",
+          "forecast_hour": "2026-11-20T09:00:00Z",
+          "weather": { "wind_mph": 16.3, "gust_mph": 27.2, "rain_in_hr": 0.0, "snow_in_hr": 1.396 },
+          "levels": { "wind": "MODERATE", "rain": "LOW", "snow": "HIGH", "overall": "HIGH" },
+          "dominant_factor": "snow",
+          "load_adjusted": false,
+          "owned_mi": 25.0,
+          "low_confidence": false
+        },
+        {
+          "index": 4,
+          "mile": 100.0,
+          "lat": 40.61258,
+          "lon": -106.49495,
+          "eta": "2026-11-20T08:41:22.771770Z",
+          "forecast_hour": "2026-11-20T09:00:00Z",
+          "weather": { "wind_mph": 18.2, "gust_mph": 30.4, "rain_in_hr": 0.0, "snow_in_hr": 1.714 },
+          "levels": { "wind": "MODERATE", "rain": "LOW", "snow": "HIGH", "overall": "HIGH" },
+          "dominant_factor": "snow",
+          "load_adjusted": false,
+          "owned_mi": 25.0,
+          "low_confidence": false
+        },
+        {
+          "index": 5,
+          "mile": 125.0,
+          "lat": 40.77712,
+          "lon": -106.91985,
+          "eta": "2026-11-20T09:05:19.686056Z",
+          "forecast_hour": "2026-11-20T10:00:00Z",
+          "weather": { "wind_mph": 30.6, "gust_mph": 50.9, "rain_in_hr": 0.0, "snow_in_hr": 2.177 },
+          "levels": {
+            "wind": "NO_TRAVEL",
+            "rain": "LOW",
+            "snow": "SEVERE",
+            "overall": "NO_TRAVEL"
+          },
+          "dominant_factor": "wind",
+          "load_adjusted": true,
+          "owned_mi": 25.0,
+          "low_confidence": false
+        },
+        {
+          "index": 6,
+          "mile": 150.0,
+          "lat": 40.91467,
+          "lon": -107.36212,
+          "eta": "2026-11-20T09:29:16.600342Z",
+          "forecast_hour": "2026-11-20T10:00:00Z",
+          "weather": { "wind_mph": 33.5, "gust_mph": 55.9, "rain_in_hr": 0.0, "snow_in_hr": 1.787 },
+          "levels": { "wind": "NO_TRAVEL", "rain": "LOW", "snow": "HIGH", "overall": "NO_TRAVEL" },
+          "dominant_factor": "wind",
+          "load_adjusted": false,
+          "owned_mi": 25.0,
+          "low_confidence": false
+        },
+        {
+          "index": 7,
+          "mile": 175.0,
+          "lat": 41.02299,
+          "lon": -107.8192,
+          "eta": "2026-11-20T09:53:13.514628Z",
+          "forecast_hour": "2026-11-20T10:00:00Z",
+          "weather": { "wind_mph": 25.9, "gust_mph": 43.2, "rain_in_hr": 0.0, "snow_in_hr": 1.348 },
+          "levels": { "wind": "SEVERE", "rain": "LOW", "snow": "HIGH", "overall": "SEVERE" },
+          "dominant_factor": "wind",
+          "load_adjusted": true,
+          "owned_mi": 25.0,
+          "low_confidence": false
+        },
+        {
+          "index": 8,
+          "mile": 200.0,
+          "lat": 41.10059,
+          "lon": -108.28777,
+          "eta": "2026-11-20T10:17:10.428913Z",
+          "forecast_hour": "2026-11-20T11:00:00Z",
+          "weather": { "wind_mph": 12.7, "gust_mph": 21.2, "rain_in_hr": 0.0, "snow_in_hr": 0.595 },
+          "levels": { "wind": "LOW", "rain": "LOW", "snow": "MODERATE", "overall": "MODERATE" },
+          "dominant_factor": "snow",
+          "load_adjusted": false,
+          "owned_mi": 25.0,
+          "low_confidence": false
+        },
+        {
+          "index": 9,
+          "mile": 225.0,
+          "lat": 41.14694,
+          "lon": -108.76402,
+          "eta": "2026-11-20T10:41:07.343199Z",
+          "forecast_hour": "2026-11-20T11:00:00Z",
+          "weather": { "wind_mph": 12.7, "gust_mph": 21.2, "rain_in_hr": 0.0, "snow_in_hr": 0.27 },
+          "levels": { "wind": "LOW", "rain": "LOW", "snow": "LOW", "overall": "LOW" },
+          "dominant_factor": "wind",
+          "load_adjusted": false,
+          "owned_mi": 25.0,
+          "low_confidence": false
+        },
+        {
+          "index": 10,
+          "mile": 250.0,
+          "lat": 41.16247,
+          "lon": -109.24401,
+          "eta": "2026-11-20T11:05:04.257485Z",
+          "forecast_hour": "2026-11-20T12:00:00Z",
+          "weather": { "wind_mph": 13.5, "gust_mph": 22.5, "rain_in_hr": 0.0, "snow_in_hr": 0.043 },
+          "levels": { "wind": "LOW", "rain": "LOW", "snow": "LOW", "overall": "LOW" },
+          "dominant_factor": "wind",
+          "load_adjusted": false,
+          "owned_mi": 25.0,
+          "low_confidence": false
+        },
+        {
+          "index": 11,
+          "mile": 275.0,
+          "lat": 41.14855,
+          "lon": -109.72411,
+          "eta": "2026-11-20T11:29:01.171770Z",
+          "forecast_hour": "2026-11-20T12:00:00Z",
+          "weather": { "wind_mph": 8.5, "gust_mph": 14.1, "rain_in_hr": 0.0, "snow_in_hr": 0.011 },
+          "levels": { "wind": "LOW", "rain": "LOW", "snow": "LOW", "overall": "LOW" },
+          "dominant_factor": "wind",
+          "load_adjusted": false,
+          "owned_mi": 25.0,
+          "low_confidence": false
+        },
+        {
+          "index": 12,
+          "mile": 300.0,
+          "lat": 41.10717,
+          "lon": -110.20123,
+          "eta": "2026-11-20T11:52:58.086056Z",
+          "forecast_hour": "2026-11-20T12:00:00Z",
+          "weather": { "wind_mph": 5.8, "gust_mph": 9.7, "rain_in_hr": 0.0, "snow_in_hr": 0.003 },
+          "levels": { "wind": "LOW", "rain": "LOW", "snow": "LOW", "overall": "LOW" },
+          "dominant_factor": "wind",
+          "load_adjusted": false,
+          "owned_mi": 25.0,
+          "low_confidence": false
+        },
+        {
+          "index": 13,
+          "mile": 325.0,
+          "lat": 41.04073,
+          "lon": -110.67296,
+          "eta": "2026-11-20T12:16:55.000342Z",
+          "forecast_hour": "2026-11-20T13:00:00Z",
+          "weather": { "wind_mph": 11.0, "gust_mph": 18.3, "rain_in_hr": 0.0, "snow_in_hr": 0.0 },
+          "levels": { "wind": "LOW", "rain": "LOW", "snow": "LOW", "overall": "LOW" },
+          "dominant_factor": "wind",
+          "load_adjusted": false,
+          "owned_mi": 25.0,
+          "low_confidence": false
+        },
+        {
+          "index": 14,
+          "mile": 350.0,
+          "lat": 40.95176,
+          "lon": -111.13758,
+          "eta": "2026-11-20T12:40:51.914628Z",
+          "forecast_hour": "2026-11-20T13:00:00Z",
+          "weather": { "wind_mph": 12.6, "gust_mph": 21.0, "rain_in_hr": 0.0, "snow_in_hr": 0.0 },
+          "levels": { "wind": "LOW", "rain": "LOW", "snow": "LOW", "overall": "LOW" },
+          "dominant_factor": "wind",
+          "load_adjusted": false,
+          "owned_mi": 25.0,
+          "low_confidence": false
+        },
+        {
+          "index": 15,
+          "mile": 375.0,
+          "lat": 40.84276,
+          "lon": -111.59397,
+          "eta": "2026-11-20T13:04:48.828913Z",
+          "forecast_hour": "2026-11-20T14:00:00Z",
+          "weather": {
+            "wind_mph": 7.4,
+            "gust_mph": 12.3,
+            "rain_in_hr": 0.022,
+            "snow_in_hr": 0.156
+          },
+          "levels": { "wind": "LOW", "rain": "LOW", "snow": "LOW", "overall": "LOW" },
+          "dominant_factor": "wind",
+          "load_adjusted": false,
+          "owned_mi": 20.77,
+          "low_confidence": false
+        },
+        {
+          "index": 16,
+          "mile": 391.54,
+          "lat": 40.7608,
+          "lon": -111.891,
+          "eta": "2026-11-20T13:25:36.867452Z",
+          "forecast_hour": "2026-11-20T14:00:00Z",
+          "weather": { "wind_mph": 5.6, "gust_mph": 9.3, "rain_in_hr": 0.026, "snow_in_hr": 0.495 },
+          "levels": { "wind": "LOW", "rain": "LOW", "snow": "LOW", "overall": "LOW" },
+          "dominant_factor": "wind",
+          "load_adjusted": false,
+          "owned_mi": 8.27,
+          "low_confidence": false
+        }
+      ],
+      "stats": {
+        "miles_by_level": {
+          "LOW": 179.0,
+          "MODERATE": 87.5,
+          "HIGH": 50.0,
+          "SEVERE": 25.0,
+          "NO_TRAVEL": 50.0
+        },
+        "unknown_mi": 0.0,
+        "avg_risk": 1.18,
+        "max_level": "NO_TRAVEL"
+      },
+      "rank": 2,
+      "recommended": false
+    },
+    {
+      "id": "C",
+      "label": "via US 40",
+      "source": "provider",
+      "distance_mi": 396.2,
+      "duration_s": 24266,
+      "arrival_time": "2026-11-20T13:44:26.123420Z",
+      "geometry": "_snxjAvdbggEnad@d`xBldc@z{wBfgb@pwwBrpZpo_B|}Yxl_Bn{_@hlwB~sXpf_B~f^rdwB`jWh`_Bpr\\x|vBlu[pxvBhxZdtvBd{YzovB~}XpkvBxbShl~ApiWxcvBllVn_vBpaQrb~A|nP|_~Ar`TftuB~dOvy}AdlRnluB`oQdhuB|qPzcuBxtOp_uBrwNf{tBnzM|vtBlfJdb}AvsIn_}AvnKvktBrqJjgtBnrGxu|Ab}Hr_tBphFro|AthGzwsBpkFpssBhgD|e|A`wDvksBh}Bv_|AtbC~csBneBv_sBjhAj{rBfk@bwrBjMbo{AeGhorBqZ|h{Au{@pgrBodAvb{AcpBx_rBgmCl{qByeCbyzAuaEtsqB{~EjoqB_|FbkqBk~E|kzAmpHhcqBsmI~~pBujJtzpB_wHz~yAe_LzrpB{`JrxyAssMdkpB}jKlryAahOjcpBgeP`_pBclMvhyAuyQhwoByvR~roB}sStnoBwdPt{xAmwPzxxAu_VlcoB{|Vd_oB_zWxznBcwXpvnBigThhxA}yTpexA}b[hknB_`\\~fnBe}\\rbnBkz]j~mByiX~twAyn_@rvmBwsYvnwAgca@znmBk`b@njmBau[bewAytc@vbmBa_]|~vAiie@|zlB_i^txvAu}f@fslB{zg@|nlB_xh@pjlBsaa@rkvAmlj@xblBqkb@jevA{`l@`{kBa~l@vvkBe{m@lrkBkxn@bnkBm{e@xtuAwlp@jfkBmeg@pnuAgar@r~jBkoh@jhuA_bi@peuA_mt@lsjBcju@`ojBigv@vjjBmdw@lfjB{ql@`utA{xx@r~iB}{m@zntAimz@zviBmj{@rriBsg|@fniBwd}@~iiB{a~@reiBccr@xzsAwur@`xsAsm`AlzhBu_t@zqsAcbbArrhBg_cAjnhBk|cA`jhBoydAvehBsow@fasA",
+      "cum_time_s": [
+        0.0, 438.8, 785.3, 994.9, 1161.9, 1328.5, 1535.9, 1701.3, 1907.3, 2071.6, 2276.2, 2480.1,
+        2683.3, 2885.7, 3087.5, 3248.4, 3448.9, 3648.7, 3808.1, 3967.1, 4165.3, 4323.5, 4520.6,
+        4717.1, 4913.1, 5108.5, 5303.4, 5497.8, 5652.9, 5807.8, 6000.9, 6193.6, 6347.4, 6539.3,
+        6692.5, 6883.7, 7074.5, 7226.9, 7417.1, 7569.0, 7758.6, 7947.9, 8136.9, 8325.7, 8476.6,
+        8664.9, 8815.5, 9003.5, 9153.8, 9341.5, 9529.0, 9679.0, 9866.4, 10053.7, 10240.9, 10390.6,
+        10577.7, 10764.9, 10952.0, 11101.7, 11288.9, 11438.7, 11626.0, 11775.9, 11963.3, 12150.9,
+        12301.1, 12489.0, 12677.0, 12865.2, 13016.0, 13166.9, 13355.7, 13544.8, 13734.1, 13923.8,
+        14075.7, 14227.9, 14418.4, 14609.3, 14800.6, 14992.2, 15145.9, 15338.3, 15492.5, 15685.8,
+        15879.5, 16034.8, 16229.5, 16385.5, 16581.1, 16738.0, 16934.6, 17131.8, 17329.6, 17488.2,
+        17687.1, 17846.7, 18046.8, 18247.6, 18449.0, 18651.2, 18813.4, 19016.9, 19180.2, 19385.0,
+        19549.5, 19714.4, 19921.3, 20128.9, 20337.4, 20546.8, 20714.9, 20925.8, 21095.1, 21307.6,
+        21521.0, 21735.3, 21950.5, 22166.7, 22340.3, 22514.6, 22733.2, 22908.9, 23129.3, 23350.8,
+        23573.3, 23893.2, 24266.1
+      ],
+      "risk_segments": [
+        {
+          "level": "MODERATE",
+          "from_mi": 0.0,
+          "to_mi": 112.5,
+          "geometry": "_snxjAvdbggEnad@d`xBjhj@bapClab@vvwBhda@jrwBlxf@ppoCdd_@zhwB~f^rdwB|i]f`wBpeb@xznCxi[xvvBrlZlrvBnoYbnvBjrXzivBfuWnevBvl[vzmCbuU~{uB~wTvwuBxzSjsuBt}RbouB~vUx_mCp}PreuBl`PfauB`gRfolCj`NxwtBbzOxclCf`LhntB`cK~itB|eJtetBxhIjatBtkH`}sBnnGtxsBbxGzvgC"
+        },
+        {
+          "level": "NO_TRAVEL",
+          "from_mi": 112.5,
+          "to_mi": 137.5,
+          "geometry": "kucajAr}wckEttE~vvBfqDzjsBdtCrfsB~vBhbsBxyA~}rBv|@tyrBp_@hurBvCb_`B"
+        },
+        {
+          "level": "SEVERE",
+          "from_mi": 137.5,
+          "to_mi": 162.5,
+          "geometry": "kbi`jAp|h`lEqRf|mB_p@hirBcmA|drBijBt`rBmgCh|qBqdD`xqBuaEtsqBsyEn}nB"
+        },
+        {
+          "level": "MODERATE",
+          "from_mi": 162.5,
+          "to_mi": 187.5,
+          "geometry": "ukgajAhuy|lEgaG~|sBcyGvfqBivHlbqBksIb~pBqpJzypBumKnupB{jLdqpBkkLloiB"
+        },
+        {
+          "level": "LOW",
+          "from_mi": 187.5,
+          "to_mi": 396.15,
+          "geometry": "gl_djArqdymEc~Kfq`Bm|NbepBqyOx`pBwvPl|oBysQdxoB_qRzsoBcnSpooBa`Ph|xAsbUxgoBu_VlcoB{|Vd_oB_zWxznB_pSxkxAmnY`snBqkZvnnBwh[ljnB{e\\bfnB_c]xanBe`^n}mBonXhtwAeaYpqwA{k`@hrmBaia@|mmBefb@timBkcc@hemBm`d@`amBs}d@t|lByze@lxlB}v^rvvAgog@rplBilh@hllBoii@~glBsfj@vclByck@j_lB{`l@`{kBquc@b_vAium@hskBqrn@~nkBsoo@tjkBwlp@jfkBmeg@pnuAgar@r~jBk~r@fzjBo{s@~ujBuxt@rqjBwuu@jmjBslk@pztAgjw@pejBmgx@fajBody@~|iBeen@lmtA_yz@duiBcv{@zpiBgs|@pliBmp}@dhiBqm~@|ciBuj_Ar_iByg`Ah{hB}daA~vhBcbbArrhBuiu@tksAovcAzjhBwsdArfhBypeAfbhB"
+        }
+      ],
+      "checkpoints": [
+        {
+          "index": 0,
+          "mile": 0.0,
+          "lat": 39.7392,
+          "lon": -104.9903,
+          "eta": "2026-11-20T07:00:00Z",
+          "forecast_hour": "2026-11-20T07:00:00Z",
+          "weather": {
+            "wind_mph": 7.3,
+            "gust_mph": 12.1,
+            "rain_in_hr": 0.117,
+            "snow_in_hr": 0.682
+          },
+          "levels": {
+            "wind": "LOW",
+            "rain": "MODERATE",
+            "snow": "MODERATE",
+            "overall": "MODERATE"
+          },
+          "dominant_factor": "snow",
+          "load_adjusted": false,
+          "owned_mi": 12.5,
+          "low_confidence": false
+        },
+        {
+          "index": 1,
+          "mile": 25.0,
+          "lat": 39.61388,
+          "lon": -105.43123,
+          "eta": "2026-11-20T07:30:53.739642Z",
+          "forecast_hour": "2026-11-20T08:00:00Z",
+          "weather": {
+            "wind_mph": 13.1,
+            "gust_mph": 21.8,
+            "rain_in_hr": 0.106,
+            "snow_in_hr": 0.818
+          },
+          "levels": {
+            "wind": "LOW",
+            "rain": "MODERATE",
+            "snow": "MODERATE",
+            "overall": "MODERATE"
+          },
+          "dominant_factor": "snow",
+          "load_adjusted": false,
+          "owned_mi": 25.0,
+          "low_confidence": false
+        },
+        {
+          "index": 2,
+          "mile": 50.0,
+          "lat": 39.50986,
+          "lon": -105.88066,
+          "eta": "2026-11-20T07:55:43.872975Z",
+          "forecast_hour": "2026-11-20T08:00:00Z",
+          "weather": {
+            "wind_mph": 13.2,
+            "gust_mph": 22.0,
+            "rain_in_hr": 0.099,
+            "snow_in_hr": 0.63
+          },
+          "levels": { "wind": "LOW", "rain": "LOW", "snow": "MODERATE", "overall": "MODERATE" },
+          "dominant_factor": "snow",
+          "load_adjusted": false,
+          "owned_mi": 25.0,
+          "low_confidence": false
+        },
+        {
+          "index": 3,
+          "mile": 75.0,
+          "lat": 39.42928,
+          "lon": -106.33749,
+          "eta": "2026-11-20T08:20:34.006309Z",
+          "forecast_hour": "2026-11-20T09:00:00Z",
+          "weather": {
+            "wind_mph": 12.6,
+            "gust_mph": 21.0,
+            "rain_in_hr": 0.073,
+            "snow_in_hr": 0.54
+          },
+          "levels": { "wind": "LOW", "rain": "LOW", "snow": "MODERATE", "overall": "MODERATE" },
+          "dominant_factor": "snow",
+          "load_adjusted": false,
+          "owned_mi": 25.0,
+          "low_confidence": false
+        },
+        {
+          "index": 4,
+          "mile": 100.0,
+          "lat": 39.37419,
+          "lon": -106.80016,
+          "eta": "2026-11-20T08:45:24.139642Z",
+          "forecast_hour": "2026-11-20T09:00:00Z",
+          "weather": {
+            "wind_mph": 17.6,
+            "gust_mph": 29.3,
+            "rain_in_hr": 0.053,
+            "snow_in_hr": 0.849
+          },
+          "levels": {
+            "wind": "MODERATE",
+            "rain": "LOW",
+            "snow": "MODERATE",
+            "overall": "MODERATE"
+          },
+          "dominant_factor": "wind",
+          "load_adjusted": false,
+          "owned_mi": 25.0,
+          "low_confidence": false
+        },
+        {
+          "index": 5,
+          "mile": 125.0,
+          "lat": 39.34638,
+          "lon": -107.26662,
+          "eta": "2026-11-20T09:10:14.272975Z",
+          "forecast_hour": "2026-11-20T10:00:00Z",
+          "weather": {
+            "wind_mph": 27.6,
+            "gust_mph": 46.0,
+            "rain_in_hr": 0.005,
+            "snow_in_hr": 1.237
+          },
+          "levels": { "wind": "NO_TRAVEL", "rain": "LOW", "snow": "HIGH", "overall": "NO_TRAVEL" },
+          "dominant_factor": "wind",
+          "load_adjusted": true,
+          "owned_mi": 25.0,
+          "low_confidence": false
+        },
+        {
+          "index": 6,
+          "mile": 150.0,
+          "lat": 39.34723,
+          "lon": -107.73437,
+          "eta": "2026-11-20T09:35:04.406309Z",
+          "forecast_hour": "2026-11-20T10:00:00Z",
+          "weather": { "wind_mph": 24.8, "gust_mph": 41.3, "rain_in_hr": 0.0, "snow_in_hr": 1.164 },
+          "levels": { "wind": "SEVERE", "rain": "LOW", "snow": "HIGH", "overall": "SEVERE" },
+          "dominant_factor": "wind",
+          "load_adjusted": true,
+          "owned_mi": 25.0,
+          "low_confidence": false
+        },
+        {
+          "index": 7,
+          "mile": 175.0,
+          "lat": 39.37751,
+          "lon": -108.20057,
+          "eta": "2026-11-20T09:59:54.539642Z",
+          "forecast_hour": "2026-11-20T10:00:00Z",
+          "weather": { "wind_mph": 16.9, "gust_mph": 28.2, "rain_in_hr": 0.0, "snow_in_hr": 0.922 },
+          "levels": {
+            "wind": "MODERATE",
+            "rain": "LOW",
+            "snow": "MODERATE",
+            "overall": "MODERATE"
+          },
+          "dominant_factor": "wind",
+          "load_adjusted": false,
+          "owned_mi": 25.0,
+          "low_confidence": false
+        },
+        {
+          "index": 8,
+          "mile": 200.0,
+          "lat": 39.43728,
+          "lon": -108.66228,
+          "eta": "2026-11-20T10:24:44.672975Z",
+          "forecast_hour": "2026-11-20T11:00:00Z",
+          "weather": { "wind_mph": 12.6, "gust_mph": 21.0, "rain_in_hr": 0.0, "snow_in_hr": 0.365 },
+          "levels": { "wind": "LOW", "rain": "LOW", "snow": "LOW", "overall": "LOW" },
+          "dominant_factor": "wind",
+          "load_adjusted": false,
+          "owned_mi": 25.0,
+          "low_confidence": false
+        },
+        {
+          "index": 9,
+          "mile": 225.0,
+          "lat": 39.52587,
+          "lon": -109.11666,
+          "eta": "2026-11-20T10:49:34.806309Z",
+          "forecast_hour": "2026-11-20T11:00:00Z",
+          "weather": { "wind_mph": 15.0, "gust_mph": 25.0, "rain_in_hr": 0.0, "snow_in_hr": 0.175 },
+          "levels": { "wind": "LOW", "rain": "LOW", "snow": "LOW", "overall": "LOW" },
+          "dominant_factor": "wind",
+          "load_adjusted": false,
+          "owned_mi": 25.0,
+          "low_confidence": false
+        },
+        {
+          "index": 10,
+          "mile": 250.0,
+          "lat": 39.64194,
+          "lon": -109.56119,
+          "eta": "2026-11-20T11:14:24.939642Z",
+          "forecast_hour": "2026-11-20T12:00:00Z",
+          "weather": { "wind_mph": 10.7, "gust_mph": 17.8, "rain_in_hr": 0.0, "snow_in_hr": 0.027 },
+          "levels": { "wind": "LOW", "rain": "LOW", "snow": "LOW", "overall": "LOW" },
+          "dominant_factor": "wind",
+          "load_adjusted": false,
+          "owned_mi": 25.0,
+          "low_confidence": false
+        },
+        {
+          "index": 11,
+          "mile": 275.0,
+          "lat": 39.78364,
+          "lon": -109.99385,
+          "eta": "2026-11-20T11:39:15.072975Z",
+          "forecast_hour": "2026-11-20T12:00:00Z",
+          "weather": { "wind_mph": 6.0, "gust_mph": 9.9, "rain_in_hr": 0.0, "snow_in_hr": 0.008 },
+          "levels": { "wind": "LOW", "rain": "LOW", "snow": "LOW", "overall": "LOW" },
+          "dominant_factor": "wind",
+          "load_adjusted": false,
+          "owned_mi": 25.0,
+          "low_confidence": false
+        },
+        {
+          "index": 12,
+          "mile": 300.0,
+          "lat": 39.94879,
+          "lon": -110.41318,
+          "eta": "2026-11-20T12:04:05.206309Z",
+          "forecast_hour": "2026-11-20T13:00:00Z",
+          "weather": { "wind_mph": 7.8, "gust_mph": 13.0, "rain_in_hr": 0.0, "snow_in_hr": 0.001 },
+          "levels": { "wind": "LOW", "rain": "LOW", "snow": "LOW", "overall": "LOW" },
+          "dominant_factor": "wind",
+          "load_adjusted": false,
+          "owned_mi": 25.0,
+          "low_confidence": false
+        },
+        {
+          "index": 13,
+          "mile": 325.0,
+          "lat": 40.13505,
+          "lon": -110.81826,
+          "eta": "2026-11-20T12:28:55.339642Z",
+          "forecast_hour": "2026-11-20T13:00:00Z",
+          "weather": { "wind_mph": 12.4, "gust_mph": 20.7, "rain_in_hr": 0.0, "snow_in_hr": 0.0 },
+          "levels": { "wind": "LOW", "rain": "LOW", "snow": "LOW", "overall": "LOW" },
+          "dominant_factor": "wind",
+          "load_adjusted": false,
+          "owned_mi": 25.0,
+          "low_confidence": false
+        },
+        {
+          "index": 14,
+          "mile": 350.0,
+          "lat": 40.34012,
+          "lon": -111.20868,
+          "eta": "2026-11-20T12:53:45.472975Z",
+          "forecast_hour": "2026-11-20T13:00:00Z",
+          "weather": { "wind_mph": 12.1, "gust_mph": 20.2, "rain_in_hr": 0.0, "snow_in_hr": 0.119 },
+          "levels": { "wind": "LOW", "rain": "LOW", "snow": "LOW", "overall": "LOW" },
+          "dominant_factor": "wind",
+          "load_adjusted": false,
+          "owned_mi": 25.0,
+          "low_confidence": false
+        },
+        {
+          "index": 15,
+          "mile": 375.0,
+          "lat": 40.56179,
+          "lon": -111.5844,
+          "eta": "2026-11-20T13:18:35.606309Z",
+          "forecast_hour": "2026-11-20T14:00:00Z",
+          "weather": { "wind_mph": 7.5, "gust_mph": 12.5, "rain_in_hr": 0.0, "snow_in_hr": 0.386 },
+          "levels": { "wind": "LOW", "rain": "LOW", "snow": "LOW", "overall": "LOW" },
+          "dominant_factor": "wind",
+          "load_adjusted": false,
+          "owned_mi": 23.08,
+          "low_confidence": false
+        },
+        {
+          "index": 16,
+          "mile": 396.15,
+          "lat": 40.7608,
+          "lon": -111.891,
+          "eta": "2026-11-20T13:44:26.123420Z",
+          "forecast_hour": "2026-11-20T14:00:00Z",
+          "weather": { "wind_mph": 5.6, "gust_mph": 9.3, "rain_in_hr": 0.026, "snow_in_hr": 0.495 },
+          "levels": { "wind": "LOW", "rain": "LOW", "snow": "LOW", "overall": "LOW" },
+          "dominant_factor": "wind",
+          "load_adjusted": false,
+          "owned_mi": 10.58,
+          "low_confidence": false
+        }
+      ],
+      "stats": {
+        "miles_by_level": {
+          "LOW": 208.7,
+          "MODERATE": 137.5,
+          "HIGH": 0.0,
+          "SEVERE": 25.0,
+          "NO_TRAVEL": 25.0
+        },
+        "unknown_mi": 0.0,
+        "avg_risk": 0.79,
+        "max_level": "NO_TRAVEL"
+      },
+      "rank": 1,
+      "recommended": true
+    }
+  ],
+  "recommendation": {
+    "route_id": "C",
+    "status": "NO_SAFE_ROUTE",
+    "reasons": [
+      "Chosen over B: 25.0 fewer No Travel miles",
+      "Chosen over A: 50.0 fewer No Travel miles"
+    ]
+  },
+  "warnings": [
+    {
+      "code": "SIMULATED_WEATHER",
+      "detail": "Simulated weather (winter storm) is layered on the forecast."
+    }
+  ]
+}

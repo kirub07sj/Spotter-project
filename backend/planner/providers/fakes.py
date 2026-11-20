@@ -52,7 +52,7 @@ class FakeRouting:
     """A fast primary plus one alternative, like Mapbox often returns, so the via-point
     fallback (D-13) is exercised in offline dev too."""
 
-    ALTERNATIVES = ((0.0, 31.3, "I 80"), (0.12, 27.0, "US 40"))  # offset, cruise m/s, name
+    ALTERNATIVES = ((0.0, 31.3, "I 80"), (-0.12, 27.0, "US 40"))  # offset, cruise m/s, name
 
     async def route(
         self,

@@ -42,7 +42,8 @@ def test_three_routes_with_via_fallback_and_full_contract(client: APIClient) -> 
         assert etas == sorted(etas) and etas[0].tzinfo is not None
         assert sum(cp["owned_mi"] for cp in cps) == pytest.approx(r["distance_mi"], abs=0.1)
         assert r["risk_segments"][0]["from_mi"] == 0.0
-        assert r["risk_segments"][-1]["to_mi"] == pytest.approx(r["distance_mi"], abs=0.05)
+        # distance is rounded to 0.1 and to_mi to 0.01, so they can differ by up to 0.055
+        assert r["risk_segments"][-1]["to_mi"] == pytest.approx(r["distance_mi"], abs=0.056)
         assert sum(r["stats"]["miles_by_level"].values()) == pytest.approx(
             r["distance_mi"], abs=0.3
         )
