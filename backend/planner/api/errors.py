@@ -6,6 +6,8 @@ from rest_framework import exceptions as drf_exc
 from rest_framework.response import Response
 from rest_framework.views import exception_handler
 
+from planner.domain.errors import PlannerError
+
 
 def problem(status: int, code: str, title: str, detail: str, **extra: Any) -> Response:
     body = {
@@ -20,6 +22,9 @@ def problem(status: int, code: str, title: str, detail: str, **extra: Any) -> Re
 
 
 def problem_exception_handler(exc: Exception, context: dict[str, Any]) -> Response | None:
+    if isinstance(exc, PlannerError):
+        # Messages are written by us; provider error text is never forwarded (docs/02 §8).
+        return problem(exc.status, exc.code, exc.title, str(exc) or exc.title)
     if isinstance(exc, drf_exc.ValidationError):
         return problem(
             400, "VALIDATION_ERROR", "Invalid request", _first_error(exc.detail), errors=exc.detail

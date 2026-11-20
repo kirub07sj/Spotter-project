@@ -4,6 +4,22 @@
  */
 
 export interface paths {
+  '/api/v1/geocode': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['geocode_retrieve'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/v1/health': {
     parameters: {
       query?: never;
@@ -11,9 +27,25 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    get: operations['api_v1_health_retrieve'];
+    get: operations['health_retrieve'];
     put?: never;
     post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/plans': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['plans_create'];
     delete?: never;
     options?: never;
     head?: never;
@@ -24,10 +56,250 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
   schemas: {
+    Assumptions: {
+      wind_metric: components['schemas']['WindMetricEnum'];
+      /** Format: double */
+      truck_max_speed_mph: number;
+      hos_breaks: boolean;
+      scenario: (components['schemas']['ScenarioEnum'] | components['schemas']['NullEnum']) | null;
+      providers: components['schemas']['ProvidersEnum'];
+      load_weight_lb: number;
+      sample_interval_mi: number;
+      /** Format: date-time */
+      departure_time: string;
+    };
+    Checkpoint: {
+      index: number;
+      /** Format: double */
+      mile: number;
+      /** Format: double */
+      lat: number;
+      /** Format: double */
+      lon: number;
+      /** Format: date-time */
+      eta: string;
+      /** Format: date-time */
+      forecast_hour: string;
+      weather: components['schemas']['Weather'];
+      levels: components['schemas']['CheckpointLevels'];
+      dominant_factor:
+        (components['schemas']['DominantFactorEnum'] | components['schemas']['NullEnum']) | null;
+      load_adjusted: boolean;
+      /** Format: double */
+      owned_mi: number;
+      low_confidence: boolean;
+    };
+    CheckpointLevels: {
+      wind: components['schemas']['RiskLevel'];
+      rain: components['schemas']['RiskLevel'];
+      snow: components['schemas']['RiskLevel'];
+      overall: components['schemas']['RiskLevel'];
+    };
+    /**
+     * @description * `wind` - wind
+     *     * `snow` - snow
+     *     * `rain` - rain
+     * @enum {string}
+     */
+    DominantFactorEnum: 'wind' | 'snow' | 'rain';
+    GeocodeResponse: {
+      results: components['schemas']['Place'][];
+    };
     Health: {
       status: string;
       version: string;
     };
+    MilesByLevel: {
+      /** Format: double */
+      LOW: number;
+      /** Format: double */
+      MODERATE: number;
+      /** Format: double */
+      HIGH: number;
+      /** Format: double */
+      SEVERE: number;
+      /** Format: double */
+      NO_TRAVEL: number;
+    };
+    /** @enum {unknown} */
+    NullEnum: null;
+    Place: {
+      id: string;
+      label: string;
+      /** Format: double */
+      lat: number;
+      /** Format: double */
+      lon: number;
+    };
+    PlanRequestRequest: {
+      origin: components['schemas']['PointRequest'];
+      destination: components['schemas']['PointRequest'];
+      /** Format: date-time */
+      departure_time: string;
+      load_weight_lb: number;
+      /** @default 25 */
+      sample_interval_mi: components['schemas']['SampleIntervalMiEnum'];
+    };
+    PlanResponse: {
+      plan_id: string;
+      /** Format: date-time */
+      generated_at: string;
+      assumptions: components['schemas']['Assumptions'];
+      routes: components['schemas']['Route'][];
+      recommendation: components['schemas']['Recommendation'];
+      warnings: components['schemas']['Warning'][];
+    };
+    PointRequest: {
+      /** Format: double */
+      lat: number;
+      /** Format: double */
+      lon: number;
+      label?: string;
+    };
+    Problem: {
+      type: string;
+      title: string;
+      status: number;
+      code: components['schemas']['ProblemCodeEnum'];
+      detail: string;
+    };
+    /**
+     * @description * `VALIDATION_ERROR` - VALIDATION_ERROR
+     *     * `GEOCODE_NOT_FOUND` - GEOCODE_NOT_FOUND
+     *     * `NO_ROUTE` - NO_ROUTE
+     *     * `ROUTE_TOO_LONG` - ROUTE_TOO_LONG
+     *     * `PROVIDER_UNAVAILABLE` - PROVIDER_UNAVAILABLE
+     *     * `RATE_LIMITED` - RATE_LIMITED
+     *     * `HTTP_ERROR` - HTTP_ERROR
+     * @enum {string}
+     */
+    ProblemCodeEnum:
+      | 'VALIDATION_ERROR'
+      | 'GEOCODE_NOT_FOUND'
+      | 'NO_ROUTE'
+      | 'ROUTE_TOO_LONG'
+      | 'PROVIDER_UNAVAILABLE'
+      | 'RATE_LIMITED'
+      | 'HTTP_ERROR';
+    /**
+     * @description * `real` - real
+     *     * `fake` - fake
+     * @enum {string}
+     */
+    ProvidersEnum: 'real' | 'fake';
+    Recommendation: {
+      route_id: components['schemas']['RouteId'];
+      status: components['schemas']['StatusEnum'];
+      reasons: string[];
+    };
+    /**
+     * @description * `UNKNOWN` - UNKNOWN
+     *     * `LOW` - LOW
+     *     * `MODERATE` - MODERATE
+     *     * `HIGH` - HIGH
+     *     * `SEVERE` - SEVERE
+     *     * `NO_TRAVEL` - NO_TRAVEL
+     * @enum {string}
+     */
+    RiskLevel: 'UNKNOWN' | 'LOW' | 'MODERATE' | 'HIGH' | 'SEVERE' | 'NO_TRAVEL';
+    RiskSegment: {
+      level: components['schemas']['RiskLevel'];
+      /** Format: double */
+      from_mi: number;
+      /** Format: double */
+      to_mi: number;
+      /** @description polyline6 */
+      geometry: string;
+    };
+    Route: {
+      id: components['schemas']['RouteId'];
+      label: string;
+      source: components['schemas']['SourceEnum'];
+      /** Format: double */
+      distance_mi: number;
+      /** Format: double */
+      duration_s: number;
+      /** Format: date-time */
+      arrival_time: string;
+      /** @description polyline6, simplified to <= 2,000 vertices */
+      geometry: string;
+      /** @description Seconds from departure, one per vertex */
+      cum_time_s: number[];
+      risk_segments: components['schemas']['RiskSegment'][];
+      checkpoints: components['schemas']['Checkpoint'][];
+      stats: components['schemas']['RouteStats'];
+      rank: number;
+      recommended: boolean;
+    };
+    /**
+     * @description * `A` - A
+     *     * `B` - B
+     *     * `C` - C
+     * @enum {string}
+     */
+    RouteId: 'A' | 'B' | 'C';
+    RouteStats: {
+      miles_by_level: components['schemas']['MilesByLevel'];
+      /** Format: double */
+      unknown_mi: number;
+      /** Format: double */
+      avg_risk: number;
+      max_level: components['schemas']['RiskLevel'];
+    };
+    /**
+     * @description * `10` - 10
+     *     * `25` - 25
+     *     * `50` - 50
+     * @enum {integer}
+     */
+    SampleIntervalMiEnum: 10 | 25 | 50;
+    /**
+     * @description * `winter_storm` - winter_storm
+     *     * `high_wind` - high_wind
+     * @enum {string}
+     */
+    ScenarioEnum: 'winter_storm' | 'high_wind';
+    /**
+     * @description * `provider` - provider
+     *     * `via` - via
+     * @enum {string}
+     */
+    SourceEnum: 'provider' | 'via';
+    /**
+     * @description * `OK` - OK
+     *     * `NO_SAFE_ROUTE` - NO_SAFE_ROUTE
+     * @enum {string}
+     */
+    StatusEnum: 'OK' | 'NO_SAFE_ROUTE';
+    Warning: {
+      code: components['schemas']['WarningCodeEnum'];
+      detail: string;
+    };
+    /**
+     * @description * `ONLY_N_DISTINCT_ROUTES` - ONLY_N_DISTINCT_ROUTES
+     *     * `WEATHER_GAPS` - WEATHER_GAPS
+     *     * `LOW_CONFIDENCE_FORECAST` - LOW_CONFIDENCE_FORECAST
+     *     * `SIMULATED_WEATHER` - SIMULATED_WEATHER
+     * @enum {string}
+     */
+    WarningCodeEnum:
+      'ONLY_N_DISTINCT_ROUTES' | 'WEATHER_GAPS' | 'LOW_CONFIDENCE_FORECAST' | 'SIMULATED_WEATHER';
+    Weather: {
+      /** Format: double */
+      wind_mph: number | null;
+      /** Format: double */
+      gust_mph: number | null;
+      /** Format: double */
+      rain_in_hr: number | null;
+      /** Format: double */
+      snow_in_hr: number | null;
+    };
+    /**
+     * @description * `gust` - gust
+     *     * `sustained` - sustained
+     * @enum {string}
+     */
+    WindMetricEnum: 'gust' | 'sustained';
   };
   responses: never;
   parameters: never;
@@ -37,7 +309,69 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
-  api_v1_health_retrieve: {
+  geocode_retrieve: {
+    parameters: {
+      query: {
+        limit?: number;
+        q: string;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['GeocodeResponse'];
+        };
+      };
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['Problem'];
+        };
+      };
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['Problem'];
+        };
+      };
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['Problem'];
+        };
+      };
+      429: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['Problem'];
+        };
+      };
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['Problem'];
+        };
+      };
+    };
+  };
+  health_retrieve: {
     parameters: {
       query?: never;
       header?: never;
@@ -52,6 +386,71 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['Health'];
+        };
+      };
+    };
+  };
+  plans_create: {
+    parameters: {
+      query?: {
+        scenario?: 'high_wind' | 'winter_storm';
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['PlanRequestRequest'];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['PlanResponse'];
+        };
+      };
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['Problem'];
+        };
+      };
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['Problem'];
+        };
+      };
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['Problem'];
+        };
+      };
+      429: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['Problem'];
+        };
+      };
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['Problem'];
         };
       };
     };

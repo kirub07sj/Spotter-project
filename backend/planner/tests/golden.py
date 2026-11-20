@@ -1,5 +1,8 @@
 """Hand-written golden scenarios shared by the domain-level and end-to-end tests.
 
+Route letters follow ascending duration in every scenario, because the plan service names
+routes A, B, C by ascending duration (docs/03 §3).
+
 Weather values below are chosen to sit clearly inside a band: wind (gust) 10 = Low,
 40 = High (Severe with load > 40,000 lb), 50 = Severe (No Travel with load > 30,000 lb),
 60 = No Travel; rain 0.30 = High; snow 0.7 = Moderate, 2.5 = Severe, 3.5 = No Travel."""
@@ -71,36 +74,37 @@ GOLDEN_SCENARIOS: dict[str, GoldenScenario] = {
         ),
     ),
     "high_decides": GoldenScenario(
+        note="C is the slowest but has the fewest High miles among equal Severe miles.",
         routes={
             "A": GoldenRoute(100, at(cp1=W(gust=40), cp2=W(gust=50))),  # Sev 25, High 25
-            "B": GoldenRoute(130, at(cp2=W(snow=2.5))),  # Sev 25
-            "C": GoldenRoute(110, at(cp1=W(rain=0.3), cp2=W(gust=50), cp3=W(gust=40))),
+            "B": GoldenRoute(110, at(cp1=W(rain=0.3), cp2=W(gust=50), cp3=W(gust=40))),
+            "C": GoldenRoute(130, at(cp2=W(snow=2.5))),  # Sev 25
         },
         load_lb=20_000,
-        expected_winner="B",
+        expected_winner="C",
         expected_status="OK",
-        expected_order=["B", "A", "C"],
+        expected_order=["C", "A", "B"],
         expected_reasons=(
             "Chosen over A: same Severe miles, 25.0 fewer High miles",
-            "Chosen over C: same Severe miles, 50.0 fewer High miles",
+            "Chosen over B: same Severe miles, 50.0 fewer High miles",
         ),
     ),
     "avg_risk_decides": GoldenScenario(
         note="All routes have 12.5 High miles (destination) and no Severe.",
         routes={
-            "A": GoldenRoute(100, at(cp1=W(snow=0.7), cp2=W(snow=0.7), cp4=W(rain=0.3))),
-            "B": GoldenRoute(140, at(cp2=W(snow=0.7), cp4=W(rain=0.3))),
-            "C": GoldenRoute(
-                90, at(cp1=W(snow=0.7), cp2=W(snow=0.7), cp3=W(snow=0.7), cp4=W(rain=0.3))
+            "A": GoldenRoute(
+                95, at(cp1=W(snow=0.7), cp2=W(snow=0.7), cp3=W(snow=0.7), cp4=W(rain=0.3))
             ),
+            "B": GoldenRoute(100, at(cp1=W(snow=0.7), cp2=W(snow=0.7), cp4=W(rain=0.3))),
+            "C": GoldenRoute(140, at(cp2=W(snow=0.7), cp4=W(rain=0.3))),
         },
         load_lb=20_000,
-        expected_winner="B",
+        expected_winner="C",
         expected_status="OK",
-        expected_order=["B", "A", "C"],
+        expected_order=["C", "B", "A"],
         expected_reasons=(
-            "Chosen over A: same Severe and High miles, lower average risk (0.50 vs 0.75)",
-            "Chosen over C: same Severe and High miles, lower average risk (0.50 vs 1.00)",
+            "Chosen over B: same Severe and High miles, lower average risk (0.50 vs 0.75)",
+            "Chosen over A: same Severe and High miles, lower average risk (0.50 vs 1.00)",
         ),
     ),
     "duration_decides": GoldenScenario(
@@ -138,7 +142,7 @@ GOLDEN_SCENARIOS: dict[str, GoldenScenario] = {
 _LOAD_FLIP_ROUTES = {
     "A": GoldenRoute(100, at(cp2=W(gust=40))),  # High at 35k, Severe (load rule) at 45k
     "B": GoldenRoute(110, at(cp1=W(rain=0.3), cp3=W(rain=0.3))),  # High 50 at any load
-    "C": GoldenRoute(105, at(cp1=W(snow=2.5), cp3=W(rain=0.3))),  # Severe 25, High 25
+    "C": GoldenRoute(120, at(cp1=W(snow=2.5), cp3=W(rain=0.3))),  # Severe 25, High 25
 }
 GOLDEN_SCENARIOS["load_flip_35k"] = GoldenScenario(
     routes=_LOAD_FLIP_ROUTES,

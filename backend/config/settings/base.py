@@ -128,6 +128,11 @@ SPECTACULAR_SETTINGS = {
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
     "COMPONENT_SPLIT_REQUEST": True,
+    "ENUM_NAME_OVERRIDES": {
+        "RiskLevel": "planner.api.serializers.LEVEL_ENUM",
+        "SampleInterval": "planner.api.serializers.INTERVAL_ENUM",
+        "RouteId": "planner.api.serializers.ROUTE_ID_ENUM",
+    },
 }
 
 LOGGING = {
