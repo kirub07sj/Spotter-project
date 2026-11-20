@@ -1,6 +1,6 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { ApiError, apiFetch, postJson } from './client';
-import type { Place, Plan, PlanRequest, Scenario } from './types';
+import type { HeatmapRequest, HeatmapResponse, Place, Plan, PlanRequest, Scenario } from './types';
 
 export interface PlanInputs {
   request: PlanRequest;
@@ -39,6 +39,26 @@ export function useGeocode(query: string) {
         if (err instanceof ApiError && err.code === 'GEOCODE_NOT_FOUND') return [];
         throw err;
       }
+    },
+  });
+}
+
+/** Starts as soon as the plan arrives; keyed by plan_id (docs/04 §6). */
+export function useHeatmap(plan: Plan | undefined) {
+  return useQuery({
+    queryKey: ['heatmap', plan?.plan_id],
+    enabled: plan !== undefined,
+    staleTime: FIVE_MINUTES,
+    retry: 1,
+    queryFn: ({ signal }) => {
+      if (!plan) throw new Error('no plan');
+      const body: HeatmapRequest = {
+        routes: plan.routes.map((r) => r.geometry),
+        departure_time: plan.assumptions.departure_time,
+        load_weight_lb: plan.assumptions.load_weight_lb,
+        scenario: plan.assumptions.scenario,
+      };
+      return postJson<HeatmapResponse>('/heatmaps', body, signal);
     },
   });
 }

@@ -171,7 +171,7 @@ Response:
   "grid": { "lat0": 38.9, "lon0": -112.4, "dlat": 0.15, "dlon": 0.15, "rows": 24, "cols": 52 },
   "hours": ["2026-11-20T13:00:00Z", "... 49 entries"],
   "mask": "base64 bitset rows*cols",
-  "scores": "base64 Uint8Array length 49*rows*cols, value = round(score*50), 255 = no data",
+  "scores": "base64 Uint8Array length 49*rows*cols, value = floor(score*50), 255 = no data",
   "encoding": { "scale": 50, "no_data": 255 }
 }
 ```

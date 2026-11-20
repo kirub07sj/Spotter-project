@@ -14,3 +14,6 @@ export type Problem = Schemas['Problem'];
 export type ProblemCode = Problem['code'];
 export type PlanWarning = Schemas['Warning'];
 export type Scenario = Schemas['ScenarioEnum'];
+export type HeatmapResponse = Schemas['HeatmapResponse'];
+export type HeatmapRequest = Schemas['HeatmapRequestRequest'];
+export type Grid = Schemas['Grid'];

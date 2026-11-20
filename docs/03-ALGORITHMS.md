@@ -343,7 +343,7 @@ def build_grid(route_geoms, corridor_km, max_points):
 
 **Scoring:** build an array of shape `(49, rows, cols)`, fill in the vectorized `continuous_score`, and set unmasked cells to 255.
 
-**Encoding:** `uint8 = round(score * 50)` (0 to 200), with 255 meaning no data. Base64-encode it. For 49 × 30 × 60 that's about 88 KB raw, or about 30 KB gzipped.
+**Encoding:** `uint8 = floor(score * 50)` (0 to 200), with 255 meaning no data. Floor, not round: rounding lifts the top of a band (2.999 to 150, which decodes as 3.0) into the next level and breaks D-15. Base64-encode it. For 49 × 30 × 60 that's about 88 KB raw, or about 30 KB gzipped.
 
 ---
 

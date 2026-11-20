@@ -5,7 +5,10 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Map as MapGL, NavigationControl, useControl, type MapRef } from 'react-map-gl/maplibre';
 import maplibregl, { type StyleSpecification } from 'maplibre-gl';
 import type { Checkpoint, Plan, RouteId } from '../../api/types';
+import { truckPositionAt } from '../../lib/truck';
 import { useUi } from '../../store/ui';
+import { useHeatmapStore } from '../heatmap';
+import { heatmapLayers, truckLayers, type TruckDatum } from '../heatmap/layers';
 import { endpointLayer, routeLayers } from './layers';
 import { checkpointTooltip } from './tooltip';
 import { FALLBACK_STYLE, MAP_STYLE_URL, US_VIEW } from './styles';
@@ -44,8 +47,14 @@ export function MapView({ plan, selectedId }: Props) {
   const showCheckpoints = useUi((s) => s.showCheckpoints);
   const selectRoute = useUi((s) => s.selectRoute);
   const hoverCheckpoint = useUi((s) => s.hoverCheckpoint);
+  // Slider-driven state: only the map and the slider subscribe to these.
+  const hour = useUi((s) => s.hour);
+  const heatmapVisible = useUi((s) => s.heatmapVisible);
+  const heatmapOpacity = useUi((s) => s.heatmapOpacity);
+  const heatmapVersion = useHeatmapStore((s) => s.version);
   const data = useMapData(plan);
   const selected = selectedId ?? plan?.recommendation.route_id ?? 'A';
+  const tSeconds = hour * 3600;
 
   // Camera moves only when a new plan arrives, never on slider or selection changes.
   useEffect(() => {
@@ -67,15 +76,57 @@ export function MapView({ plan, selectedId }: Props) {
     [data, selected],
   );
 
+  // Nearest checkpoint to the slider time on the selected route gets a thicker ring.
+  const emphasizedCheckpoint = useMemo(() => {
+    const cps = data?.checkpointOffsetsS[selected];
+    if (!cps?.length || tSeconds < 0 || tSeconds > (cps[cps.length - 1] as number) + 1800)
+      return null;
+    let best = 0;
+    for (let i = 1; i < cps.length; i++) {
+      if (Math.abs((cps[i] as number) - tSeconds) < Math.abs((cps[best] as number) - tSeconds))
+        best = i;
+    }
+    return best;
+  }, [data, selected, tSeconds]);
+
+  const trucks: TruckDatum[] = data
+    ? data.routes.flatMap((r) => {
+        if (!showAllRoutes && r.id !== selected) return [];
+        const pos = truckPositionAt(r.path, r.cumTimeS, tSeconds);
+        return pos
+          ? [
+              {
+                id: r.id,
+                position: pos.position,
+                selected: r.id === selected,
+                moving: pos.state === 'driving',
+              },
+            ]
+          : [];
+      })
+    : [];
+
+  const heatmap = useHeatmapStore.getState();
+  const showHeatmap = heatmapVisible && heatmap.bounds !== null && heatmap.planId === data?.planId;
+
   const layers = data
     ? [
+        ...(showHeatmap && heatmap.bounds
+          ? heatmapLayers({
+              bitmaps: heatmap.bitmaps,
+              bounds: heatmap.bounds,
+              position: hour + heatmap.departureOffsetH,
+              opacity: heatmapOpacity,
+              beforeId: labelLayerId,
+            })
+          : []),
         ...routeLayers(
           data,
           {
             selectedId: selected,
             hoveredRouteId,
             hoveredCheckpoint,
-            emphasizedCheckpoint: null,
+            emphasizedCheckpoint,
             showAllRoutes,
             showCheckpoints,
             beforeId: labelLayerId,
@@ -83,8 +134,10 @@ export function MapView({ plan, selectedId }: Props) {
           selectedSegments,
         ),
         endpointLayer(data),
+        ...truckLayers(trucks),
       ]
     : [];
+  void heatmapVersion; // re-render when new bitmaps land (bumped at most once per frame)
 
   const getTooltip = useCallback(
     ({ object, layer }: PickingInfo) => {

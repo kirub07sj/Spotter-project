@@ -4,6 +4,7 @@ import { usePlan } from './api/hooks';
 import { AssumptionsFooter } from './app/AssumptionsFooter';
 import { queryClient } from './app/queryClient';
 import { ResultsPanel } from './app/ResultsPanel';
+import { ForecastSlider, HeatmapController } from './features/heatmap';
 import { PlanForm } from './features/plan-form';
 import { useUi } from './store/ui';
 
@@ -22,6 +23,7 @@ function Shell() {
   const plan = query.data;
   return (
     <div className="flex h-full flex-col">
+      <HeatmapController plan={plan} />
       <div className="flex min-h-0 flex-1">
         <aside className="flex w-[400px] shrink-0 flex-col overflow-y-auto border-r border-slate-200 bg-slate-50">
           <header className="border-b border-slate-200 bg-white px-4 py-3">
@@ -39,6 +41,16 @@ function Shell() {
           <Suspense fallback={<MapFallback />}>
             <MapView plan={plan} selectedId={selectedId} />
           </Suspense>
+          {plan && (
+            <div className="pointer-events-none absolute inset-x-3 bottom-3 z-10 mx-auto max-w-3xl">
+              <ForecastSlider
+                departure={plan.assumptions.departure_time}
+                route={plan.routes.find(
+                  (r) => r.id === (selectedId ?? plan.recommendation.route_id),
+                )}
+              />
+            </div>
+          )}
         </main>
       </div>
       <AssumptionsFooter plan={plan} />

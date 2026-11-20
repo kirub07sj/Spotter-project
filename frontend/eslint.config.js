@@ -28,7 +28,14 @@ export default tseslint.config(
         {
           patterns: [
             {
-              group: ['../plan-form/*', '../routes/*', '../map/*', '../heatmap/*'],
+              // heatmap/layers is a second public entry: deck.gl code for the lazy map chunk.
+              group: [
+                '../plan-form/*',
+                '../routes/*',
+                '../map/*',
+                '../heatmap/*',
+                '!../heatmap/layers',
+              ],
               message: 'Import another feature through its index.ts, not its internals.',
             },
           ],

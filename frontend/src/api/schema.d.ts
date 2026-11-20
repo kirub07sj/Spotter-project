@@ -36,6 +36,22 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/v1/heatmaps': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['heatmaps_create'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/v1/plans': {
     parameters: {
       query?: never;
@@ -105,9 +121,48 @@ export interface components {
     GeocodeResponse: {
       results: components['schemas']['Place'][];
     };
+    Grid: {
+      /**
+       * Format: double
+       * @description Centre latitude of the south-west cell
+       */
+      lat0: number;
+      /**
+       * Format: double
+       * @description Centre longitude of the south-west cell
+       */
+      lon0: number;
+      /** Format: double */
+      dlat: number;
+      /** Format: double */
+      dlon: number;
+      rows: number;
+      cols: number;
+    };
     Health: {
       status: string;
       version: string;
+    };
+    HeatmapEncoding: {
+      scale: number;
+      no_data: number;
+    };
+    HeatmapRequestRequest: {
+      /** @description Simplified route geometries from the plan, route A first */
+      routes: string[];
+      /** Format: date-time */
+      departure_time: string;
+      load_weight_lb: number;
+      scenario?: (components['schemas']['ScenarioEnum'] | components['schemas']['NullEnum']) | null;
+    };
+    HeatmapResponse: {
+      grid: components['schemas']['Grid'];
+      hours: string[];
+      /** @description base64 bitset, rows*cols bits, row-major, LSB first */
+      mask: string;
+      /** @description base64 Uint8Array of hours*rows*cols, value = floor(score*scale), 255 = no data */
+      scores: string;
+      encoding: components['schemas']['HeatmapEncoding'];
     };
     MilesByLevel: {
       /** Format: double */
@@ -386,6 +441,69 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['Health'];
+        };
+      };
+    };
+  };
+  heatmaps_create: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['HeatmapRequestRequest'];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HeatmapResponse'];
+        };
+      };
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['Problem'];
+        };
+      };
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['Problem'];
+        };
+      };
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['Problem'];
+        };
+      };
+      429: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['Problem'];
+        };
+      };
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['Problem'];
         };
       };
     };

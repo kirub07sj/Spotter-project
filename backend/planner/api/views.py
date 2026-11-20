@@ -9,16 +9,20 @@ from rest_framework.throttling import ScopedRateThrottle
 from rest_framework.views import APIView
 
 from planner.domain.errors import GeocodeNotFoundError
+from planner.domain.heatmap import NO_DATA, SCORE_SCALE, b64
 from planner.domain.models import LatLon
 from planner.domain.scenarios import SCENARIOS
 from planner.providers.registry import get_providers
+from planner.services.heatmap_service import HeatmapConfig, HeatmapRequest, create_heatmap
 from planner.services.plan_service import PlanConfig, PlanRequest, create_plan
 from planner.services.timing import Timings
 
-from .presenters import present_plan
+from .presenters import iso, present_plan
 from .serializers import (
     GeocodeQuerySerializer,
     GeocodeResponseSerializer,
+    HeatmapRequestSerializer,
+    HeatmapResponseSerializer,
     PlanRequestSerializer,
     PlanResponseSerializer,
     ProblemSerializer,
@@ -100,5 +104,51 @@ class PlanView(APIView):
         with timings.measure("serialize"):
             payload = present_plan(plan)
         response = Response(payload)
+        response["Server-Timing"] = timings.header()
+        return response
+
+
+class HeatmapView(APIView):
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = "heatmaps"
+
+    @extend_schema(
+        request=HeatmapRequestSerializer,
+        responses={200: HeatmapResponseSerializer, **PROBLEM_RESPONSES},
+    )
+    def post(self, request: Request) -> Response:
+        body = HeatmapRequestSerializer(data=request.data, context={"now": timezone.now()})
+        body.is_valid(raise_exception=True)
+        data = body.validated_data
+        heatmap_request = HeatmapRequest(
+            routes=data["routes"],
+            departure=data["departure_time"],
+            load_lb=data["load_weight_lb"],
+            scenario=data.get("scenario"),
+        )
+        config = HeatmapConfig(
+            wind_metric=plan_config().wind_metric,
+            corridor_km=settings.HEATMAP_CORRIDOR_KM,
+            max_points=settings.HEATMAP_MAX_POINTS,
+        )
+        timings = Timings()
+        heatmap = async_to_sync(create_heatmap)(heatmap_request, get_providers(), config, timings)
+        g = heatmap.grid
+        response = Response(
+            {
+                "grid": {
+                    "lat0": round(g.lat0, 6),
+                    "lon0": round(g.lon0, 6),
+                    "dlat": round(g.dlat, 6),
+                    "dlon": round(g.dlon, 6),
+                    "rows": g.rows,
+                    "cols": g.cols,
+                },
+                "hours": [iso(h) for h in heatmap.hours],
+                "mask": b64(heatmap.mask),
+                "scores": b64(heatmap.scores),
+                "encoding": {"scale": SCORE_SCALE, "no_data": NO_DATA},
+            }
+        )
         response["Server-Timing"] = timings.header()
         return response

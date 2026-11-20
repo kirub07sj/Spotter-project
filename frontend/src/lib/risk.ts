@@ -77,9 +77,9 @@ export function scoreColor(score: number): [number, number, number, number] {
   const f = s - k;
   const a = LEVELS[LEVEL_ORDER[k] as RiskLevel].rgb;
   const b = LEVELS[LEVEL_ORDER[k + 1] as RiskLevel].rgb;
-  // Hold each band's own colour for most of the band so the map reads as discrete levels,
-  // then blend quickly toward the next one near the edge.
-  const t = Math.max(0, (f - 0.8) / 0.2);
+  // Hold each band's own colour for the first half so levels stay readable, then blend
+  // toward the next band so the field looks continuous rather than blocky.
+  const t = Math.max(0, (f - 0.5) / 0.5);
   const alpha0 = ALPHA_STOPS[k] as number;
   const alpha1 = ALPHA_STOPS[k + 1] as number;
   return [

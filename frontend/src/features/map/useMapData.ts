@@ -23,6 +23,8 @@ export interface MapData {
   routes: MapRoute[];
   segments: MapSegment[];
   checkpoints: Record<string, Checkpoint[]>;
+  /** checkpoint ETAs as seconds after departure, per route */
+  checkpointOffsetsS: Record<string, number[]>;
   endpoints: { kind: 'origin' | 'destination'; position: LonLat }[];
   bounds: [[number, number], [number, number]] | null;
 }
@@ -49,6 +51,13 @@ export function useMapData(plan: Plan | undefined): MapData | null {
       })),
     );
     const checkpoints = Object.fromEntries(plan.routes.map((r) => [r.id, r.checkpoints]));
+    const t0 = new Date(plan.assumptions.departure_time).getTime();
+    const checkpointOffsetsS = Object.fromEntries(
+      plan.routes.map((r) => [
+        r.id,
+        r.checkpoints.map((c) => (new Date(c.eta).getTime() - t0) / 1000),
+      ]),
+    );
     const first = routes[0]?.path;
     const endpoints = first?.length
       ? [
@@ -61,6 +70,7 @@ export function useMapData(plan: Plan | undefined): MapData | null {
       routes,
       segments,
       checkpoints,
+      checkpointOffsetsS,
       endpoints,
       bounds: boundsOf(routes.map((r) => r.path)),
     };

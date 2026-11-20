@@ -25,6 +25,15 @@ MAX_LOAD_LB = 80_000
 # --- requests ---
 
 
+def validate_departure_window(value: datetime, now: datetime) -> datetime:
+    """D-17: from now minus 1 hour to now plus 7 days."""
+    if value < now - DEPARTURE_PAST:
+        raise serializers.ValidationError("Departure can be at most 1 hour in the past.")
+    if value > now + DEPARTURE_FUTURE:
+        raise serializers.ValidationError("Departure can be at most 7 days ahead.")
+    return value
+
+
 class PointSerializer(serializers.Serializer):
     lat = serializers.FloatField(min_value=-90, max_value=90)
     lon = serializers.FloatField(min_value=-180, max_value=180)
@@ -39,12 +48,7 @@ class PlanRequestSerializer(serializers.Serializer):
     sample_interval_mi = serializers.ChoiceField(choices=INTERVAL_CHOICES, default=25)
 
     def validate_departure_time(self, value: datetime) -> datetime:
-        now: datetime = self.context["now"]
-        if value < now - DEPARTURE_PAST:
-            raise serializers.ValidationError("Departure can be at most 1 hour in the past.")
-        if value > now + DEPARTURE_FUTURE:
-            raise serializers.ValidationError("Departure can be at most 7 days ahead.")
-        return value
+        return validate_departure_window(value, self.context["now"])
 
     def validate(self, attrs: dict[str, Any]) -> dict[str, Any]:
         o, d = attrs["origin"], attrs["destination"]
@@ -207,3 +211,64 @@ class ProblemSerializer(serializers.Serializer):
 LEVEL_ENUM = [(v, v) for v in LEVEL_CHOICES]
 INTERVAL_ENUM = [(v, str(v)) for v in INTERVAL_CHOICES]
 ROUTE_ID_ENUM = [(v, v) for v in ("A", "B", "C")]
+
+
+# --- heatmaps ---
+
+MAX_HEATMAP_ROUTES = 3
+MAX_POINTS_PER_ROUTE = 5_000
+
+
+class HeatmapRequestSerializer(serializers.Serializer):
+    routes = serializers.ListField(
+        child=serializers.CharField(help_text="polyline6"),
+        min_length=1,
+        max_length=MAX_HEATMAP_ROUTES,
+        help_text="Simplified route geometries from the plan, route A first",
+    )
+    departure_time = serializers.DateTimeField()
+    load_weight_lb = serializers.IntegerField(min_value=1, max_value=MAX_LOAD_LB)
+    scenario = serializers.ChoiceField(choices=list(SCENARIOS), allow_null=True, required=False)
+
+    def validate_departure_time(self, value: datetime) -> datetime:
+        return validate_departure_window(value, self.context["now"])
+
+    def validate_routes(self, value: list[str]) -> list[list[LatLon]]:
+        from planner.services.encoding import decode
+
+        decoded = []
+        for encoded in value:
+            try:
+                coords = decode(encoded)
+            except (ValueError, IndexError, TypeError) as exc:
+                raise serializers.ValidationError("Each route must be a polyline6 string.") from exc
+            if not 2 <= len(coords) <= MAX_POINTS_PER_ROUTE:
+                raise serializers.ValidationError(
+                    f"Each route needs 2 to {MAX_POINTS_PER_ROUTE:,} points."
+                )
+            decoded.append(coords)
+        return decoded
+
+
+class GridSerializer(serializers.Serializer):
+    lat0 = serializers.FloatField(help_text="Centre latitude of the south-west cell")
+    lon0 = serializers.FloatField(help_text="Centre longitude of the south-west cell")
+    dlat = serializers.FloatField()
+    dlon = serializers.FloatField()
+    rows = serializers.IntegerField()
+    cols = serializers.IntegerField()
+
+
+class HeatmapEncodingSerializer(serializers.Serializer):
+    scale = serializers.IntegerField()
+    no_data = serializers.IntegerField()
+
+
+class HeatmapResponseSerializer(serializers.Serializer):
+    grid = GridSerializer()
+    hours = serializers.ListField(child=serializers.DateTimeField())
+    mask = serializers.CharField(help_text="base64 bitset, rows*cols bits, row-major, LSB first")
+    scores = serializers.CharField(
+        help_text="base64 Uint8Array of hours*rows*cols, value = floor(score*scale), 255 = no data"
+    )
+    encoding = HeatmapEncodingSerializer()

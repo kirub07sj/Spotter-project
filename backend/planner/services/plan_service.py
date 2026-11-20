@@ -21,7 +21,7 @@ from planner.domain.errors import (
     RouteTooLongError,
 )
 from planner.domain.eta import capped_durations, cumulative
-from planner.domain.geo import simplify_indices, slice_by_distance
+from planner.domain.geo import segment_lengths_m, simplify_indices, slice_by_distance
 from planner.domain.levels import Level, WindMetric
 from planner.domain.models import (
     Checkpoint,
@@ -252,8 +252,11 @@ async def _fetch_weather(
     series = await providers.weather.hourly(points, start, end)
     anchor = None
     if req.scenario:
-        a = prepared[0]
-        anchor = scenario_anchor(req.scenario, a.geometry.coords, a.cum_dist_m, req.departure)
+        # Anchor on route A's simplified geometry: the exact line the frontend sends back to
+        # /heatmaps, so the checkpoints and the heatmap see the same storm (D-15, D-20).
+        a = prepared[0].simplified
+        cum = cumulative(segment_lengths_m(a))
+        anchor = scenario_anchor(req.scenario, a, cum, req.departure)
     out: list[list[WeatherSample]] = []
     it = iter(series)
     for p in prepared:

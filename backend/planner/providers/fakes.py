@@ -78,8 +78,8 @@ class FakeRouting:
 
 
 class FakeWeather:
-    """Smooth, deterministic fields of (lat, lon, hour), mostly Low with some Moderate
-    and High patches. Built in metric and converted like the real adapter."""
+    """Smooth, deterministic fields of (lat, lon, hour), mostly Low with Moderate patches.
+    Built in metric and converted like the real adapter."""
 
     async def hourly(
         self, points: Sequence[LatLon], start: datetime, end: datetime
@@ -94,10 +94,12 @@ class FakeWeather:
         wind, gust, rain, snow = [], [], [], []
         for t in times:
             h = t.timestamp() / 3600.0
+            # Peaks near 34 mph (Moderate) so Severe and No Travel come from the demo
+            # scenarios, not from the fake baseline.
             gust_kmh = (
                 15
-                + 35 * max(0.0, math.sin(lat * 0.9 + lon * 0.35 + h * 0.11))
-                + 20 * math.sin(lon * 1.7 - h * 0.05) ** 2
+                + 28 * max(0.0, math.sin(lat * 0.9 + lon * 0.35 + h * 0.11))
+                + 12 * math.sin(lon * 0.9 - h * 0.05) ** 2
             )
             rain_mm = max(0.0, 6 * math.sin(lat * 1.3 - lon * 0.4 + h * 0.07) - 2)
             snow_cm = max(0.0, 3.5 * math.sin(lat * 0.8 + lon * 0.9 - h * 0.09) - 1.5)
