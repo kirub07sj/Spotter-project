@@ -15,12 +15,14 @@ export interface UiState {
   heatmapOpacity: number;
   showAllRoutes: boolean;
   showCheckpoints: boolean;
+  theme: 'dark' | 'light';
   submit: (inputs: PlanInputs) => void;
   selectRoute: (id: RouteId | null) => void;
   hoverRoute: (id: RouteId | null) => void;
   hoverCheckpoint: (index: number | null) => void;
   setHour: (hour: number) => void;
   setPlaying: (playing: boolean) => void;
+  toggleTheme: () => void;
   setLayer: (
     patch: Partial<
       Pick<UiState, 'heatmapVisible' | 'heatmapOpacity' | 'showAllRoutes' | 'showCheckpoints'>
@@ -29,6 +31,11 @@ export interface UiState {
 }
 
 export const MAX_HOUR = 48;
+
+const initialTheme: 'dark' | 'light' =
+  typeof window !== 'undefined' && localStorage.getItem('spotter_theme') === 'light'
+    ? 'light'
+    : 'dark';
 
 export const useUi = create<UiState>()((set) => ({
   submitted: null,
@@ -41,6 +48,7 @@ export const useUi = create<UiState>()((set) => ({
   heatmapOpacity: 0.85,
   showAllRoutes: true,
   showCheckpoints: true,
+  theme: initialTheme,
   submit: (inputs) =>
     set({
       submitted: inputs,
@@ -54,5 +62,11 @@ export const useUi = create<UiState>()((set) => ({
   hoverCheckpoint: (index) => set({ hoveredCheckpoint: index }),
   setHour: (hour) => set({ hour: Math.min(Math.max(hour, 0), MAX_HOUR) }),
   setPlaying: (playing) => set({ playing }),
+  toggleTheme: () =>
+    set((state) => {
+      const next = state.theme === 'dark' ? 'light' : 'dark';
+      if (typeof window !== 'undefined') localStorage.setItem('spotter_theme', next);
+      return { theme: next };
+    }),
   setLayer: (patch) => set(patch),
 }));

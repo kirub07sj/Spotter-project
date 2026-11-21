@@ -17,7 +17,9 @@ import { useUi } from './store/ui';
 const MapView = lazy(() => import('./features/map/MapView').then((m) => ({ default: m.MapView })));
 
 function MapFallback() {
-  return <div className="h-full w-full bg-[#e9eef2]" aria-label="Loading map" />;
+  return (
+    <div className="h-full w-full bg-neutral-100 dark:bg-neutral-950" aria-label="Loading map" />
+  );
 }
 
 const SCENARIO_LABEL = { winter_storm: 'winter storm', high_wind: 'high wind' } as const;
@@ -31,14 +33,44 @@ function Slider({ plan, selectedId }: { plan: Plan; selectedId: RouteId | null }
   );
 }
 
+function ThemeToggle() {
+  const theme = useUi((s) => s.theme);
+  const toggleTheme = useUi((s) => s.toggleTheme);
+
+  return (
+    <button
+      type="button"
+      onClick={toggleTheme}
+      aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+      title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+      className="flex shrink-0 items-center gap-1.5 rounded-full border border-black/10 bg-black/5 px-2.5 py-1 text-xs font-medium text-neutral-800 transition-colors hover:bg-black/10 dark:border-white/15 dark:bg-white/10 dark:text-neutral-200 dark:hover:bg-white/15"
+    >
+      <span aria-hidden="true" className="text-xs">
+        {theme === 'dark' ? '☀' : '🌙'}
+      </span>
+      <span className="text-[11px] font-semibold tracking-wide">
+        {theme === 'dark' ? 'Light' : 'Dark'}
+      </span>
+    </button>
+  );
+}
+
 function Title() {
   return (
-    <>
-      <h1 className="text-base font-bold tracking-tight">Weather-Aware Truck Routing</h1>
-      <p className="text-xs text-slate-500 max-lg:hidden">
+    <div>
+      <div className="flex items-center gap-2">
+        <span
+          className="flex h-2.5 w-2.5 rounded-full bg-neutral-900 shadow-[0_0_8px_rgba(0,0,0,0.4)] dark:bg-white dark:shadow-[0_0_8px_rgba(255,255,255,0.8)]"
+          aria-hidden="true"
+        />
+        <h1 className="text-base font-bold tracking-tight text-neutral-900 dark:text-white">
+          Weather-Aware Truck Routing
+        </h1>
+      </div>
+      <p className="mt-1 text-xs text-neutral-500 dark:text-neutral-400 max-lg:hidden">
         Compare routes by forecast weather at each checkpoint’s ETA.
       </p>
-    </>
+    </div>
   );
 }
 
@@ -46,6 +78,7 @@ function Shell() {
   const submitted = useUi((s) => s.submitted);
   const submit = useUi((s) => s.submit);
   const selectedId = useUi((s) => s.selectedRouteId);
+  const theme = useUi((s) => s.theme);
   const query = usePlan(submitted);
   const plan = query.data;
   const desktop = useMediaQuery(DESKTOP_QUERY);
@@ -70,63 +103,78 @@ function Shell() {
     </Suspense>
   );
 
+  const rootClass =
+    theme === 'dark'
+      ? 'dark relative h-full w-full overflow-hidden bg-black font-sans'
+      : 'relative h-full w-full overflow-hidden bg-neutral-100 font-sans';
+
   if (desktop) {
     return (
-      <div className="flex h-full flex-col">
+      <div className={rootClass}>
         <HeatmapController plan={plan} />
         <a
           href="#results"
-          className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-white focus:p-2"
+          className="sr-only focus:not-sr-only focus:absolute focus:left-6 focus:top-6 focus:z-50 focus:rounded-md focus:bg-black focus:px-3 focus:py-2 focus:text-white focus:shadow-lg dark:focus:bg-white dark:focus:text-black"
         >
           Skip to results
         </a>
-        <div className="flex min-h-0 flex-1">
-          {/* Contain absolutely positioned screen-reader text inside the scrollable sidebar. */}
-          <aside className="relative flex w-[400px] shrink-0 flex-col overflow-y-auto border-r border-slate-200 bg-slate-50">
-            <header className="border-b border-slate-200 bg-white px-4 py-3">
+        <main className="absolute inset-0 z-0 h-full w-full" aria-label="Map">
+          {map}
+        </main>
+        <aside
+          className="pointer-events-auto absolute bottom-4 left-4 top-4 z-20 flex w-[420px] max-w-[calc(100vw-2rem)] flex-col rounded-2xl border border-black/10 bg-white/80 text-neutral-900 shadow-2xl shadow-black/15 backdrop-blur-2xl dark:border-white/10 dark:bg-black/75 dark:text-white dark:shadow-black/80"
+          aria-label="Trip planning and route comparison"
+        >
+          <header className="border-b border-black/10 bg-black/[0.02] px-5 py-4 backdrop-blur-md dark:border-white/10 dark:bg-white/[0.03]">
+            <div className="flex items-start justify-between gap-3">
               <Title />
-            </header>
-            <div className="space-y-4 p-4">
-              {form}
-              <div id="results" tabIndex={-1}>
-                {results}
-              </div>
+              <ThemeToggle />
             </div>
-          </aside>
-          <main className="relative min-w-0 flex-1" aria-label="Map">
-            {map}
-            {plan && (
-              <div className="pointer-events-none absolute inset-x-3 bottom-3 z-10 mx-auto max-w-3xl">
-                <Slider plan={plan} selectedId={selectedId} />
+            {plan?.assumptions.scenario && (
+              <div className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-amber-500/10 px-2.5 py-0.5 text-[11px] font-semibold text-amber-800 ring-1 ring-amber-500/20 dark:bg-amber-500/20 dark:text-amber-300 dark:ring-amber-400/30">
+                <span aria-hidden="true">⚠</span> Simulated weather ·{' '}
+                {SCENARIO_LABEL[plan.assumptions.scenario]}
               </div>
             )}
-          </main>
-        </div>
-        <AssumptionsFooter plan={plan} />
+          </header>
+          <div className="flex-1 space-y-4 overflow-y-auto px-5 py-4">
+            {form}
+            <div id="results" tabIndex={-1} className="outline-none">
+              {results}
+            </div>
+          </div>
+          <AssumptionsFooter plan={plan} />
+        </aside>
+        {plan && (
+          <div className="pointer-events-none absolute bottom-5 left-4 right-4 z-10 mx-auto max-w-2xl lg:left-[456px] lg:right-6 lg:max-w-3xl">
+            <Slider plan={plan} selectedId={selectedId} />
+          </div>
+        )}
       </div>
     );
   }
 
   const sheetPx = snapHeight(snap, window.innerHeight);
   return (
-    <div className="relative h-full overflow-hidden">
+    <div className={rootClass}>
       <HeatmapController plan={plan} />
       <main className="absolute inset-0" aria-label="Map">
         {map}
       </main>
-      <header className="absolute inset-x-2 top-2 z-30 max-h-[85%] overflow-y-auto rounded-xl bg-white/95 shadow-lg ring-1 ring-slate-200 backdrop-blur">
-        <div className="flex items-center gap-2 px-3 py-2">
+      <header className="absolute inset-x-2 top-2 z-30 max-h-[85%] overflow-y-auto rounded-2xl border border-black/10 bg-white/85 p-3 text-neutral-900 shadow-2xl shadow-black/15 backdrop-blur-2xl dark:border-white/10 dark:bg-black/80 dark:text-white dark:shadow-black/80">
+        <div className="flex items-center gap-2">
           <div className="min-w-0 flex-1">
             <Title />
             {plan?.assumptions.scenario && (
-              <span className="text-[11px] font-semibold text-amber-800">
+              <span className="text-[11px] font-semibold text-amber-700 dark:text-amber-400">
                 ⚠ Simulated weather · {SCENARIO_LABEL[plan.assumptions.scenario]}
               </span>
             )}
           </div>
+          <ThemeToggle />
           <button
             type="button"
-            className="shrink-0 rounded-md bg-slate-900 px-3 py-1.5 text-xs font-semibold text-white"
+            className="shrink-0 rounded-lg bg-black px-3 py-1.5 text-xs font-semibold text-white shadow-md hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200"
             aria-expanded={formOpen}
             aria-controls="trip-form"
             onClick={() => setFormOpen((o) => !o)}
@@ -134,7 +182,11 @@ function Shell() {
             {formOpen ? 'Hide trip' : 'Edit trip'}
           </button>
         </div>
-        <div id="trip-form" hidden={!formOpen} className="border-t border-slate-200 p-3">
+        <div
+          id="trip-form"
+          hidden={!formOpen}
+          className="mt-3 border-t border-black/10 pt-3 dark:border-white/10"
+        >
           {form}
         </div>
       </header>

@@ -3,7 +3,7 @@ import type { PickingInfo } from '@deck.gl/core';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Map as MapGL, NavigationControl, useControl, type MapRef } from 'react-map-gl/maplibre';
-import maplibregl, { type StyleSpecification } from 'maplibre-gl';
+import maplibregl from 'maplibre-gl';
 import type { Checkpoint, Plan, RouteId } from '../../api/types';
 import { truckPositionAt } from '../../lib/truck';
 import { useUi } from '../../store/ui';
@@ -11,7 +11,13 @@ import { useHeatmapStore } from '../heatmap';
 import { heatmapLayers, truckLayers, type TruckDatum } from '../heatmap/layers';
 import { endpointLayer, prepareRouteLayers, routeLayers } from './layers';
 import { checkpointTooltip } from './tooltip';
-import { FALLBACK_STYLE, MAP_STYLE_URL, US_VIEW } from './styles';
+import {
+  DARK_MAP_STYLE_URL,
+  FALLBACK_STYLE_DARK,
+  FALLBACK_STYLE_LIGHT,
+  LIGHT_MAP_STYLE_URL,
+  US_VIEW,
+} from './styles';
 import { EMPTY_MAP_DATA, useMapData, type MapRoute } from './useMapData';
 import { MapControls } from './MapControls';
 
@@ -28,7 +34,7 @@ function cameraPadding() {
   const mobile = window.innerWidth < 1024;
   return mobile
     ? { top: 80, bottom: Math.round(window.innerHeight * 0.45), left: 30, right: 30 }
-    : { top: 60, bottom: 150, left: 60, right: 80 };
+    : { top: 60, bottom: 150, left: 470, right: 80 };
 }
 
 interface Props {
@@ -38,8 +44,11 @@ interface Props {
 
 export function MapView({ plan, selectedId }: Props) {
   const mapRef = useRef<MapRef>(null);
-  const [style, setStyle] = useState<string | StyleSpecification>(MAP_STYLE_URL);
+  const theme = useUi((s) => s.theme);
   const [basemapFailed, setBasemapFailed] = useState(false);
+  const activeStyle = theme === 'dark' ? DARK_MAP_STYLE_URL : LIGHT_MAP_STYLE_URL;
+  const fallbackStyle = theme === 'dark' ? FALLBACK_STYLE_DARK : FALLBACK_STYLE_LIGHT;
+  const style = basemapFailed ? fallbackStyle : activeStyle;
   const [labelLayerId, setLabelLayerId] = useState<string | undefined>();
   const hoveredRouteId = useUi((s) => s.hoveredRouteId);
   const hoveredCheckpoint = useUi((s) => s.hoveredCheckpoint);
@@ -135,19 +144,20 @@ export function MapView({ plan, selectedId }: Props) {
   const getTooltip = useCallback(
     ({ object, layer }: PickingInfo) => {
       if (!object || !layer) return null;
+      const tooltipStyle = theme === 'dark' ? TOOLTIP_STYLE_DARK : TOOLTIP_STYLE_LIGHT;
       if (layer.id === 'checkpoints') {
-        return { html: checkpointTooltip(object as Checkpoint, selected), style: TOOLTIP_STYLE };
+        return { html: checkpointTooltip(object as Checkpoint, selected), style: tooltipStyle };
       }
       if (layer.id === 'routes-unselected') {
         const r = object as MapRoute;
         return {
           text: `Route ${r.id} · ${r.label}\nClick to select`,
-          style: { ...TOOLTIP_STYLE, whiteSpace: 'pre-line' },
+          style: { ...tooltipStyle, whiteSpace: 'pre-line' },
         };
       }
       return null;
     },
-    [selected],
+    [selected, theme],
   );
 
   const onHover = useCallback(
@@ -177,7 +187,6 @@ export function MapView({ plan, selectedId }: Props) {
         onError={(e) => {
           if (!basemapFailed && !mapRef.current?.getMap().isStyleLoaded()) {
             setBasemapFailed(true);
-            setStyle(FALLBACK_STYLE);
           } else if (import.meta.env.DEV) {
             console.warn('map error', e.error);
           }
@@ -198,7 +207,7 @@ export function MapView({ plan, selectedId }: Props) {
         />
       </MapGL>
       {basemapFailed && (
-        <p className="pointer-events-none absolute left-2 top-2 rounded bg-white/90 px-2 py-1 text-xs text-slate-600 shadow">
+        <p className="pointer-events-none absolute left-4 top-4 z-30 rounded-xl border border-black/10 bg-white/90 px-3 py-1.5 text-xs text-neutral-800 shadow-xl backdrop-blur-md dark:border-white/10 dark:bg-black/90 dark:text-neutral-200">
           Basemap unavailable · routes and weather still shown
         </p>
       )}
@@ -209,11 +218,24 @@ export function MapView({ plan, selectedId }: Props) {
 
 const WORLD_BOUNDS: [number, number, number, number] = [-180, -85, 180, 85];
 
-const TOOLTIP_STYLE = {
-  backgroundColor: 'white',
+const TOOLTIP_STYLE_DARK = {
+  backgroundColor: 'rgba(0, 0, 0, 0.90)',
+  color: '#f8fafc',
+  border: '1px solid rgba(255, 255, 255, 0.15)',
+  backdropFilter: 'blur(12px)',
+  borderRadius: '12px',
+  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.6)',
+  padding: '8px 12px',
+  fontSize: '12px',
+} as const;
+
+const TOOLTIP_STYLE_LIGHT = {
+  backgroundColor: 'rgba(255, 255, 255, 0.95)',
   color: '#0f172a',
-  borderRadius: '8px',
-  boxShadow: '0 4px 16px rgba(15,23,42,.18)',
-  padding: '8px 10px',
+  border: '1px solid rgba(0, 0, 0, 0.1)',
+  backdropFilter: 'blur(12px)',
+  borderRadius: '12px',
+  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)',
+  padding: '8px 12px',
   fontSize: '12px',
 } as const;

@@ -19,18 +19,21 @@ export function MapControls() {
   const showCheckpoints = useUi((s) => s.showCheckpoints);
   const setLayer = useUi((s) => s.setLayer);
   return (
-    <div className="absolute right-2 top-24 z-10 w-56 rounded-lg bg-white/95 text-xs shadow-lg ring-1 ring-slate-200 backdrop-blur max-lg:top-[124px] max-lg:w-auto max-lg:max-w-[14rem]">
+    <div className="absolute right-4 top-4 z-10 w-64 rounded-2xl border border-black/10 bg-white/80 text-xs text-neutral-800 shadow-2xl shadow-black/15 backdrop-blur-2xl dark:border-white/10 dark:bg-black/75 dark:text-neutral-200 dark:shadow-black/80 max-lg:top-[124px] max-lg:w-auto max-lg:max-w-[15rem]">
       <button
         type="button"
-        className="flex w-full items-center justify-between px-3 py-2 font-semibold"
+        className="flex w-full items-center justify-between px-3.5 py-2.5 font-semibold text-neutral-900 transition-colors hover:text-black dark:text-neutral-100 dark:hover:text-white"
         aria-expanded={open}
         onClick={() => setOpen((o) => !o)}
       >
         Legend & layers <span aria-hidden="true">{open ? '▾' : '▸'}</span>
       </button>
       {open && (
-        <div className="space-y-3 px-3 pb-3">
-          <ul className="grid grid-cols-2 gap-1" aria-label="Risk levels">
+        <div className="space-y-3 px-3.5 pb-3.5">
+          <ul
+            className="grid grid-cols-2 gap-1 text-neutral-700 dark:text-neutral-300"
+            aria-label="Risk levels"
+          >
             {[...LEVEL_ORDER, 'UNKNOWN' as const].map((lvl) => (
               <li key={lvl} className="flex items-center gap-1.5">
                 <span
@@ -43,13 +46,18 @@ export function MapControls() {
             ))}
           </ul>
           <div>
-            <div className="mb-1 text-slate-500">Heatmap risk score 0 to 4</div>
+            <div className="mb-1 text-neutral-500 dark:text-neutral-400">
+              Heatmap risk score 0 to 4
+            </div>
             <div
-              className="h-2 rounded-full ring-1 ring-slate-200"
+              className="h-2 rounded-full ring-1 ring-black/10 dark:ring-white/15"
               style={{ background: gradient }}
             />
           </div>
-          <ul className="flex justify-between" aria-label="Route colours">
+          <ul
+            className="flex justify-between text-neutral-700 dark:text-neutral-300"
+            aria-label="Route colours"
+          >
             {(Object.keys(ROUTE_COLORS) as (keyof typeof ROUTE_COLORS)[]).map((id) => (
               <li key={id} className="flex items-center gap-1 whitespace-nowrap">
                 <span
@@ -61,14 +69,14 @@ export function MapControls() {
               </li>
             ))}
           </ul>
-          <fieldset className="space-y-1.5 border-t border-slate-200 pt-2">
+          <fieldset className="space-y-1.5 border-t border-black/10 pt-2 dark:border-white/10">
             <legend className="sr-only">Layers</legend>
             <Toggle
               label="Weather heatmap"
               checked={heatmapVisible}
               onChange={(v) => setLayer({ heatmapVisible: v })}
             />
-            <label className="flex items-center gap-2 pl-5 text-slate-600">
+            <label className="flex items-center gap-2 pl-5 text-neutral-600 dark:text-neutral-400">
               Opacity
               <input
                 type="range"
@@ -78,7 +86,7 @@ export function MapControls() {
                 value={heatmapOpacity}
                 disabled={!heatmapVisible}
                 onChange={(e) => setLayer({ heatmapOpacity: Number(e.target.value) })}
-                className="w-full"
+                className="w-full accent-black dark:accent-white"
                 aria-label="Heatmap opacity"
               />
             </label>
@@ -109,10 +117,10 @@ function Toggle({
   onChange: (v: boolean) => void;
 }) {
   return (
-    <label className="flex min-h-6 cursor-pointer items-center gap-2 py-0.5">
+    <label className="flex min-h-6 cursor-pointer items-center gap-2 py-0.5 text-neutral-700 transition-colors hover:text-black dark:text-neutral-300 dark:hover:text-white">
       <input
         type="checkbox"
-        className="h-4 w-4"
+        className="h-4 w-4 rounded border-black/20 bg-black/5 text-black accent-black focus:ring-0 dark:border-white/20 dark:bg-white/10 dark:text-white dark:accent-white"
         checked={checked}
         onChange={(e) => onChange(e.target.checked)}
       />

@@ -12,9 +12,9 @@ interface Props {
 function Skeleton() {
   return (
     <div className="space-y-3 motion-safe:animate-pulse" aria-hidden="true">
-      <div className="h-20 rounded-lg bg-slate-200" />
+      <div className="h-20 rounded-xl bg-black/[0.06] dark:bg-white/[0.06]" />
       {[0, 1, 2].map((i) => (
-        <div key={i} className="h-28 rounded-lg bg-slate-200" />
+        <div key={i} className="h-28 rounded-xl bg-black/[0.06] dark:bg-white/[0.06]" />
       ))}
     </div>
   );
@@ -23,7 +23,7 @@ function Skeleton() {
 export function ResultsPanel({ query, submitted, selectedId }: Props) {
   if (!submitted) {
     return (
-      <p className="rounded-lg border border-dashed border-slate-300 p-4 text-sm text-slate-600">
+      <p className="rounded-xl border border-dashed border-black/15 bg-black/[0.02] p-4 text-center text-sm text-neutral-600 dark:border-white/15 dark:bg-white/[0.02] dark:text-neutral-400">
         Enter a trip to compare 3 routes by weather risk.
       </p>
     );
@@ -31,13 +31,16 @@ export function ResultsPanel({ query, submitted, selectedId }: Props) {
   if (query.isError) {
     const { title, detail } = errorMessage(query.error);
     return (
-      <div role="alert" className="rounded-lg border border-red-300 bg-red-50 p-3 text-sm">
-        <p className="font-semibold text-red-900">{title}</p>
-        <p className="mt-0.5 text-red-800">{detail}</p>
+      <div
+        role="alert"
+        className="rounded-xl border border-rose-500/30 bg-rose-500/10 p-3.5 text-sm backdrop-blur-sm dark:bg-rose-950/40"
+      >
+        <p className="font-semibold text-rose-800 dark:text-rose-200">{title}</p>
+        <p className="mt-0.5 text-rose-700 dark:text-rose-300">{detail}</p>
         <button
           type="button"
           onClick={() => void query.refetch()}
-          className="mt-2 rounded-md bg-white px-3 py-1.5 text-xs font-semibold text-red-900 ring-1 ring-red-300 hover:bg-red-100"
+          className="mt-2.5 rounded-lg bg-neutral-900 px-3 py-1.5 text-xs font-semibold text-white hover:bg-black dark:bg-white dark:text-black dark:hover:bg-neutral-200 transition-colors"
         >
           Retry
         </button>
@@ -64,7 +67,7 @@ export function ResultsPanel({ query, submitted, selectedId }: Props) {
         <section aria-labelledby="cp-title">
           <h3
             id="cp-title"
-            className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-slate-500"
+            className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400"
           >
             Checkpoints · Route {route.id} · every {plan.assumptions.sample_interval_mi} mi
           </h3>

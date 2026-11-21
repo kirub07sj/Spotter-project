@@ -14,7 +14,7 @@ export function Warnings({ warnings }: { warnings: PlanWarning[] }) {
       {items.map((w) => (
         <li
           key={w.code}
-          className="flex gap-2 rounded-md bg-sky-50 px-2.5 py-1.5 text-xs text-sky-900 ring-1 ring-sky-200"
+          className="flex gap-2 rounded-xl border border-black/10 bg-black/5 px-3 py-2 text-xs text-neutral-800 backdrop-blur-sm dark:border-white/10 dark:bg-white/5 dark:text-neutral-200"
         >
           <span aria-hidden="true">ℹ</span>
           {w.detail}

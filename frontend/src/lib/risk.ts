@@ -19,7 +19,7 @@ export const LEVELS: Record<RiskLevel, LevelMeta> = {
     icon: '●',
     hex: '#2E9E5B',
     rgb: [46, 158, 91],
-    chip: 'bg-risk-low/15 text-green-900 ring-risk-low/40',
+    chip: 'bg-risk-low/20 text-emerald-800 dark:text-emerald-300 ring-risk-low/40',
     swatch: 'bg-risk-low',
   },
   MODERATE: {
@@ -27,7 +27,7 @@ export const LEVELS: Record<RiskLevel, LevelMeta> = {
     icon: '▲',
     hex: '#E3B505',
     rgb: [227, 181, 5],
-    chip: 'bg-risk-moderate/20 text-yellow-900 ring-risk-moderate/50',
+    chip: 'bg-risk-moderate/20 text-amber-800 dark:text-yellow-300 ring-risk-moderate/50',
     swatch: 'bg-risk-moderate',
   },
   HIGH: {
@@ -35,7 +35,7 @@ export const LEVELS: Record<RiskLevel, LevelMeta> = {
     icon: '◆',
     hex: '#F08A24',
     rgb: [240, 138, 36],
-    chip: 'bg-risk-high/20 text-orange-900 ring-risk-high/50',
+    chip: 'bg-risk-high/20 text-orange-900 dark:text-orange-300 ring-risk-high/50',
     swatch: 'bg-risk-high',
   },
   SEVERE: {
@@ -59,7 +59,7 @@ export const LEVELS: Record<RiskLevel, LevelMeta> = {
     icon: '?',
     hex: '#9AA0A6',
     rgb: [154, 160, 166],
-    chip: 'bg-risk-unknown/20 text-slate-800 ring-risk-unknown/50',
+    chip: 'bg-risk-unknown/20 text-neutral-700 dark:text-neutral-300 ring-risk-unknown/50',
     swatch: 'bg-risk-unknown',
   },
 };

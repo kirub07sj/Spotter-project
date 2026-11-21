@@ -19,7 +19,7 @@ export function RiskBar({ milesByLevel, unknownMi = 0, className = '' }: Props) 
   const summary = parts.map((p) => `${LEVELS[p.lvl].label} ${formatMiles(p.mi)}`).join(', ');
   return (
     <div
-      className={`flex h-2.5 w-full overflow-hidden rounded-full bg-slate-200 ${className}`}
+      className={`flex h-2.5 w-full overflow-hidden rounded-full bg-black/10 dark:bg-white/10 ${className}`}
       role="img"
       aria-label={`Miles by risk level: ${summary}`}
     >

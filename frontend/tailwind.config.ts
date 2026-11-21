@@ -2,6 +2,7 @@ import type { Config } from 'tailwindcss';
 
 // Design tokens (docs/04 §4). Components use these names, never raw hex values.
 export default {
+  darkMode: 'class',
   content: ['./index.html', './src/**/*.{ts,tsx}'],
   theme: {
     extend: {

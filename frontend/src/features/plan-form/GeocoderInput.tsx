@@ -67,7 +67,10 @@ export function GeocoderInput({ label, value, onChange, error, autoFocus, placeh
   const listId = `${id}-list`;
   return (
     <div className="relative">
-      <label htmlFor={id} className="mb-1 block text-xs font-medium text-slate-600">
+      <label
+        htmlFor={id}
+        className="mb-1 block text-xs font-medium text-neutral-600 dark:text-neutral-300"
+      >
         {label}
       </label>
       <div className="relative">
@@ -83,7 +86,7 @@ export function GeocoderInput({ label, value, onChange, error, autoFocus, placeh
           autoComplete="off"
           autoFocus={autoFocus}
           placeholder={placeholder}
-          className={`w-full rounded-md border bg-white px-3 py-2 pr-8 text-sm shadow-sm ${error ? 'border-red-500' : 'border-slate-300'}`}
+          className={`w-full rounded-xl border bg-black/[0.04] px-3 py-2 pr-8 text-sm text-neutral-900 placeholder-neutral-400 shadow-inner focus:border-black/40 focus:bg-black/[0.06] focus:outline-none focus:ring-1 focus:ring-black/20 dark:border-white/10 dark:bg-white/[0.06] dark:text-white dark:placeholder-neutral-400 dark:focus:border-white/40 dark:focus:bg-white/[0.1] dark:focus:ring-white/20 ${error ? 'border-rose-500/80 ring-1 ring-rose-500/50' : 'border-black/10 dark:border-white/10'}`}
           value={text}
           onChange={(e) => {
             setText(e.target.value);
@@ -96,7 +99,7 @@ export function GeocoderInput({ label, value, onChange, error, autoFocus, placeh
           onKeyDown={onKeyDown}
         />
         {isFetching && (
-          <span className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400">
+          <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-neutral-400">
             <Spinner />
           </span>
         )}
@@ -106,7 +109,7 @@ export function GeocoderInput({ label, value, onChange, error, autoFocus, placeh
           id={listId}
           role="listbox"
           aria-label={`${label} suggestions`}
-          className="absolute z-30 mt-1 max-h-60 w-full overflow-auto rounded-md border border-slate-200 bg-white py-1 text-sm shadow-lg"
+          className="absolute z-30 mt-1.5 max-h-60 w-full overflow-auto rounded-xl border border-black/10 bg-white/95 py-1 text-sm shadow-2xl backdrop-blur-2xl text-neutral-900 dark:border-white/15 dark:bg-neutral-900/95 dark:text-neutral-200"
         >
           {results.map((place, i) => (
             <li
@@ -114,7 +117,7 @@ export function GeocoderInput({ label, value, onChange, error, autoFocus, placeh
               id={`${id}-opt-${i}`}
               role="option"
               aria-selected={i === active}
-              className={`cursor-pointer px-3 py-1.5 ${i === active ? 'bg-blue-50 text-blue-900' : ''}`}
+              className={`cursor-pointer px-3 py-2 transition-colors ${i === active ? 'bg-black/10 font-semibold text-black dark:bg-white/20 dark:text-white' : 'text-neutral-700 hover:bg-black/5 hover:text-black dark:text-neutral-300 dark:hover:bg-white/[0.08] dark:hover:text-white'}`}
               onMouseDown={(e) => {
                 e.preventDefault();
                 choose(place);
@@ -125,14 +128,14 @@ export function GeocoderInput({ label, value, onChange, error, autoFocus, placeh
             </li>
           ))}
           {!isFetching && results.length === 0 && (
-            <li className="px-3 py-1.5 text-slate-500">
+            <li className="px-3 py-2 text-neutral-500 dark:text-neutral-400">
               {isError ? 'Search failed. Keep typing to retry.' : 'No matches'}
             </li>
           )}
         </ul>
       )}
       {error && (
-        <p id={`${id}-err`} className="mt-1 text-xs text-red-700">
+        <p id={`${id}-err`} className="mt-1 text-xs text-rose-600 dark:text-rose-400">
           {error}
         </p>
       )}

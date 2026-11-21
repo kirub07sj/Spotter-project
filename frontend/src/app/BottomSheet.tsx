@@ -46,12 +46,12 @@ export function BottomSheet({ snap, onSnap, label, children }: Props) {
   return (
     <section
       aria-label={label}
-      className="absolute inset-x-0 bottom-0 z-20 flex flex-col rounded-t-2xl bg-slate-50 shadow-[0_-8px_24px_rgba(15,23,42,.18)] motion-safe:transition-[height] motion-safe:duration-200"
+      className="absolute inset-x-0 bottom-0 z-20 flex flex-col rounded-t-3xl border-t border-black/15 bg-white/85 text-neutral-900 shadow-[0_-8px_32px_rgba(0,0,0,.15)] backdrop-blur-2xl motion-safe:transition-[height] motion-safe:duration-200 dark:border-white/15 dark:bg-black/85 dark:text-neutral-100 dark:shadow-[0_-8px_32px_rgba(0,0,0,.8)]"
       style={{ height, transitionProperty: drag === null ? undefined : 'none' }}
     >
       <button
         type="button"
-        className="flex w-full shrink-0 touch-none justify-center py-2"
+        className="flex w-full shrink-0 touch-none justify-center py-2.5"
         aria-label={`Results panel, ${snap === 'full' ? 'expanded' : snap === 'half' ? 'half open' : 'collapsed'}. Activate to resize.`}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
@@ -63,7 +63,7 @@ export function BottomSheet({ snap, onSnap, label, children }: Props) {
           }
         }}
       >
-        <span className="h-1.5 w-10 rounded-full bg-slate-300" aria-hidden="true" />
+        <span className="h-1.5 w-12 rounded-full bg-black/20 dark:bg-white/20" aria-hidden="true" />
       </button>
       <div className="min-h-0 flex-1 overflow-y-auto px-3 pb-4">{children}</div>
     </section>

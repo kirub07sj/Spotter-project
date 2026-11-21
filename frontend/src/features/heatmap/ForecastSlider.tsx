@@ -53,7 +53,7 @@ export function ForecastSlider({ departure, route }: Props) {
   };
 
   return (
-    <div className="pointer-events-auto rounded-xl bg-white/95 px-3 pb-2 pt-2 shadow-lg ring-1 ring-slate-200 backdrop-blur">
+    <div className="pointer-events-auto rounded-2xl border border-black/10 bg-white/80 px-4 py-3 text-neutral-900 shadow-2xl shadow-black/15 backdrop-blur-2xl dark:border-white/10 dark:bg-black/75 dark:text-white dark:shadow-black/80">
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
         <button
           type="button"
@@ -61,7 +61,7 @@ export function ForecastSlider({ departure, route }: Props) {
           disabled={disabled || reducedMotion}
           title={reducedMotion ? 'Playback disabled by your reduced-motion preference' : undefined}
           aria-label={playing ? 'Pause forecast playback' : 'Play forecast'}
-          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-900 text-white disabled:bg-slate-300"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-black text-white shadow-md hover:bg-neutral-800 disabled:bg-neutral-300 disabled:text-neutral-500 dark:bg-white dark:text-black dark:hover:bg-neutral-200 dark:disabled:bg-neutral-800 dark:disabled:text-neutral-500 transition-colors"
         >
           <span aria-hidden="true">{playing ? '❚❚' : '▶'}</span>
         </button>
@@ -86,14 +86,14 @@ export function ForecastSlider({ departure, route }: Props) {
             {etaTicks.map((h, i) => (
               <span
                 key={i}
-                className="absolute top-0 h-1.5 w-px bg-slate-900"
+                className="absolute top-0 h-1.5 w-px bg-slate-900 dark:bg-white/80"
                 style={{ left: `${(h / MAX_HOUR) * 100}%` }}
               />
             ))}
             {HOUR_TICKS.map((h) => (
               <span
                 key={h}
-                className="absolute top-1.5 -translate-x-1/2 text-[10px] leading-none text-slate-400"
+                className="absolute top-1.5 -translate-x-1/2 text-[10px] leading-none text-neutral-500 dark:text-neutral-400"
                 style={{ left: `${(h / MAX_HOUR) * 100}%` }}
               >
                 {h}
@@ -102,10 +102,10 @@ export function ForecastSlider({ departure, route }: Props) {
           </div>
         </div>
         <div className="w-40 shrink-0 text-right max-sm:order-first max-sm:flex max-sm:w-full max-sm:items-baseline max-sm:justify-between max-sm:text-left">
-          <div className="text-sm font-semibold text-slate-900">
+          <div className="text-sm font-semibold text-neutral-900 dark:text-white">
             {formatOffset(hour, departure)}
           </div>
-          <div className="text-[11px] text-slate-500" aria-live="polite">
+          <div className="text-[11px] text-neutral-500 dark:text-neutral-400" aria-live="polite">
             {loading ? (
               'Loading forecast…'
             ) : status === 'error' ? (
@@ -114,7 +114,7 @@ export function ForecastSlider({ departure, route }: Props) {
                 {retry && (
                   <button
                     type="button"
-                    className="pointer-events-auto font-semibold text-blue-700 underline"
+                    className="pointer-events-auto font-semibold text-neutral-900 underline hover:text-black dark:text-white dark:hover:text-neutral-200"
                     onClick={retry}
                   >
                     Retry
