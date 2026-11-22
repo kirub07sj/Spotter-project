@@ -23,7 +23,7 @@ export function CheckpointPanel({ plan, selectedId }: Props) {
 
   return (
     <aside
-      className="pointer-events-auto absolute bottom-22 right-4 z-20 flex w-[430px] max-w-[calc(100vw-30rem)] max-h-[46vh] flex-col rounded-3xl overflow-hidden border border-black/10 bg-white/95 text-neutral-900 shadow-2xl shadow-black/10 backdrop-blur-2xl dark:border-white/10 dark:bg-black/85 dark:text-white dark:shadow-black/80 max-lg:hidden"
+      className="pointer-events-auto absolute bottom-5 right-16 z-20 flex w-[420px] max-w-[calc(100vw-30rem)] max-h-[48vh] flex-col rounded-3xl overflow-hidden border border-black/10 bg-white/95 text-neutral-900 shadow-2xl shadow-black/10 backdrop-blur-2xl dark:border-white/10 dark:bg-black/85 dark:text-white dark:shadow-black/80 max-lg:hidden"
       aria-label="Route checkpoints"
     >
       <header className="flex items-center justify-between border-b border-black/[0.06] bg-neutral-50/80 px-4 py-2.5 backdrop-blur-md dark:border-white/10 dark:bg-white/[0.03]">

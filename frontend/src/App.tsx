@@ -80,6 +80,7 @@ function Shell() {
   const submit = useUi((s) => s.submit);
   const selectedId = useUi((s) => s.selectedRouteId);
   const theme = useUi((s) => s.theme);
+  const checkpointTableOpen = useUi((s) => s.checkpointTableOpen);
   const query = usePlan(submitted);
   const plan = query.data;
   const desktop = useMediaQuery(DESKTOP_QUERY);
@@ -167,8 +168,14 @@ function Shell() {
         </aside>
         {plan && <CheckpointPanel plan={plan} selectedId={selectedId} />}
         {plan && (
-          <div className="pointer-events-none absolute bottom-5 left-4 right-4 z-10 mx-auto max-w-xl lg:left-[440px] lg:right-6 lg:max-w-2xl">
-            <Slider plan={plan} selectedId={selectedId} />
+          <div
+            className={`pointer-events-none absolute bottom-5 left-4 z-10 flex justify-center transition-all duration-300 lg:left-[440px] ${
+              checkpointTableOpen ? 'right-4 lg:right-[500px]' : 'right-4 lg:right-16'
+            }`}
+          >
+            <div className="pointer-events-auto w-full max-w-xl">
+              <Slider plan={plan} selectedId={selectedId} />
+            </div>
           </div>
         )}
       </div>
