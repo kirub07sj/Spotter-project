@@ -143,10 +143,10 @@ function Shell() {
           {map}
         </main>
         <aside
-          className="pointer-events-auto absolute bottom-4 left-4 top-4 z-20 flex w-[420px] max-w-[calc(100vw-2rem)] flex-col rounded-3xl overflow-hidden border border-black/10 bg-white/95 text-neutral-900 shadow-2xl shadow-black/10 backdrop-blur-2xl dark:border-white/10 dark:bg-black/85 dark:text-white dark:shadow-black/80"
+          className="glass-panel pointer-events-auto absolute bottom-4 left-4 top-4 z-20 flex w-[420px] max-w-[calc(100vw-2rem)] flex-col overflow-hidden"
           aria-label="Trip planning and route comparison"
         >
-          <header className="border-b border-black/[0.06] bg-neutral-50/80 px-5 py-4 backdrop-blur-md dark:border-white/10 dark:bg-white/[0.03]">
+          <header className="glass-header px-5 py-4">
             <div className="flex items-start justify-between gap-3">
               <Title />
               <ThemeToggle />
@@ -189,7 +189,7 @@ function Shell() {
       <main className="absolute inset-0" aria-label="Map">
         {map}
       </main>
-      <header className="absolute inset-x-2 top-2 z-30 max-h-[85%] overflow-y-auto rounded-3xl border border-black/10 bg-white/95 p-3 text-neutral-900 shadow-2xl shadow-black/15 backdrop-blur-2xl dark:border-white/10 dark:bg-black/90 dark:text-white dark:shadow-black/80">
+      <header className="glass-panel absolute inset-x-2 top-2 z-30 max-h-[85%] overflow-y-auto p-3">
         <div className="flex items-center gap-2">
           <div className="min-w-0 flex-1">
             <Title />

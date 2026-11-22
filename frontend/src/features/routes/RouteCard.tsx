@@ -38,8 +38,8 @@ export function RouteCard({
       onBlur={() => onHover(false)}
       className={`cursor-pointer rounded-2xl border p-3.5 transition-all backdrop-blur-md ${
         selected
-          ? 'border-2 border-neutral-900 bg-white shadow-md shadow-neutral-900/5 dark:border-white/80 dark:bg-white/[0.1] dark:shadow-black/70'
-          : 'border border-neutral-200 bg-white/85 shadow-sm hover:border-neutral-300 hover:bg-white dark:border-white/10 dark:bg-white/[0.03] dark:hover:border-white/20 dark:hover:bg-white/[0.06]'
+          ? 'border-2 border-neutral-900 bg-white/90 shadow-md shadow-neutral-900/5 dark:border-white/80 dark:bg-white/[0.1] dark:shadow-black/70'
+          : 'border border-neutral-200/80 bg-white/50 shadow-sm hover:border-neutral-300 hover:bg-white/70 dark:border-white/10 dark:bg-white/[0.03] dark:hover:border-white/20 dark:hover:bg-white/[0.06]'
       }`}
     >
       <div className="flex items-center gap-2">

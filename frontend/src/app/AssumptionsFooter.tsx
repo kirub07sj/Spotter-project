@@ -16,7 +16,7 @@ export function AssumptionsFooter({ plan }: { plan: Plan | undefined }) {
       ? 'Demo data (offline providers)'
       : 'Routing: Mapbox · Weather: Open-Meteo';
   return (
-    <footer className="flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-black/[0.06] bg-neutral-50/90 px-4 py-2 text-[11px] text-neutral-600 dark:border-white/10 dark:bg-black/50 dark:text-neutral-400">
+    <footer className="glass-footer flex flex-wrap items-center gap-x-3 gap-y-1 px-4 py-2 text-[11px] text-neutral-600 dark:text-neutral-400">
       <span>Risk from {metric} (D-04)</span>
       <span>· Truck {cap}</span>
       <span>· Hours-of-service breaks not modelled</span>

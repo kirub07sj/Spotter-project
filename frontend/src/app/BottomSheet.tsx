@@ -46,7 +46,7 @@ export function BottomSheet({ snap, onSnap, label, children }: Props) {
   return (
     <section
       aria-label={label}
-      className="absolute inset-x-0 bottom-0 z-20 flex flex-col rounded-t-3xl border-t border-black/10 bg-white/95 text-neutral-900 shadow-[0_-8px_32px_rgba(0,0,0,.12)] backdrop-blur-2xl motion-safe:transition-[height] motion-safe:duration-200 dark:border-white/15 dark:bg-black/90 dark:text-neutral-100 dark:shadow-[0_-8px_32px_rgba(0,0,0,.8)]"
+      className="absolute inset-x-0 bottom-0 z-20 flex flex-col rounded-t-3xl border-t border-black/10 bg-white/70 text-neutral-900 shadow-[0_-8px_32px_rgba(0,0,0,.12)] backdrop-blur-3xl motion-safe:transition-[height] motion-safe:duration-200 dark:border-white/15 dark:bg-black/65 dark:text-neutral-100 dark:shadow-[0_-8px_32px_rgba(0,0,0,.8)]"
       style={{ height, transitionProperty: drag === null ? undefined : 'none' }}
     >
       <button

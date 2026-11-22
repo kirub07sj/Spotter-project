@@ -31,7 +31,7 @@ export function MapControls() {
           className={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold backdrop-blur-2xl transition-all shadow-md ${
             legendOpen
               ? 'border-neutral-900 bg-neutral-900 text-white shadow-black/20 dark:border-white dark:bg-white dark:text-neutral-950'
-              : 'border-black/10 bg-white/95 text-neutral-700 hover:bg-white hover:text-black dark:border-white/15 dark:bg-black/85 dark:text-neutral-300 dark:hover:bg-black dark:hover:text-white'
+              : 'border-black/10 bg-white/70 text-neutral-700 hover:bg-white/90 hover:text-black dark:border-white/15 dark:bg-black/65 dark:text-neutral-300 dark:hover:bg-black/85 dark:hover:text-white'
           }`}
         >
           <span aria-hidden="true" className="text-xs">
@@ -48,7 +48,7 @@ export function MapControls() {
           className={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold backdrop-blur-2xl transition-all shadow-md ${
             checkpointTableOpen
               ? 'border-neutral-900 bg-neutral-900 text-white shadow-black/20 dark:border-white dark:bg-white dark:text-neutral-950'
-              : 'border-black/10 bg-white/95 text-neutral-700 hover:bg-white hover:text-black dark:border-white/15 dark:bg-black/85 dark:text-neutral-300 dark:hover:bg-black dark:hover:text-white'
+              : 'border-black/10 bg-white/70 text-neutral-700 hover:bg-white/90 hover:text-black dark:border-white/15 dark:bg-black/65 dark:text-neutral-300 dark:hover:bg-black/85 dark:hover:text-white'
           }`}
         >
           <span aria-hidden="true" className="text-xs">
@@ -60,8 +60,8 @@ export function MapControls() {
 
       {/* Legend & layers card: positioned to the left of the zoom buttons (right-16) */}
       {legendOpen && (
-        <div className="absolute right-16 top-14 z-20 w-64 rounded-3xl border border-black/10 bg-white/95 text-xs text-neutral-800 shadow-2xl shadow-black/10 backdrop-blur-2xl dark:border-white/10 dark:bg-black/85 dark:text-neutral-200 dark:shadow-black/80 max-lg:top-[168px] max-lg:right-4 max-lg:w-auto max-lg:max-w-[15rem] overflow-hidden">
-          <div className="flex items-center justify-between border-b border-black/[0.06] bg-neutral-50/80 px-3.5 py-2.5 font-semibold text-neutral-900 dark:border-white/10 dark:bg-white/[0.03] dark:text-white">
+        <div className="glass-panel absolute right-16 top-14 z-20 w-64 text-xs overflow-hidden max-lg:top-[168px] max-lg:right-4 max-lg:w-auto max-lg:max-w-[15rem]">
+          <div className="glass-header flex items-center justify-between px-3.5 py-2.5 font-semibold text-neutral-900 dark:text-white">
             <span>Legend & layers</span>
             <button
               type="button"
