@@ -86,8 +86,12 @@ export function toPlanInputs(v: PlanFormValues): PlanInputs {
   if (!v.origin || !v.destination) throw new Error('form is not valid');
   return {
     request: {
-      origin: { lat: v.origin.lat, lon: v.origin.lon, label: v.origin.label },
-      destination: { lat: v.destination.lat, lon: v.destination.lon, label: v.destination.label },
+      origin: { lat: v.origin.lat, lon: v.origin.lon, label: v.origin.label.slice(0, 200) },
+      destination: {
+        lat: v.destination.lat,
+        lon: v.destination.lon,
+        label: v.destination.label.slice(0, 200),
+      },
       departure_time: new Date(v.departure).toISOString(),
       load_weight_lb: parseLoad(v.load) ?? 0,
       sample_interval_mi: Number(v.interval) as 10 | 25 | 50,

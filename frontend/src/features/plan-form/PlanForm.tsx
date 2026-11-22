@@ -71,12 +71,21 @@ export function PlanForm({ onSubmit, loading, initial }: Props) {
       />
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label
-            htmlFor="departure"
-            className="mb-1 block text-xs font-medium text-neutral-600 dark:text-neutral-300"
-          >
-            Departure
-          </label>
+          <div className="mb-1 flex items-center justify-between">
+            <label
+              htmlFor="departure"
+              className="text-xs font-medium text-neutral-600 dark:text-neutral-300"
+            >
+              Departure
+            </label>
+            <button
+              type="button"
+              onClick={() => setValue('departure', nextHourLocal(), { shouldValidate: true })}
+              className="text-[11px] font-medium text-neutral-500 hover:text-black dark:text-neutral-400 dark:hover:text-white transition-colors"
+            >
+              Reset to now
+            </button>
+          </div>
           <input
             id="departure"
             type="datetime-local"

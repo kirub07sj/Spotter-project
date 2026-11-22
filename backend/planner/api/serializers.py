@@ -35,7 +35,7 @@ def validate_departure_window(value: datetime, now: datetime) -> datetime:
 class PointSerializer(serializers.Serializer):
     lat = serializers.FloatField(min_value=-90, max_value=90)
     lon = serializers.FloatField(min_value=-180, max_value=180)
-    label = serializers.CharField(max_length=200, required=False, allow_blank=True)
+    label = serializers.CharField(max_length=500, required=False, allow_blank=True, allow_null=True)
 
 
 class PlanRequestSerializer(serializers.Serializer):
