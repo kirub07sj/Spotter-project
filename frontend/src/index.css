@@ -28,3 +28,27 @@
     @apply h-4 w-4 rounded-full border-2 border-white bg-black shadow-md dark:border-black dark:bg-white;
   }
 }
+
+/* Thin, transparent scrollbars (Stitch glassmorphism) */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(150, 150, 150, 0.3) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: rgba(150, 150, 150, 0.25);
+  border-radius: 9999px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(150, 150, 150, 0.45);
+}

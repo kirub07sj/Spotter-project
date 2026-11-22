@@ -7,6 +7,7 @@ interface Props {
   query: UseQueryResult<Plan>;
   submitted: boolean;
   selectedId: RouteId | null;
+  showCheckpoints?: boolean;
 }
 
 function Skeleton() {
@@ -20,7 +21,7 @@ function Skeleton() {
   );
 }
 
-export function ResultsPanel({ query, submitted, selectedId }: Props) {
+export function ResultsPanel({ query, submitted, selectedId, showCheckpoints = true }: Props) {
   if (!submitted) {
     return (
       <p className="rounded-2xl border border-dashed border-neutral-300 bg-white/70 p-4 text-center text-sm text-neutral-600 shadow-sm dark:border-white/15 dark:bg-white/[0.02] dark:text-neutral-400">
@@ -63,7 +64,7 @@ export function ResultsPanel({ query, submitted, selectedId }: Props) {
       <RecommendationBanner plan={plan} />
       <Warnings warnings={plan.warnings} />
       <RouteCards plan={plan} selectedId={selected} />
-      {route && (
+      {showCheckpoints && route && (
         <section aria-labelledby="cp-title">
           <h3
             id="cp-title"

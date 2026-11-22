@@ -19,3 +19,5 @@ frontend/coverage/
 .import_linter_cache/
 .DS_Store
 spotter-docs/
+image.png
+sample.png

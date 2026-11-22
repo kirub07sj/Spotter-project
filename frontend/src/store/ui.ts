@@ -16,6 +16,8 @@ export interface UiState {
   showAllRoutes: boolean;
   showCheckpoints: boolean;
   theme: 'dark' | 'light';
+  legendOpen: boolean;
+  checkpointTableOpen: boolean;
   submit: (inputs: PlanInputs) => void;
   selectRoute: (id: RouteId | null) => void;
   hoverRoute: (id: RouteId | null) => void;
@@ -23,6 +25,10 @@ export interface UiState {
   setHour: (hour: number) => void;
   setPlaying: (playing: boolean) => void;
   toggleTheme: () => void;
+  toggleLegend: () => void;
+  toggleCheckpointTable: () => void;
+  setLegendOpen: (open: boolean) => void;
+  setCheckpointTableOpen: (open: boolean) => void;
   setLayer: (
     patch: Partial<
       Pick<UiState, 'heatmapVisible' | 'heatmapOpacity' | 'showAllRoutes' | 'showCheckpoints'>
@@ -49,6 +55,8 @@ export const useUi = create<UiState>()((set) => ({
   showAllRoutes: true,
   showCheckpoints: true,
   theme: initialTheme,
+  legendOpen: true,
+  checkpointTableOpen: true,
   submit: (inputs) =>
     set({
       submitted: inputs,
@@ -56,6 +64,7 @@ export const useUi = create<UiState>()((set) => ({
       hour: 0,
       playing: false,
       hoveredCheckpoint: null,
+      checkpointTableOpen: true,
     }),
   selectRoute: (id) => set({ selectedRouteId: id, hoveredCheckpoint: null }),
   hoverRoute: (id) => set({ hoveredRouteId: id }),
@@ -68,5 +77,9 @@ export const useUi = create<UiState>()((set) => ({
       if (typeof window !== 'undefined') localStorage.setItem('spotter_theme', next);
       return { theme: next };
     }),
+  toggleLegend: () => set((s) => ({ legendOpen: !s.legendOpen })),
+  toggleCheckpointTable: () => set((s) => ({ checkpointTableOpen: !s.checkpointTableOpen })),
+  setLegendOpen: (legendOpen) => set({ legendOpen }),
+  setCheckpointTableOpen: (checkpointTableOpen) => set({ checkpointTableOpen }),
   setLayer: (patch) => set(patch),
 }));

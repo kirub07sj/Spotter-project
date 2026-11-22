@@ -10,6 +10,7 @@ import { queryClient } from './app/queryClient';
 import { ResultsPanel } from './app/ResultsPanel';
 import { ForecastSlider, HeatmapController } from './features/heatmap';
 import { PlanForm } from './features/plan-form';
+import { CheckpointPanel } from './features/routes';
 import { DESKTOP_QUERY, useMediaQuery } from './lib/useMediaQuery';
 import { useUi } from './store/ui';
 
@@ -100,8 +101,21 @@ function Shell() {
   }, [plan, desktop]);
 
   const form = <PlanForm onSubmit={onSubmit} loading={query.isFetching} />;
-  const results = (
-    <ResultsPanel query={query} submitted={submitted !== null} selectedId={selectedId} />
+  const desktopResults = (
+    <ResultsPanel
+      query={query}
+      submitted={submitted !== null}
+      selectedId={selectedId}
+      showCheckpoints={false}
+    />
+  );
+  const mobileResults = (
+    <ResultsPanel
+      query={query}
+      submitted={submitted !== null}
+      selectedId={selectedId}
+      showCheckpoints={true}
+    />
   );
   const map = (
     <Suspense fallback={<MapFallback />}>
@@ -146,13 +160,14 @@ function Shell() {
           <div className="flex-1 space-y-4 overflow-y-auto px-5 py-4">
             {form}
             <div id="results" tabIndex={-1} className="outline-none">
-              {results}
+              {desktopResults}
             </div>
           </div>
           <AssumptionsFooter plan={plan} />
         </aside>
+        {plan && <CheckpointPanel plan={plan} selectedId={selectedId} />}
         {plan && (
-          <div className="pointer-events-none absolute bottom-5 left-4 right-4 z-10 mx-auto max-w-2xl lg:left-[456px] lg:right-6 lg:max-w-3xl">
+          <div className="pointer-events-none absolute bottom-5 left-4 right-4 z-10 mx-auto max-w-xl lg:left-[440px] lg:right-6 lg:max-w-2xl">
             <Slider plan={plan} selectedId={selectedId} />
           </div>
         )}
@@ -207,7 +222,7 @@ function Shell() {
       {submitted && (
         <BottomSheet snap={snap} onSnap={setSnap} label="Results">
           <div className="space-y-3">
-            {results}
+            {mobileResults}
             <AssumptionsFooter plan={plan} />
           </div>
         </BottomSheet>

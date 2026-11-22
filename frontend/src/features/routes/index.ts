@@ -1,3 +1,4 @@
+export { CheckpointPanel } from './CheckpointPanel';
 export { CheckpointTable } from './CheckpointTable';
 export { RecommendationBanner } from './RecommendationBanner';
 export { RouteCards } from './RouteCards';
