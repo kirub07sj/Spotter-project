@@ -15,10 +15,10 @@ const Row = memo(function Row({ cp, hovered }: { cp: Checkpoint; hovered: boolea
   return (
     <tr
       style={{ height: ROW_H }}
-      className={`border-b border-neutral-100 transition-colors dark:border-white/5 ${
+      className={`border-b border-black/[0.04] transition-colors dark:border-white/5 ${
         hovered
-          ? 'bg-neutral-100 font-medium text-neutral-900 dark:bg-white/15 dark:text-white'
-          : 'text-neutral-800 hover:bg-neutral-50 dark:text-neutral-300 dark:hover:bg-white/[0.04]'
+          ? 'bg-black/[0.06] font-medium text-neutral-900 dark:bg-white/15 dark:text-white'
+          : 'text-neutral-800 hover:bg-black/[0.03] dark:text-neutral-300 dark:hover:bg-white/[0.04]'
       } ${cp.low_confidence ? 'text-neutral-500 dark:text-neutral-400' : ''}`}
       onMouseEnter={() => hover(cp.index)}
       onMouseLeave={() => hover(null)}
@@ -79,7 +79,7 @@ export function CheckpointTable({ route }: { route: Route }) {
   const end = virtual ? Math.min(rows.length, start + VIEWPORT_ROWS + 8) : rows.length;
   return (
     <div
-      className="overflow-auto rounded-2xl border border-neutral-200 bg-white/80 shadow-sm backdrop-blur-md dark:border-white/10 dark:bg-black/60"
+      className="overflow-auto bg-transparent"
       style={virtual ? { maxHeight: ROW_H * (VIEWPORT_ROWS + 1) } : undefined}
       onScroll={virtual ? (e) => setScrollTop(e.currentTarget.scrollTop) : undefined}
     >
@@ -87,7 +87,7 @@ export function CheckpointTable({ route }: { route: Route }) {
         <caption className="sr-only">
           Checkpoints for route {route.id}: weather at each ETA and risk level
         </caption>
-        <thead className="sticky top-0 z-10 border-b border-neutral-200 bg-neutral-50/95 text-left text-[11px] uppercase tracking-wide text-neutral-500 backdrop-blur dark:border-white/10 dark:bg-neutral-900/95 dark:text-neutral-400">
+        <thead className="glass-header sticky top-0 z-10 text-left text-[11px] uppercase tracking-wide text-neutral-600 dark:text-neutral-300">
           <tr style={{ height: ROW_H }}>
             <th scope="col" className="px-2 text-right">
               Mile

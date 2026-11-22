@@ -3,9 +3,19 @@ info:
   title: Weather-Aware Truck Routing API
   version: 1.0.0
 paths:
+  /:
+    get:
+      operationId: root_retrieve
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Health'
+          description: ''
   /api/v1/geocode:
     get:
-      operationId: geocode_retrieve
+      operationId: api_v1_geocode_retrieve
       parameters:
       - in: query
         name: limit
@@ -22,7 +32,7 @@ paths:
           maxLength: 200
         required: true
       tags:
-      - geocode
+      - api
       responses:
         '200':
           content:
@@ -62,9 +72,9 @@ paths:
           description: ''
   /api/v1/health:
     get:
-      operationId: health_retrieve
+      operationId: api_v1_health_retrieve
       tags:
-      - health
+      - api
       responses:
         '200':
           content:
@@ -74,9 +84,9 @@ paths:
           description: ''
   /api/v1/heatmaps:
     post:
-      operationId: heatmaps_create
+      operationId: api_v1_heatmaps_create
       tags:
-      - heatmaps
+      - api
       requestBody:
         content:
           application/json:
@@ -122,7 +132,7 @@ paths:
           description: ''
   /api/v1/plans:
     post:
-      operationId: plans_create
+      operationId: api_v1_plans_create
       parameters:
       - in: query
         name: scenario
@@ -132,7 +142,7 @@ paths:
           - high_wind
           - winter_storm
       tags:
-      - plans
+      - api
       requestBody:
         content:
           application/json:
@@ -506,7 +516,8 @@ components:
           minimum: -180
         label:
           type: string
-          maxLength: 200
+          nullable: true
+          maxLength: 500
       required:
       - lat
       - lon

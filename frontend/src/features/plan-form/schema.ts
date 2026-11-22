@@ -56,11 +56,11 @@ export const planFormSchema = z
     const now = Date.now();
     if (Number.isNaN(t)) {
       ctx.addIssue({ code: 'custom', path: ['departure'], message: 'Choose a departure time' });
-    } else if (t < now - HOUR_MS) {
+    } else if (t < now - 60_000) {
       ctx.addIssue({
         code: 'custom',
         path: ['departure'],
-        message: 'Departure can be at most 1 hour ago',
+        message: 'Departure time must be from now into the future',
       });
     } else if (t > now + 7 * 24 * HOUR_MS) {
       ctx.addIssue({
@@ -78,6 +78,20 @@ export function nextHourLocal(now = new Date()): string {
   const d = new Date(now);
   d.setMinutes(0, 0, 0);
   d.setHours(d.getHours() + 1);
+  const pad = (n: number) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
+/** `datetime-local` format: YYYY-MM-DDTHH:MM for now (used as min limiter) */
+export function nowLocal(now = new Date()): string {
+  const d = new Date(now);
+  const pad = (n: number) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
+/** `datetime-local` format: YYYY-MM-DDTHH:MM for 7 days ahead (D-17 maximum) */
+export function maxFutureLocal(now = new Date()): string {
+  const d = new Date(now.getTime() + 7 * 24 * HOUR_MS);
   const pad = (n: number) => String(n).padStart(2, '0');
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }

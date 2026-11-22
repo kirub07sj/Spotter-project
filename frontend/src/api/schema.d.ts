@@ -4,6 +4,22 @@
  */
 
 export interface paths {
+  '/': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['root_retrieve'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/v1/geocode': {
     parameters: {
       query?: never;
@@ -11,7 +27,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    get: operations['geocode_retrieve'];
+    get: operations['api_v1_geocode_retrieve'];
     put?: never;
     post?: never;
     delete?: never;
@@ -27,7 +43,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    get: operations['health_retrieve'];
+    get: operations['api_v1_health_retrieve'];
     put?: never;
     post?: never;
     delete?: never;
@@ -45,7 +61,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['heatmaps_create'];
+    post: operations['api_v1_heatmaps_create'];
     delete?: never;
     options?: never;
     head?: never;
@@ -61,7 +77,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['plans_create'];
+    post: operations['api_v1_plans_create'];
     delete?: never;
     options?: never;
     head?: never;
@@ -209,7 +225,7 @@ export interface components {
       lat: number;
       /** Format: double */
       lon: number;
-      label?: string;
+      label?: string | null;
     };
     Problem: {
       type: string;
@@ -364,7 +380,26 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
-  geocode_retrieve: {
+  root_retrieve: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['Health'];
+        };
+      };
+    };
+  };
+  api_v1_geocode_retrieve: {
     parameters: {
       query: {
         limit?: number;
@@ -426,7 +461,7 @@ export interface operations {
       };
     };
   };
-  health_retrieve: {
+  api_v1_health_retrieve: {
     parameters: {
       query?: never;
       header?: never;
@@ -445,7 +480,7 @@ export interface operations {
       };
     };
   };
-  heatmaps_create: {
+  api_v1_heatmaps_create: {
     parameters: {
       query?: never;
       header?: never;
@@ -508,7 +543,7 @@ export interface operations {
       };
     };
   };
-  plans_create: {
+  api_v1_plans_create: {
     parameters: {
       query?: {
         scenario?: 'high_wind' | 'winter_storm';

@@ -1,4 +1,4 @@
-import { useEffect, useId, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { useGeocode } from '../../api/hooks';
 import type { Place } from '../../api/types';
 import { Spinner } from '../../lib/ui/Spinner';
@@ -28,9 +28,18 @@ export function GeocoderInput({ label, value, onChange, error, autoFocus, placeh
   const [text, setText] = useState(value?.label ?? '');
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(0);
+  const blurTimerRef = useRef<number | null>(null);
   const query = useDebounced(text, 250);
   const typing = open && text !== value?.label;
   const { data: results = [], isFetching, isError } = useGeocode(typing ? query : '');
+
+  useEffect(() => {
+    return () => {
+      if (blurTimerRef.current !== null) {
+        window.clearTimeout(blurTimerRef.current);
+      }
+    };
+  }, []);
 
   // Follow external selections (e.g. a form reset) without clobbering typed text: clearing
   // the value while typing must not wipe the input. Adjusting state during render avoids
@@ -94,8 +103,18 @@ export function GeocoderInput({ label, value, onChange, error, autoFocus, placeh
             setActive(0);
             if (value) onChange(null);
           }}
-          onFocus={() => setOpen(true)}
-          onBlur={() => window.setTimeout(() => setOpen(false), 120)}
+          onFocus={() => {
+            if (blurTimerRef.current !== null) {
+              window.clearTimeout(blurTimerRef.current);
+            }
+            setOpen(true);
+          }}
+          onBlur={() => {
+            if (blurTimerRef.current !== null) {
+              window.clearTimeout(blurTimerRef.current);
+            }
+            blurTimerRef.current = window.setTimeout(() => setOpen(false), 120);
+          }}
           onKeyDown={onKeyDown}
         />
         {isFetching && (
@@ -109,7 +128,7 @@ export function GeocoderInput({ label, value, onChange, error, autoFocus, placeh
           id={listId}
           role="listbox"
           aria-label={`${label} suggestions`}
-          className="absolute z-30 mt-1.5 max-h-60 w-full overflow-auto rounded-xl border border-black/10 bg-white/95 py-1 text-sm shadow-2xl backdrop-blur-2xl text-neutral-900 dark:border-white/15 dark:bg-neutral-900/95 dark:text-neutral-200"
+          className="glass-panel absolute z-30 mt-1.5 max-h-60 w-full overflow-auto rounded-2xl py-1 text-sm shadow-2xl"
         >
           {results.map((place, i) => (
             <li

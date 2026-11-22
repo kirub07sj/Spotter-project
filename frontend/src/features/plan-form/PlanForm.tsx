@@ -3,6 +3,7 @@ import { Controller, useForm } from 'react-hook-form';
 import type { PlanInputs } from '../../api/hooks';
 import { formatInt, parseLoad } from '../../lib/format';
 import { Spinner } from '../../lib/ui/Spinner';
+import { DateTimePicker } from './DateTimePicker';
 import { GeocoderInput } from './GeocoderInput';
 import { nextHourLocal, planFormSchema, toPlanInputs, type PlanFormValues } from './schema';
 
@@ -71,28 +72,23 @@ export function PlanForm({ onSubmit, loading, initial }: Props) {
       />
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <div className="mb-1 flex items-center justify-between">
-            <label
-              htmlFor="departure"
-              className="text-xs font-medium text-neutral-600 dark:text-neutral-300"
-            >
-              Departure
-            </label>
-            <button
-              type="button"
-              onClick={() => setValue('departure', nextHourLocal(), { shouldValidate: true })}
-              className="text-[11px] font-medium text-neutral-500 hover:text-black dark:text-neutral-400 dark:hover:text-white transition-colors"
-            >
-              Reset to now
-            </button>
-          </div>
-          <input
-            id="departure"
-            type="datetime-local"
-            className="w-full rounded-xl border border-neutral-300 bg-white px-2.5 py-2 text-sm text-neutral-900 shadow-sm [color-scheme:light] focus:border-black focus:outline-none focus:ring-1 focus:ring-black dark:border-white/10 dark:bg-white/[0.06] dark:text-white dark:[color-scheme:dark] dark:focus:border-white/40 dark:focus:bg-white/[0.1] dark:focus:ring-white/20"
-            aria-invalid={Boolean(errors.departure)}
-            aria-describedby={errors.departure ? 'trip-error' : undefined}
-            {...register('departure')}
+          <label
+            htmlFor="departure"
+            className="mb-1 block text-xs font-medium text-neutral-600 dark:text-neutral-300"
+          >
+            Departure
+          </label>
+          <Controller
+            control={control}
+            name="departure"
+            render={({ field }) => (
+              <DateTimePicker
+                value={field.value}
+                onChange={field.onChange}
+                error={errors.departure?.message}
+                disabled={loading}
+              />
+            )}
           />
         </div>
         <div>
