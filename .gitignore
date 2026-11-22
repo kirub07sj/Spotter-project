@@ -18,3 +18,4 @@ frontend/dist/
 frontend/coverage/
 .import_linter_cache/
 .DS_Store
+spotter-docs/
