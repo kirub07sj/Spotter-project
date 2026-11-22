@@ -80,7 +80,7 @@ export function PlanForm({ onSubmit, loading, initial }: Props) {
           <input
             id="departure"
             type="datetime-local"
-            className="w-full rounded-xl border border-black/10 bg-black/[0.04] px-2.5 py-2 text-sm text-neutral-900 shadow-inner [color-scheme:light] focus:border-black/40 focus:bg-black/[0.06] focus:outline-none focus:ring-1 focus:ring-black/20 dark:border-white/10 dark:bg-white/[0.06] dark:text-white dark:[color-scheme:dark] dark:focus:border-white/40 dark:focus:bg-white/[0.1] dark:focus:ring-white/20"
+            className="w-full rounded-xl border border-neutral-300 bg-white px-2.5 py-2 text-sm text-neutral-900 shadow-sm [color-scheme:light] focus:border-black focus:outline-none focus:ring-1 focus:ring-black dark:border-white/10 dark:bg-white/[0.06] dark:text-white dark:[color-scheme:dark] dark:focus:border-white/40 dark:focus:bg-white/[0.1] dark:focus:ring-white/20"
             aria-invalid={Boolean(errors.departure)}
             aria-describedby={errors.departure ? 'trip-error' : undefined}
             {...register('departure')}
@@ -96,7 +96,7 @@ export function PlanForm({ onSubmit, loading, initial }: Props) {
           <input
             id="load"
             inputMode="numeric"
-            className="w-full rounded-xl border border-black/10 bg-black/[0.04] px-3 py-2 text-sm text-neutral-900 placeholder-neutral-400 shadow-inner focus:border-black/40 focus:bg-black/[0.06] focus:outline-none focus:ring-1 focus:ring-black/20 dark:border-white/10 dark:bg-white/[0.06] dark:text-white dark:placeholder-neutral-400 dark:focus:border-white/40 dark:focus:bg-white/[0.1] dark:focus:ring-white/20"
+            className="w-full rounded-xl border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-900 placeholder-neutral-400 shadow-sm focus:border-black focus:outline-none focus:ring-1 focus:ring-black dark:border-white/10 dark:bg-white/[0.06] dark:text-white dark:placeholder-neutral-400 dark:focus:border-white/40 dark:focus:bg-white/[0.1] dark:focus:ring-white/20"
             aria-invalid={Boolean(errors.load)}
             aria-describedby={errors.load ? 'trip-error' : undefined}
             {...register('load', {
@@ -117,7 +117,7 @@ export function PlanForm({ onSubmit, loading, initial }: Props) {
         <legend className="mb-1 block text-xs font-medium text-neutral-600 dark:text-neutral-300">
           Checkpoint every
         </legend>
-        <div className="grid grid-cols-3 overflow-hidden rounded-xl border border-black/10 bg-black/[0.03] text-sm shadow-inner dark:border-white/10 dark:bg-white/[0.04]">
+        <div className="grid grid-cols-3 overflow-hidden rounded-xl border border-neutral-200 bg-neutral-100 text-sm shadow-sm dark:border-white/10 dark:bg-white/[0.04]">
           {INTERVALS.map((n) => (
             <label key={n} className="relative cursor-pointer text-center">
               <input type="radio" value={n} className="peer sr-only" {...register('interval')} />
@@ -128,7 +128,7 @@ export function PlanForm({ onSubmit, loading, initial }: Props) {
           ))}
         </div>
       </fieldset>
-      <details className="rounded-xl border border-dashed border-black/15 bg-black/[0.02] px-3.5 py-2.5 text-sm dark:border-white/15 dark:bg-white/[0.02]">
+      <details className="rounded-xl border border-neutral-200 bg-white/70 px-3.5 py-2.5 text-sm shadow-sm dark:border-white/15 dark:bg-white/[0.02]">
         <summary className="cursor-pointer text-xs font-medium text-neutral-700 transition-colors hover:text-black dark:text-neutral-300 dark:hover:text-white">
           Demo: simulated weather
         </summary>
@@ -137,7 +137,7 @@ export function PlanForm({ onSubmit, loading, initial }: Props) {
         </label>
         <select
           id="scenario"
-          className="mt-2 w-full rounded-xl border border-black/10 bg-white/95 px-3 py-2 text-sm text-neutral-900 [color-scheme:light] focus:border-black/40 focus:ring-1 focus:ring-black/20 dark:border-white/10 dark:bg-neutral-900/95 dark:text-white dark:[color-scheme:dark] dark:focus:border-white/40 dark:focus:ring-white/20"
+          className="mt-2 w-full rounded-xl border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-900 shadow-sm [color-scheme:light] focus:border-black focus:ring-1 focus:ring-black dark:border-white/10 dark:bg-neutral-900/95 dark:text-white dark:[color-scheme:dark] dark:focus:border-white/40 dark:focus:ring-white/20"
           {...register('scenario')}
         >
           <option value="off">Off (real forecast)</option>

@@ -1,5 +1,5 @@
 import { QueryClientProvider } from '@tanstack/react-query';
-import { lazy, Suspense, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import type { PlanInputs } from './api/hooks';
 import { usePlan } from './api/hooks';
 import type { Plan, RouteId } from './api/types';
@@ -93,6 +93,12 @@ function Shell() {
     }
   };
 
+  useEffect(() => {
+    if (plan && desktop) {
+      document.getElementById('results')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }, [plan, desktop]);
+
   const form = <PlanForm onSubmit={onSubmit} loading={query.isFetching} />;
   const results = (
     <ResultsPanel query={query} submitted={submitted !== null} selectedId={selectedId} />
@@ -122,10 +128,10 @@ function Shell() {
           {map}
         </main>
         <aside
-          className="pointer-events-auto absolute bottom-4 left-4 top-4 z-20 flex w-[420px] max-w-[calc(100vw-2rem)] flex-col rounded-2xl border border-black/10 bg-white/80 text-neutral-900 shadow-2xl shadow-black/15 backdrop-blur-2xl dark:border-white/10 dark:bg-black/75 dark:text-white dark:shadow-black/80"
+          className="pointer-events-auto absolute bottom-4 left-4 top-4 z-20 flex w-[420px] max-w-[calc(100vw-2rem)] flex-col rounded-3xl overflow-hidden border border-black/10 bg-white/95 text-neutral-900 shadow-2xl shadow-black/10 backdrop-blur-2xl dark:border-white/10 dark:bg-black/85 dark:text-white dark:shadow-black/80"
           aria-label="Trip planning and route comparison"
         >
-          <header className="border-b border-black/10 bg-black/[0.02] px-5 py-4 backdrop-blur-md dark:border-white/10 dark:bg-white/[0.03]">
+          <header className="border-b border-black/[0.06] bg-neutral-50/80 px-5 py-4 backdrop-blur-md dark:border-white/10 dark:bg-white/[0.03]">
             <div className="flex items-start justify-between gap-3">
               <Title />
               <ThemeToggle />
@@ -161,7 +167,7 @@ function Shell() {
       <main className="absolute inset-0" aria-label="Map">
         {map}
       </main>
-      <header className="absolute inset-x-2 top-2 z-30 max-h-[85%] overflow-y-auto rounded-2xl border border-black/10 bg-white/85 p-3 text-neutral-900 shadow-2xl shadow-black/15 backdrop-blur-2xl dark:border-white/10 dark:bg-black/80 dark:text-white dark:shadow-black/80">
+      <header className="absolute inset-x-2 top-2 z-30 max-h-[85%] overflow-y-auto rounded-3xl border border-black/10 bg-white/95 p-3 text-neutral-900 shadow-2xl shadow-black/15 backdrop-blur-2xl dark:border-white/10 dark:bg-black/90 dark:text-white dark:shadow-black/80">
         <div className="flex items-center gap-2">
           <div className="min-w-0 flex-1">
             <Title />

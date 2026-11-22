@@ -14,9 +14,11 @@ export interface LayerState {
   showAllRoutes: boolean;
   showCheckpoints: boolean;
   beforeId: string | undefined;
+  theme?: 'dark' | 'light';
 }
 
-const CASING: [number, number, number] = [15, 23, 42];
+const CASING_LIGHT: [number, number, number] = [15, 23, 42];
+const CASING_DARK: [number, number, number, number] = [255, 255, 255, 200];
 const dashExtension = [new PathStyleExtension({ dash: true })];
 
 /** Interleaved deck layers accept `beforeId` (draw under basemap labels), but the prop isn't
@@ -83,7 +85,7 @@ export function routeLayers(data: RouteLayerData, s: LayerState): Layer[] {
       ...below(beforeId),
       data: data.selected,
       getPath: (r) => r.path,
-      getColor: CASING,
+      getColor: s.theme === 'dark' ? CASING_DARK : CASING_LIGHT,
       getWidth: 10,
       widthUnits: 'pixels',
       capRounded: true,
@@ -150,15 +152,17 @@ export function routeLayers(data: RouteLayerData, s: LayerState): Layer[] {
   ];
 }
 
-export function endpointLayer(data: MapData): Layer {
+export function endpointLayer(data: MapData, theme?: 'dark' | 'light'): Layer {
+  const casing: [number, number, number] = theme === 'dark' ? [255, 255, 255] : CASING_LIGHT;
+  const originFill: [number, number, number] = [255, 255, 255];
   return new ScatterplotLayer<MapData['endpoints'][number]>({
     id: 'endpoints',
     data: data.endpoints,
     getPosition: (e) => e.position,
     getRadius: 8,
     radiusUnits: 'pixels',
-    getFillColor: (e) => (e.kind === 'origin' ? [255, 255, 255] : CASING),
-    getLineColor: CASING,
+    getFillColor: (e) => (e.kind === 'origin' ? originFill : casing),
+    getLineColor: casing,
     getLineWidth: 3,
     lineWidthUnits: 'pixels',
     stroked: true,

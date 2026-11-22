@@ -19,7 +19,7 @@ export function MapControls() {
   const showCheckpoints = useUi((s) => s.showCheckpoints);
   const setLayer = useUi((s) => s.setLayer);
   return (
-    <div className="absolute right-4 top-4 z-10 w-64 rounded-2xl border border-black/10 bg-white/80 text-xs text-neutral-800 shadow-2xl shadow-black/15 backdrop-blur-2xl dark:border-white/10 dark:bg-black/75 dark:text-neutral-200 dark:shadow-black/80 max-lg:top-[124px] max-lg:w-auto max-lg:max-w-[15rem]">
+    <div className="absolute right-4 top-4 z-10 w-64 rounded-3xl border border-black/10 bg-white/95 text-xs text-neutral-800 shadow-2xl shadow-black/10 backdrop-blur-2xl dark:border-white/10 dark:bg-black/85 dark:text-neutral-200 dark:shadow-black/80 max-lg:top-[124px] max-lg:w-auto max-lg:max-w-[15rem] overflow-hidden">
       <button
         type="button"
         className="flex w-full items-center justify-between px-3.5 py-2.5 font-semibold text-neutral-900 transition-colors hover:text-black dark:text-neutral-100 dark:hover:text-white"

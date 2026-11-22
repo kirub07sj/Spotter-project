@@ -32,9 +32,11 @@ const prefersReducedMotion = () =>
 
 function cameraPadding() {
   const mobile = window.innerWidth < 1024;
-  return mobile
-    ? { top: 80, bottom: Math.round(window.innerHeight * 0.45), left: 30, right: 30 }
-    : { top: 60, bottom: 150, left: 470, right: 80 };
+  if (mobile) {
+    return { top: 80, bottom: Math.round(window.innerHeight * 0.45), left: 30, right: 30 };
+  }
+  const leftPad = Math.min(450, Math.round(window.innerWidth * 0.35));
+  return { top: 60, bottom: 140, left: leftPad, right: 60 };
 }
 
 interface Props {
@@ -77,7 +79,13 @@ export function MapView({ plan, selectedId }: Props) {
 
   const onStyleLoad = useCallback(() => {
     const layers = mapRef.current?.getMap().getStyle().layers ?? [];
-    setLabelLayerId(layers.find((l) => l.type === 'symbol')?.id);
+    // Place and POI labels should stay readable over route lines (docs/04 §5).
+    // In Carto Positron, the first symbol is waterway_label at layer 13, followed by 60 road/bridge layers.
+    // Finding place_ or poi_ label ensures all basemap roads remain UNDER the route lines.
+    const placeLabel = layers.find(
+      (l) => l.type === 'symbol' && (l.id.startsWith('place_') || l.id.startsWith('poi_')),
+    );
+    setLabelLayerId(placeLabel?.id ?? layers.find((l) => l.type === 'symbol')?.id);
   }, []);
 
   const routeData = useMemo(
@@ -135,8 +143,9 @@ export function MapView({ plan, selectedId }: Props) {
       showAllRoutes,
       showCheckpoints,
       beforeId: labelLayerId,
+      theme,
     }),
-    endpointLayer(layerData),
+    endpointLayer(layerData, theme),
     ...truckLayers(trucks),
   ];
   void heatmapVersion; // re-render when new bitmaps land (bumped at most once per frame)

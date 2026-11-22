@@ -12,9 +12,9 @@ interface Props {
 function Skeleton() {
   return (
     <div className="space-y-3 motion-safe:animate-pulse" aria-hidden="true">
-      <div className="h-20 rounded-xl bg-black/[0.06] dark:bg-white/[0.06]" />
+      <div className="h-20 rounded-2xl bg-neutral-200/60 dark:bg-white/[0.06]" />
       {[0, 1, 2].map((i) => (
-        <div key={i} className="h-28 rounded-xl bg-black/[0.06] dark:bg-white/[0.06]" />
+        <div key={i} className="h-28 rounded-2xl bg-neutral-200/60 dark:bg-white/[0.06]" />
       ))}
     </div>
   );
@@ -23,7 +23,7 @@ function Skeleton() {
 export function ResultsPanel({ query, submitted, selectedId }: Props) {
   if (!submitted) {
     return (
-      <p className="rounded-xl border border-dashed border-black/15 bg-black/[0.02] p-4 text-center text-sm text-neutral-600 dark:border-white/15 dark:bg-white/[0.02] dark:text-neutral-400">
+      <p className="rounded-2xl border border-dashed border-neutral-300 bg-white/70 p-4 text-center text-sm text-neutral-600 shadow-sm dark:border-white/15 dark:bg-white/[0.02] dark:text-neutral-400">
         Enter a trip to compare 3 routes by weather risk.
       </p>
     );
@@ -33,7 +33,7 @@ export function ResultsPanel({ query, submitted, selectedId }: Props) {
     return (
       <div
         role="alert"
-        className="rounded-xl border border-rose-500/30 bg-rose-500/10 p-3.5 text-sm backdrop-blur-sm dark:bg-rose-950/40"
+        className="rounded-2xl border border-rose-200 bg-rose-50/95 p-3.5 text-sm backdrop-blur-sm dark:border-rose-500/30 dark:bg-rose-950/40"
       >
         <p className="font-semibold text-rose-800 dark:text-rose-200">{title}</p>
         <p className="mt-0.5 text-rose-700 dark:text-rose-300">{detail}</p>

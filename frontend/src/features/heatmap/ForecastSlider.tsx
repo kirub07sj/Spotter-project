@@ -53,7 +53,7 @@ export function ForecastSlider({ departure, route }: Props) {
   };
 
   return (
-    <div className="pointer-events-auto rounded-2xl border border-black/10 bg-white/80 px-4 py-3 text-neutral-900 shadow-2xl shadow-black/15 backdrop-blur-2xl dark:border-white/10 dark:bg-black/75 dark:text-white dark:shadow-black/80">
+    <div className="pointer-events-auto rounded-3xl border border-black/10 bg-white/95 px-4 py-3 text-neutral-900 shadow-2xl shadow-black/10 backdrop-blur-2xl dark:border-white/10 dark:bg-black/85 dark:text-white dark:shadow-black/80">
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
         <button
           type="button"

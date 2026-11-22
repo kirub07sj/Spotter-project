@@ -16,10 +16,14 @@ export function RecommendationBanner({ plan }: { plan: Plan }) {
   return (
     <section
       aria-labelledby="rec-title"
-      className={`rounded-xl border p-3.5 backdrop-blur-md shadow-lg ${unsafe ? 'border-rose-500/30 bg-rose-500/10 dark:bg-rose-950/40' : 'border-emerald-500/30 bg-emerald-500/10 dark:bg-emerald-950/40'}`}
+      className={`rounded-2xl border p-3.5 backdrop-blur-md shadow-md ${
+        unsafe
+          ? 'border-rose-200 bg-rose-50/95 text-rose-950 dark:border-rose-500/30 dark:bg-rose-950/40 dark:text-rose-100'
+          : 'border-emerald-200 bg-emerald-50/95 text-emerald-950 dark:border-emerald-500/30 dark:bg-emerald-950/40 dark:text-emerald-100'
+      }`}
     >
       {scenario && (
-        <p className="mb-2 inline-flex items-center gap-1 rounded-full bg-amber-500/10 px-2.5 py-0.5 text-xs font-semibold text-amber-800 ring-1 ring-amber-500/20 dark:bg-amber-500/20 dark:text-amber-300 dark:ring-amber-400/30">
+        <p className="mb-2 inline-flex items-center gap-1 rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-semibold text-amber-900 ring-1 ring-amber-500/30 dark:bg-amber-500/20 dark:text-amber-300 dark:ring-amber-400/30">
           <span aria-hidden="true">⚠</span> Simulated weather · {SCENARIO_LABEL[scenario]}
         </p>
       )}
@@ -73,7 +77,7 @@ export function RecommendationBanner({ plan }: { plan: Plan }) {
         </span>
       </div>
       {gaps && (
-        <p className="mt-2 inline-flex items-center gap-1 rounded-full border border-black/10 bg-black/5 px-2.5 py-0.5 text-xs text-neutral-700 dark:border-white/10 dark:bg-white/10 dark:text-neutral-300">
+        <p className="mt-2 inline-flex items-center gap-1 rounded-full border border-neutral-200 bg-white/80 px-2.5 py-0.5 text-xs text-neutral-700 dark:border-white/10 dark:bg-white/10 dark:text-neutral-300">
           <span aria-hidden="true">?</span> Some checkpoints have no forecast data
         </p>
       )}

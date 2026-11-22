@@ -6,6 +6,7 @@ import { RiskBar } from '../../lib/ui/RiskBar';
 
 interface Props {
   route: Route;
+  isRecommended?: boolean;
   selected: boolean;
   focusable: boolean;
   onSelect: () => void;
@@ -13,7 +14,15 @@ interface Props {
   onKeyDown: (e: React.KeyboardEvent<HTMLDivElement>) => void;
 }
 
-export function RouteCard({ route, selected, focusable, onSelect, onHover, onKeyDown }: Props) {
+export function RouteCard({
+  route,
+  isRecommended = route.recommended,
+  selected,
+  focusable,
+  onSelect,
+  onHover,
+  onKeyDown,
+}: Props) {
   const s = route.stats;
   return (
     <div
@@ -27,15 +36,15 @@ export function RouteCard({ route, selected, focusable, onSelect, onHover, onKey
       onMouseLeave={() => onHover(false)}
       onFocus={() => onHover(true)}
       onBlur={() => onHover(false)}
-      className={`cursor-pointer rounded-xl border p-3.5 transition-all backdrop-blur-md ${
+      className={`cursor-pointer rounded-2xl border p-3.5 transition-all backdrop-blur-md ${
         selected
-          ? 'border-black/50 bg-black/[0.06] shadow-xl shadow-black/10 ring-1 ring-black/30 dark:border-white/50 dark:bg-white/[0.1] dark:shadow-black/70 dark:ring-1 dark:ring-white/30'
-          : 'border-black/10 bg-black/[0.02] hover:border-black/20 hover:bg-black/[0.04] dark:border-white/10 dark:bg-white/[0.03] dark:hover:border-white/20 dark:hover:bg-white/[0.06]'
+          ? 'border-2 border-neutral-900 bg-white shadow-md shadow-neutral-900/5 dark:border-white/80 dark:bg-white/[0.1] dark:shadow-black/70'
+          : 'border border-neutral-200 bg-white/85 shadow-sm hover:border-neutral-300 hover:bg-white dark:border-white/10 dark:bg-white/[0.03] dark:hover:border-white/20 dark:hover:bg-white/[0.06]'
       }`}
     >
       <div className="flex items-center gap-2">
         <span
-          className={`inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-xs font-bold text-white shadow-sm ${ROUTE_BADGE[route.id]}`}
+          className={`inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-lg text-xs font-bold text-white shadow-sm ${ROUTE_BADGE[route.id]}`}
           aria-hidden="true"
         >
           {route.id}
@@ -47,8 +56,8 @@ export function RouteCard({ route, selected, focusable, onSelect, onHover, onKey
           <span className="sr-only">Route {route.id}, </span>
           {route.label}
         </span>
-        {route.recommended && (
-          <span className="rounded-full bg-emerald-500/15 px-2 py-0.5 text-[11px] font-semibold text-emerald-800 ring-1 ring-emerald-500/30 dark:bg-emerald-500/20 dark:text-emerald-300">
+        {isRecommended && (
+          <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[11px] font-semibold text-emerald-800 ring-1 ring-emerald-500/30 dark:bg-emerald-500/20 dark:text-emerald-300">
             Recommended
           </span>
         )}

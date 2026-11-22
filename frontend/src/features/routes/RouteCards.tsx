@@ -35,6 +35,7 @@ export function RouteCards({ plan, selectedId }: { plan: Plan; selectedId: Route
         <RouteCard
           key={route.id}
           route={route}
+          isRecommended={Boolean(route.recommended || route.id === plan.recommendation.route_id)}
           selected={route.id === selectedId}
           focusable={route.id === selectedId}
           onSelect={() => selectRoute(route.id)}

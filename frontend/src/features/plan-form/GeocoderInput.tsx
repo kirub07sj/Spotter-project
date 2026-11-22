@@ -86,7 +86,7 @@ export function GeocoderInput({ label, value, onChange, error, autoFocus, placeh
           autoComplete="off"
           autoFocus={autoFocus}
           placeholder={placeholder}
-          className={`w-full rounded-xl border bg-black/[0.04] px-3 py-2 pr-8 text-sm text-neutral-900 placeholder-neutral-400 shadow-inner focus:border-black/40 focus:bg-black/[0.06] focus:outline-none focus:ring-1 focus:ring-black/20 dark:border-white/10 dark:bg-white/[0.06] dark:text-white dark:placeholder-neutral-400 dark:focus:border-white/40 dark:focus:bg-white/[0.1] dark:focus:ring-white/20 ${error ? 'border-rose-500/80 ring-1 ring-rose-500/50' : 'border-black/10 dark:border-white/10'}`}
+          className={`w-full rounded-xl border bg-white px-3 py-2 pr-8 text-sm text-neutral-900 placeholder-neutral-400 shadow-sm focus:border-black focus:outline-none focus:ring-1 focus:ring-black dark:border-white/10 dark:bg-white/[0.06] dark:text-white dark:placeholder-neutral-400 dark:focus:border-white/40 dark:focus:bg-white/[0.1] dark:focus:ring-white/20 ${error ? 'border-rose-500/80 ring-1 ring-rose-500/50' : 'border-neutral-300 dark:border-white/10'}`}
           value={text}
           onChange={(e) => {
             setText(e.target.value);
