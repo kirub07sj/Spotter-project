@@ -1,6 +1,8 @@
 """Wires providers from settings (`PROVIDERS=real|fake`). Tests override with
 `use_providers(...)`."""
 
+import asyncio
+import logging
 from collections.abc import Iterator
 from contextlib import contextmanager
 from dataclasses import dataclass
@@ -16,6 +18,8 @@ from .mapbox_geocoding import MapboxGeocoding
 from .mapbox_routing import MapboxRouting
 from .open_meteo import OpenMeteoWeather
 
+log = logging.getLogger(__name__)
+
 
 @dataclass(frozen=True)
 class Providers:
@@ -26,11 +30,26 @@ class Providers:
 
 
 class DjangoCache:
+    _disabled = False
+
     async def get(self, key: str) -> Any | None:
-        return await django_cache.aget(key)
+        if self._disabled:
+            return None
+        try:
+            return await asyncio.wait_for(django_cache.aget(key), timeout=0.5)
+        except Exception:
+            log.warning("cache.get failed, bypassing cache for this worker", exc_info=True)
+            self._disabled = True
+            return None
 
     async def set(self, key: str, value: Any, ttl_s: int) -> None:
-        await django_cache.aset(key, value, ttl_s)
+        if self._disabled:
+            return
+        try:
+            await asyncio.wait_for(django_cache.aset(key, value, ttl_s), timeout=0.5)
+        except Exception:
+            log.warning("cache.set failed, bypassing cache for this worker", exc_info=True)
+            self._disabled = True
 
 
 _override: Providers | None = None
