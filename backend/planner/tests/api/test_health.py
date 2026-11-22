@@ -7,3 +7,10 @@ def test_health_returns_ok_and_version() -> None:
     body = response.json()
     assert body["status"] == "ok"
     assert isinstance(body["version"], str) and body["version"]
+
+
+def test_root_path_returns_health() -> None:
+    response = APIClient().get("/")
+    assert response.status_code == 200
+    body = response.json()
+    assert body["status"] == "ok"

@@ -20,7 +20,7 @@ services:
       - key: DJANGO_DEBUG
         value: 'false'
       - key: DJANGO_ALLOWED_HOSTS
-        sync: false # e.g. truck-routing-api.onrender.com
+        value: .onrender.com,localhost,127.0.0.1
       - key: CORS_ALLOWED_ORIGINS
         sync: false # e.g. https://truck-routing.vercel.app
       - key: PROVIDERS

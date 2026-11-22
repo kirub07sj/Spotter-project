@@ -7,7 +7,7 @@ if SECRET_KEY.startswith("dev-insecure"):
 DEBUG = False
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 SECURE_SSL_REDIRECT = env_bool("DJANGO_SECURE_SSL_REDIRECT", True)
-SECURE_REDIRECT_EXEMPT = [r"^api/v1/health$"]
+SECURE_REDIRECT_EXEMPT = [r"^api/v1/health$", r"^$"]
 SECURE_HSTS_SECONDS = 60 * 60 * 24 * 30
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_REFERRER_POLICY = "same-origin"
