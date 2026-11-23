@@ -79,7 +79,7 @@ export function CheckpointTable({ route }: { route: Route }) {
   const end = virtual ? Math.min(rows.length, start + VIEWPORT_ROWS + 8) : rows.length;
   return (
     <div
-      className="overflow-auto bg-transparent"
+      className="overflow-y-auto overflow-x-hidden bg-transparent"
       style={virtual ? { maxHeight: ROW_H * (VIEWPORT_ROWS + 1) } : undefined}
       onScroll={virtual ? (e) => setScrollTop(e.currentTarget.scrollTop) : undefined}
     >
@@ -89,22 +89,22 @@ export function CheckpointTable({ route }: { route: Route }) {
         </caption>
         <thead className="glass-header sticky top-0 z-10 text-left text-[11px] uppercase tracking-wide text-neutral-600 dark:text-neutral-300">
           <tr style={{ height: ROW_H }}>
-            <th scope="col" className="px-2 text-right">
+            <th scope="col" className="whitespace-nowrap px-2 text-right">
               Mile
             </th>
-            <th scope="col" className="px-2">
+            <th scope="col" className="whitespace-nowrap px-2">
               ETA
             </th>
-            <th scope="col" className="px-2 text-right">
+            <th scope="col" className="whitespace-nowrap px-2 text-right">
               Wind / gust
             </th>
-            <th scope="col" className="px-2 text-right">
+            <th scope="col" className="whitespace-nowrap px-2 text-right">
               Rain
             </th>
-            <th scope="col" className="px-2 text-right">
+            <th scope="col" className="whitespace-nowrap px-2 text-right">
               Snow
             </th>
-            <th scope="col" className="px-2">
+            <th scope="col" className="whitespace-nowrap px-2">
               Risk
             </th>
           </tr>

@@ -23,7 +23,7 @@ export function CheckpointPanel({ plan, selectedId }: Props) {
 
   return (
     <aside
-      className="glass-panel pointer-events-auto absolute bottom-5 right-16 z-20 flex w-[420px] max-w-[calc(100vw-30rem)] max-h-[48vh] flex-col overflow-hidden max-lg:hidden"
+      className="glass-panel pointer-events-auto absolute bottom-5 right-16 z-20 flex w-fit max-w-[calc(100vw-30rem)] max-h-[48vh] flex-col overflow-hidden max-lg:hidden"
       aria-label="Route checkpoints"
     >
       <header className="glass-header flex items-center justify-between px-4 py-2.5">
@@ -45,7 +45,7 @@ export function CheckpointPanel({ plan, selectedId }: Props) {
         <button
           type="button"
           onClick={() => setOpen(false)}
-          className="flex h-6 w-6 items-center justify-center rounded-full text-neutral-400 hover:bg-black/5 hover:text-neutral-900 dark:hover:bg-white/10 dark:hover:text-white transition-colors"
+          className="ml-4 flex h-6 w-6 items-center justify-center rounded-full text-neutral-400 hover:bg-black/5 hover:text-neutral-900 dark:hover:bg-white/10 dark:hover:text-white transition-colors"
           aria-label="Close checkpoints panel"
           title="Close panel"
         >
@@ -54,7 +54,7 @@ export function CheckpointPanel({ plan, selectedId }: Props) {
           </span>
         </button>
       </header>
-      <div className="flex-1 overflow-y-auto p-3">
+      <div className="flex-1 overflow-y-auto overflow-x-hidden p-2.5">
         <CheckpointTable route={route} />
       </div>
     </aside>
